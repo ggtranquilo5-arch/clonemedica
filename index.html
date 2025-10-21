@@ -93,16 +93,16 @@
 <body>
     <div class="container">
         <h1>Formulário de Anamnese Digital</h1>
-        <h2>Clínica de Saúde e Bem-Estar "TecnoVida"</h2>
+        <h2>Clínica de Saúde Obesas "TecnoGrande"</h2>
 
         <form action="#" method="POST">
 
             <fieldset>
-                <legend>1. Dados Pessoais (5 Campos)</legend>
+                <legend> Dados Pessoais</legend>
 
                 <div class="form-group">
                     <label for="nome">Nome Completo:</label>
-                    <input type="text" id="nome" name="nome_completo" required placeholder="Seu nome e sobrenome">
+                    <input type="text" id="nome" name="nome_completo" required placeholder="Seu nome e sobrenome, Por favor">
                 </div>
 
                 <div class="form-group">
@@ -114,10 +114,11 @@
                     <label for="genero">Gênero:</label>
                     <select id="genero" name="genero" required>
                         <option value="" disabled selected>Selecione seu gênero</option>
-                        <option value="F">Feminino</option>
-                        <option value="M">Masculino</option>
-                        <option value="O">Outro</option>
-                        <option value="NP">Prefiro não informar</option>
+                        <option value="F">Masculino</option>
+                        <option value="M">Feminino</option>
+                        <option value="O">Obeso</option>
+                        <option value="NP">Não sei</option>
+                        <option value="NP">Prefiro não informa</option>
                     </select>
                 </div>
 
@@ -133,16 +134,16 @@
             </fieldset>
 
             <fieldset>
-                <legend>2. Histórico de Saúde (5 Campos)</legend>
+                <legend>Histórico de Saúde (Obrigatorio)</legend>
 
                 <div class="form-group">
                     <label>Possui alguma doença crônica?</label>
                     <div class="radio-group">
                         <label for="cronica_sim">
-                            <input type="radio" id="cronica_sim" name="doenca_cronica" value="Sim" required> Sim
+                            <input type="radio" id="sim" name="doenca" value="Sim" required> Sim
                         </label>
-                        <label for="cronica_nao">
-                            <input type="radio" id="cronica_nao" name="doenca_cronica" value="Não"> Não
+                        <label for="não">
+                            <input type="radio" id="não" name="doenca" value="Não"> Não
                         </label>
                     </div>
                 </div>
@@ -169,7 +170,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>3. Detalhes da Consulta (5 Campos)</legend>
+                <legend>Detalhes da Consulta</legend>
 
                 <div class="form-group">
                     <label for="motivo_consulta">Qual é o principal motivo da sua consulta?</label>
@@ -177,18 +178,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exercicios">Com que frequência você pratica exercícios físicos?</label>
+                    <label for="exercicios">Com que frequência você pratica exercícios Anal?</label>
                     <select id="exercicios" name="frequencia_exercicios" required>
                         <option value="" disabled selected>Selecione uma opção</option>
                         <option value="Diariamente">Diariamente</option>
                         <option value="Semanalmente">Semanalmente</option>
                         <option value="Raramente">Raramente</option>
                         <option value="Nunca">Nunca</option>
+                        <option value="Nunca">Sempre</option>
+                        <option value="Nunca">Com muita frequencia</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="data_ultima_consulta">Data da Última Consulta (aproximada):</label>
+                    <label for="data_ultima_consulta">Data da Última Consulta</label>
                     <input type="date" id="data_ultima_consulta" name="data_ultima_consulta">
                 </div>
 
