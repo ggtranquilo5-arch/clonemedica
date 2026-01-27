@@ -3,48 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulas - Grande e Obesas</title>
+    <title>Formulário TecnoGrande - Clínica de Saúde</title>
     <style>
-        body {* 
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            padding: 20px;
+        /* Estilos Globais */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e8f5e9; /* Verde bem clarinho para o fundo */
+            color: #2e7d32; /* Verde escuro para o texto principal */
+            margin: 0;
+            padding: 40px 20px;
         }
+
         .container {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-top: 8px solid #2ecc71; /* Detalhe verde no topo */
         }
-        h1 {
-            color: #333;
+
+        /* Cabeçalho */
+        header {
             text-align: center;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #1b5e20;
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #4caf50;
+            font-weight: 400;
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        /* Fieldsets e Legendas */
+        fieldset {
+            border: 1px solid #c8e6c9;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            background-color: #fafafa;
+        }
+
+        legend {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #2e7d32;
+            padding: 0 15px;
+            background: #fff;
+            border: 1px solid #c8e6c9;
+            border-radius: 20px;
+        }
+
+        /* Grupos de Formulário */
+        .form-group {
             margin-bottom: 20px;
         }
-        fieldset {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 5px;
-        }
-        legend {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #007bff;
-            padding: 0 10px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
+
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #388e3c;
         }
+
+        /* Inputs e Selects */
         input[type="text"],
         input[type="number"],
         input[type="email"],
@@ -52,74 +84,108 @@
         textarea,
         select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
             box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-size: 1rem;
         }
-        textarea {
-            resize: vertical;
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.2);
         }
+
+        /* Grupos de Seleção */
         .radio-group, .checkbox-group {
             display: flex;
-            gap: 20px;
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px dashed #c8e6c9;
         }
+
         .radio-group label, .checkbox-group label {
-            display: inline-block;
             font-weight: normal;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
         }
-        .radio-group input, .checkbox-group input {
-            width: auto;
-            margin-right: 5px;
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: #27ae60; /* Cor do marcador verde */
         }
+
+        /* Botão */
         .submit-button {
             display: block;
             width: 100%;
-            padding: 10px;
-            background-color: #28a745;
+            padding: 15px;
+            background-color: #27ae60;
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 1.1em;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background 0.3s transform 0.2s;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
         }
+
         .submit-button:hover {
-            background-color: #218838;
+            background-color: #219150;
+            transform: translateY(-2px);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            .radio-group { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Formulário de Analise Digital</h1>
-        <h2>Clínica de Saúde Obesas "TecnoGrande"</h2>
+        <header>
+            <h1>Formulário de Análise Digital</h1>
+            <h2>Clínica de Saúde "TecnoGrande"</h2>
+        </header>
 
         <form action="#" method="POST">
 
             <fieldset>
-                <legend> Dados Pessoais</legend>
+                <legend>👤 Dados Pessoais</legend>
 
                 <div class="form-group">
                     <label for="nome">Nome Completo:</label>
-                    <input type="text" id="nome" name="nome_completo" required placeholder="Seu nome e sobrenome, Por favor">
+                    <input type="text" id="nome" name="nome_completo" required placeholder="Digite seu nome completo">
                 </div>
 
-                <div class="form-group">
-                    <label for="nascimento">Data de Nascimento:</label>
-                    <input type="date" id="nascimento" name="data_nascimento" required>
-                </div>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label for="nascimento">Data de Nascimento:</label>
+                        <input type="date" id="nascimento" name="data_nascimento" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="genero">Gênero:</label>
-                    <select id="genero" name="genero" required>
-                        <option value="" disabled selected>Selecione seu gênero</option>
-                        <option value="F">Masculino</option>
-                        <option value="M">Feminino</option>
-                        <option value="O">Obeso</option>
-                        <option value="NP">Não sei</option>
-                        <option value="NP">Prefiro não informa</option>
-                    </select>
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label for="genero">Gênero:</label>
+                        <select id="genero" name="genero" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                            <option value="O">Outro</option>
+                            <option value="NP">Prefiro não informar</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -134,83 +200,68 @@
             </fieldset>
 
             <fieldset>
-                <legend>Histórico de Saúde (Obrigatorio)</legend>
+                <legend>🏥 Histórico de Saúde</legend>
 
                 <div class="form-group">
                     <label>Possui alguma doença crônica?</label>
                     <div class="radio-group">
-                        <label for="cronica_sim">
-                            <input type="radio" id="sim" name="doenca" value="Sim" required> Sim
-                        </label>
-                        <label for="não">
-                            <input type="radio" id="não" name="doenca" value="Não"> Não
-                        </label>
+                        <label><input type="radio" name="doenca" value="Sim" required> Sim</label>
+                        <label><input type="radio" name="doenca" value="Não"> Não</label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="medicamentos">Quais medicamentos você utiliza regularmente?</label>
-                    <textarea id="medicamentos" name="medicamentos" rows="4" placeholder="Liste os nomes e as dosagens, se souber."></textarea>
+                    <label for="medicamentos">Medicamentos de uso regular:</label>
+                    <textarea id="medicamentos" name="medicamentos" rows="3" placeholder="Liste nomes e dosagens..."></textarea>
                 </div>
 
                 <div class="form-group checkbox-group">
-                    <label for="fumante">Você fuma?</label>
-                    <input type="checkbox" id="fumante" name="fumante" value="Sim">
+                    <label for="fumante">
+                        <input type="checkbox" id="fumante" name="fumante" value="Sim"> Você é fumante?
+                    </label>
                 </div>
 
-                <div class="form-group">
-                    <label for="altura">Altura (em cm):</label>
-                    <input type="number" id="altura" name="altura" min="50" max="300" placeholder="Ex: 175" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="peso">Peso (em kg):</label>
-                    <input type="number" id="peso" name="peso" step="0.1" min="10" max="500" placeholder="Ex: 75.5" required>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="altura">Altura (cm):</label>
+                        <input type="number" id="altura" name="altura" min="50" max="300" placeholder="Ex: 175">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="peso">Peso (kg):</label>
+                        <input type="number" id="peso" name="peso" step="0.1" min="10" max="500" placeholder="Ex: 75.5">
+                    </div>
                 </div>
             </fieldset>
 
             <fieldset>
-                <legend>Detalhes da Consulta</legend>
+                <legend>📅 Detalhes da Consulta</legend>
 
                 <div class="form-group">
-                    <label for="motivo_consulta">Qual é o principal motivo da sua consulta?</label>
-                    <textarea id="motivo_consulta" name="motivo_consulta" rows="3" placeholder="Descreva brevemente sua queixa ou objetivo."></textarea>
+                    <label for="motivo_consulta">Principal motivo da consulta:</label>
+                    <textarea id="motivo_consulta" name="motivo_consulta" rows="3" placeholder="Descreva brevemente sua queixa..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="exercicios">Com que frequência você pratica exercícios Anal?</label>
+                    <label for="exercicios">Frequência de exercícios físicos:</label>
                     <select id="exercicios" name="frequencia_exercicios" required>
                         <option value="" disabled selected>Selecione uma opção</option>
                         <option value="Diariamente">Diariamente</option>
                         <option value="Semanalmente">Semanalmente</option>
                         <option value="Raramente">Raramente</option>
                         <option value="Nunca">Nunca</option>
-                        <option value="Nunca">Sempre</option>
-                        <option value="Nunca">Com muita frequencia</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="data_ultima_consulta">Data da Última Consulta</label>
-                    <input type="date" id="data_ultima_consulta" name="data_ultima_consulta">
-                </div>
-
-                <div class="form-group">
-                    <label>Prefere ser contatado por:</label>
+                    <label>Preferência de contato:</label>
                     <div class="radio-group">
-                        <label for="contato_tel">
-                            <input type="radio" id="contato_tel" name="contato_preferencial" value="Telefone" required> Telefone
-                        </label>
-                        <label for="contato_email">
-                            <input type="radio" id="contato_email" name="contato_preferencial" value="E-mail"> E-mail
-                        </label>
+                        <label><input type="radio" name="contato_preferencial" value="Telefone" required> Telefone</label>
+                        <label><input type="radio" name="contato_preferencial" value="E-mail"> E-mail</label>
                     </div>
                 </div>
             </fieldset>
 
-            <div class="form-group">
-                <button type="submit" class="submit-button">Enviar Formulário de Anamnese</button>
-            </div>
+            <button type="home.html" class="submit-button">Finalizar e Enviar </button>
 
         </form>
     </div>
