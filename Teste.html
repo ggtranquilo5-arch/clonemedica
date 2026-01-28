@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medprev - Agendamento</title>
+    <style>
+        :root {
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --texto: #333;
+            --img-fundo: url("imagem.pjp/Logo- prog WEB.png"); 
+        }
+
+        body {
+            font-family: Arial, sans-serif; margin: 0; color: var(--texto);
+            background-image: linear-gradient(rgba(248, 249, 250, 0.8), rgba(248, 249, 250, 0.8)), var(--img-fundo);
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95); padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
+        }
+
+        .nav-links { display: flex; gap: 10px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.9rem; padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; transition: 0.3s; }
+        .nav-links a:hover { background-color: var(--verde-escuro); color: white; }
+
+        .logo-img { width: 35px; height: auto; margin-right: 10px; }
+
+        /* --- CÁPSULA DE PERFIL ESTILO IF --- */
+        .profile-capsule {
+            display: flex; align-items: center; background-color: #1a1a1a;
+            border-radius: 50px; padding: 4px 4px 4px 15px; cursor: pointer;
+            position: relative; transition: 0.3s; border: 1px solid #333;
+        }
+
+        .mini-logo { width: 22px; height: auto; margin-right: 12px; }
+
+        .avatar-circle {
+            width: 32px; height: 32px; background-color: #78909c;
+            color: white; border-radius: 50%; display: flex;
+            justify-content: center; align-items: center; font-weight: bold;
+        }
+
+        /* Dropdown do Perfil */
+        .profile-dropdown {
+            position: absolute; top: 50px; right: 0; background: white;
+            min-width: 180px; box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            border-radius: 8px; display: none; flex-direction: column; overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .profile-dropdown a, .profile-dropdown button {
+            padding: 12px 15px; text-decoration: none; color: #333;
+            font-size: 0.9rem; border: none; background: none; text-align: left; cursor: pointer;
+        }
+
+        .profile-dropdown a:hover, .profile-dropdown button:hover { background-color: #f5f5f5; }
+
+        .btn-login {
+            text-decoration: none; color: var(--verde-escuro); font-weight: bold;
+            padding: 8px 20px; border: 2px solid var(--verde-escuro); border-radius: 8px;
+        }
+
+        .hidden { display: none !important; }
+        .hero { text-align: center; padding: 80px 20px; }
+        .btn-primary { background-color: var(--verde-escuro); color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-links">
+            <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
+            <a href="#">Paciente</a>
+            <a href="#">Profissional</a>
+            <a href="#">Unidades</a>
+        </div>
+
+        <div class="user-area">
+            <a href="login.html" id="btn-login-header" class="btn-login">Login</a>
+
+            <div id="user-logged-info" class="profile-capsule hidden" onclick="toggleDropdown()">
+                <img src="imagem.pjp/Logo- prog WEB.png" class="mini-logo" alt="IF">
+                <div class="avatar-circle" id="user-initial">U</div>
+                
+                <div id="drop-menu" class="profile-dropdown">
+                    <a href="perfil.html">👤 Ver meu Perfil</a>
+                    <a href="login.html">🔄 Trocar de Perfil</a>
+                    <hr style="border:0; border-top:1px solid #eee; margin:0;">
+                    <button onclick="logout()" style="color: red;">🚪 Sair</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="hero">
+        <h1>AGENDE CONSULTAS E EXAMES</h1>
+        <p>Bem-vindo à <strong>Clínica Bem Estar</strong></p>
+        <button class="btn-primary">Novo Agendamento</button>
+    </main>
+
+    <script>
+        window.onload = function() {
+            const userJSON = localStorage.getItem('usuarioLogado');
+            
+            if (userJSON) {
+                const user = JSON.parse(userJSON);
+                // Esconde login e mostra cápsula
+                document.getElementById('btn-login-header').classList.add('hidden');
+                document.getElementById('user-logged-info').classList.remove('hidden');
+                
+                // Define a inicial do nome no círculo
+                document.getElementById('user-initial').innerText = user.nome.charAt(0).toUpperCase();
+            }
+        };
+
+        function toggleDropdown() {
+            const menu = document.getElementById('drop-menu');
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function logout() {
+            localStorage.removeItem('usuarioLogado');
+            window.location.reload();
+        }
+
+        // Fecha ao clicar fora
+        window.onclick = function(event) {
+            if (!event.target.closest('.profile-capsule')) {
+                document.getElementById('drop-menu').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

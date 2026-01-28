@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Clínica Bem Estar</title>
+    <style>
+        :root {
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --texto: #333;
+            --branco: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f7f6;
+            color: var(--texto);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header simples para o perfil */
+        header {
+            width: 100%;
+            background: var(--branco);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .btn-voltar {
+            text-decoration: none;
+            color: var(--verde-escuro);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Card Principal */
+        .perfil-container {
+            background: var(--branco);
+            width: 90%;
+            max-width: 600px;
+            margin-top: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .perfil-header {
+            background: linear-gradient(135deg, var(--verde-escuro), #2d6a4f);
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .avatar-grande {
+            width: 100px;
+            height: 100px;
+            background-color: #78909c;
+            border: 4px solid white;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .perfil-content {
+            padding: 30px;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .acoes-perfil {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-edit {
+            flex: 1;
+            background-color: var(--verde-escuro);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-logout {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="Home.html" class="btn-voltar">⬅ Voltar ao Início</a>
+        <div style="font-weight: bold; color: var(--verde-escuro);">Minha Conta</div>
+    </header>
+
+    <div class="perfil-container">
+        <div class="perfil-header">
+            <div class="avatar-grande" id="perfil-avatar">?</div>
+            <h2 id="perfil-nome-titulo">Carregando...</h2>
+            <p id="perfil-email-sub">email@exemplo.com</p>
+        </div>
+
+        <div class="perfil-content">
+            <div class="info-group">
+                <div class="info-label">Nome Completo</div>
+                <div class="info-value" id="info-nome">---</div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-label">E-mail de Acesso</div>
+                <div class="info-value" id="info-email">---</div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-label">Status da Conta</div>
+                <div class="info-value" style="color: var(--verde-escuro);">Ativa / Paciente</div>
+            </div>
+
+            <div class="acoes-perfil">
+                <button class="btn-edit" onclick="alert('Funcionalidade de editar em breve!')">Editar Dados</button>
+                <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para carregar os dados do localStorage
+        window.onload = function() {
+            const usuarioJSON = localStorage.getItem('usuarioLogado');
+            
+            if (!usuarioJSON) {
+                // Se não houver ninguém logado, manda de volta para o login
+                alert("Por favor, faça login para acessar esta página.");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const usuario = JSON.parse(usuarioJSON);
+
+            // Preenche os campos na tela
+            document.getElementById('perfil-nome-titulo').innerText = usuario.nome;
+            document.getElementById('perfil-email-sub').innerText = usuario.email;
+            document.getElementById('info-nome').innerText = usuario.nome;
+            document.getElementById('info-email').innerText = usuario.email;
+            
+            // Define a inicial no avatar
+            const inicial = usuario.nome.charAt(0).toUpperCase();
+            document.getElementById('perfil-avatar').innerText = inicial;
+        };
+
+        function fazerLogout() {
+            localStorage.removeItem('usuarioLogado');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
