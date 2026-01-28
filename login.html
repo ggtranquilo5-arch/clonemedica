@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clínica Bem Estar - Login</title>
     <style>
-        /* Mantendo sua estilização original */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body {
             background: linear-gradient(135deg, #e0f2f1 0%, #b2ebf2 100%);
@@ -13,23 +12,22 @@
         }
         .container {
             background-color: #fff; border-radius: 15px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 400px; max-width: 90%; padding: 2rem;
+            width: 400px; padding: 2rem;
         }
         .header { text-align: center; margin-bottom: 2rem; }
         .header h1 { color: #00796b; font-size: 1.8rem; }
         .tabs { display: flex; justify-content: space-around; margin-bottom: 1.5rem; border-bottom: 2px solid #f0f0f0; }
-        .tab-btn { background: none; border: none; padding: 10px; cursor: pointer; color: #999; font-weight: bold; }
+        .tab-btn { background: none; border: none; padding: 10px; cursor: pointer; color: #999; font-weight: bold; transition: 0.3s; }
         .tab-btn.active { color: #00796b; border-bottom: 3px solid #00796b; }
         .input-group { margin-bottom: 1.2rem; }
-        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #333; }
         input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
         input:focus { border-color: #00796b; }
         .btn-submit {
             background-color: #00796b; color: white; padding: 12px; border: none;
-            border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; margin-top: 1rem;
+            border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; width: 100%; margin-top: 1rem;
         }
         .hidden { display: none; }
-        .footer-link { text-align: center; display: block; margin-top: 1rem; font-size: 0.8rem; color: #00596b; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -41,62 +39,56 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="toggleForm('login')">Login</button>
-        <button class="tab-btn" onclick="toggleForm('cadastro')">Cadastro</button>
+        <button class="tab-btn active" id="btn-tab-login" onclick="toggleForm('login')">Login</button>
+        <button class="tab-btn" id="btn-tab-reg" onclick="toggleForm('cadastro')">Cadastro</button>
     </div>
 
     <form id="login-form">
         <div class="input-group">
-            <label for="email-login">E-mail</label>
+            <label>E-mail</label>
             <input type="email" id="email-login" placeholder="seu@email.com" required>
         </div>
         <div class="input-group">
-            <label for="pass-login">Senha</label>
+            <label>Senha</label>
             <input type="password" id="pass-login" placeholder="Sua senha" required>
         </div>
         <button type="submit" class="btn-submit">Entrar</button>
-        <a href="#" class="footer-link">Esqueceu sua senha?</a>
     </form>
 
     <form id="register-form" class="hidden">
         <div class="input-group">
-            <label for="name-reg">Nome Completo</label>
-            <input type="text" id="name-reg" placeholder="Seu nome" required>
+            <label>Nome Completo</label>
+            <input type="text" id="name-reg" placeholder="Ex: Joaquim" required>
         </div>
         <div class="input-group">
-            <label for="email-reg">E-mail</label>
+            <label>E-mail</label>
             <input type="email" id="email-reg" placeholder="seu@email.com" required>
         </div>
         <div class="input-group">
-            <label for="pass-reg">Criar Senha</label>
-            <input type="password" id="pass-reg" minlength="6" placeholder="Mínimo 6 caracteres" required>
+            <label>Senha</label>
+            <input type="password" id="pass-reg" minlength="6" required>
         </div>
         <button type="submit" class="btn-submit">Criar Conta</button>
     </form>
 </div>
 
 <script>
-    // Alternar entre abas
     function toggleForm(type) {
-        const loginForm = document.getElementById('login-form');
-        const regForm = document.getElementById('register-form');
-        const btns = document.querySelectorAll('.tab-btn');
-
+        const loginF = document.getElementById('login-form');
+        const regF = document.getElementById('register-form');
         if (type === 'login') {
-            loginForm.classList.remove('hidden');
-            regForm.classList.add('hidden');
-            btns[0].classList.add('active');
-            btns[1].classList.remove('active');
+            loginF.classList.remove('hidden'); regF.classList.add('hidden');
+            document.getElementById('btn-tab-login').classList.add('active');
+            document.getElementById('btn-tab-reg').classList.remove('active');
         } else {
-            loginForm.classList.add('hidden');
-            regForm.classList.remove('hidden');
-            btns[0].classList.remove('active');
-            btns[1].classList.add('active');
+            loginF.classList.add('hidden'); regF.classList.remove('hidden');
+            document.getElementById('btn-tab-login').classList.remove('active');
+            document.getElementById('btn-tab-reg').classList.add('active');
         }
     }
 
-    // Lógica de Cadastro
-    document.getElementById('register-form').addEventListener('submit', function(e) {
+    // Salvar Cadastro
+    document.getElementById('register-form').onsubmit = function(e) {
         e.preventDefault();
         const user = {
             nome: document.getElementById('name-reg').value,
@@ -104,24 +96,24 @@
             senha: document.getElementById('pass-reg').value
         };
         localStorage.setItem(user.email, JSON.stringify(user));
-        alert('Conta criada com sucesso! Agora faça login.');
+        alert("Cadastro realizado! Faça login.");
         toggleForm('login');
-    });
+    };
 
-    // Lógica de Login
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+    // Fazer Login
+    document.getElementById('login-form').onsubmit = function(e) {
         e.preventDefault();
         const email = document.getElementById('email-login').value;
         const senha = document.getElementById('pass-login').value;
-        const storedUser = JSON.parse(localStorage.getItem(email));
+        const dados = JSON.parse(localStorage.getItem(email));
 
-        if (storedUser && storedUser.senha === senha) {
-            localStorage.setItem('usuarioLogado', storedUser.nome); // Define sessão
-            window.location.href = 'Home.html'; // Volta para a tela inicial
+        if (dados && dados.senha === senha) {
+            localStorage.setItem('usuarioLogado', JSON.stringify(dados));
+            window.location.href = 'Home.html'; // Redireciona
         } else {
-            alert('E-mail ou senha incorretos.');
+            alert("Dados inválidos!");
         }
-    });
+    };
 </script>
 </body>
 </html>
