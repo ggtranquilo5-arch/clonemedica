@@ -3,190 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interface UI Verde Premium</title>
+    <title>Medprev - Agendamento</title>
     <style>
         :root {
-            --primary-green: #2d7a31;
-            --bg-color: #dcedc8;
-            --card-glass: rgba(255, 255, 255, 0.7);
-            --text-dark: #1b5e20;
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --texto: #333;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
 
         body {
-            background-color: #f0f4f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: Arial, sans-serif; margin: 0; color: var(--texto);
+            background-color: #f8f9fa;
         }
 
-        /* Moldura do Celular */
-        .device {
-            width: 380px;
-            height: 800px;
-            background: #1e3f1e;
-            border-radius: 50px;
-            padding: 12px;
-            position: relative;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+        header {
+            background: white; padding: 10px 5%; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
         }
 
-        .screen {
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-            border-radius: 40px;
-            overflow-y: auto;
-            padding: 20px;
-            scrollbar-width: none;
-            position: relative;
+        .nav-links { display: flex; gap: 10px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--texto); padding: 8px 15px; border-radius: 20px; border: 1px solid #ddd; font-size: 0.9rem; }
+
+        /* Estilo do Ícone de Perfil */
+        .profile-capsule {
+            display: flex; align-items: center; background: #1a1a1a;
+            border-radius: 50px; padding: 5px 15px; cursor: pointer; color: white;
+        }
+        .avatar-circle {
+            width: 30px; height: 30px; background: #78909c;
+            border-radius: 50%; display: flex; justify-content: center;
+            align-items: center; margin-left: 10px; font-weight: bold;
         }
 
-        /* Perfil */
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin: 20px 0;
+        .btn-login {
+            text-decoration: none; color: var(--verde-escuro); font-weight: bold;
+            padding: 8px 20px; border: 2px solid var(--verde-escuro); border-radius: 8px;
         }
 
-        .profile-pic {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid var(--primary-green);
-            background: url('imagem.pjp/gato-preto.gif') center/cover;
-        }
-
-        /* Cards */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .card {
-            background: var(--card-glass);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 15px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .full { grid-column: span 2; }
-
-        .bar {
-            height: 6px;
-            background: #bdd6bd;
-            border-radius: 3px;
-            margin-top: 10px;
-        }
-
-        .fill {
-            height: 100%;
-            background: var(--primary-green);
-            border-radius: 3px;
-        }
-
-        /* BARRA DE NAVEGAÇÃO COM BOTÃO HOME ANIMADO */
-        .nav-container {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            height: 70px;
-            background: var(--primary-green);
-            border-radius: 35px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        /* Estilo do Botão Home */
-        .home-btn {
-            width: 65px;
-            height: 65px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 28px;
-            cursor: pointer;
-            border: 5px solid var(--primary-green);
-            position: relative;
-            bottom: 20px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        }
-
-
-        .home-btn:hover {
-            transform: translateY(-12px) scale(1.15);
-            background: #f1f8e9;
-            box-shadow: 0 15px 30px rgba(45, 122, 49, 0.4);
-        }
-
-        .nav-icon { color: white; opacity: 0.7; font-size: 20px; cursor: pointer; }
-        .nav-icon:hover { opacity: 1; }
-
+        .hero { text-align: center; padding: 80px 20px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<div class="device">
-    <div class="screen">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px;">
-            <span>10:23 AM</span>
-            <span>📶 🔋</span>
+    <header>
+        <div class="nav-links">
+            <strong>CLÍNICA</strong>
+            <a href="#">Paciente</a>
+            <a href="#">Unidades</a>
+            <a href="#">Sobre</a>
         </div>
 
-        <div class="header">
-            <div class="profile-pic"></div>
-            <div>
-                <h2 style="color: var(--text-dark);">Pobre Gato</h2>
-                <p style="font-size: 11px; color: #555;">Passa fome</p>
+        <div class="user-area" id="user-area">
+            <a href="login.html" id="btn-login" class="btn-login">Login</a>
+
+            <div id="profile-area" class="profile-capsule hidden" onclick="logout()">
+                <span id="user-name">Usuário</span>
+                <div class="avatar-circle" id="user-initial">U</div>
             </div>
         </div>
+    </header>
 
-        <div class="grid">
-            <div class="card full">
-                <p style="font-size: 12px;">Aura Premium</p>
-                <div class="bar"><div class="fill" style="width: 70%;"></div></div>
-            </div>
+    <main class="hero">
+        <h1>AGENDE CONSULTAS E EXAMES</h1>
+        <p>Sua saúde em boas mãos na <strong>Fision Floresta</strong></p>
+    </main>
 
-            <div class="card">
-                <p style="font-size: 12px;">Devedor</p>
-                <h3 style="color: var(--primary-green);">$1,740.00</h3>
-            </div>
+    <script>
+        // Verificar se há usuário logado ao carregar
+        window.onload = function() {
+            const nomeUsuario = localStorage.getItem('usuarioLogado');
+            const btnLogin = document.getElementById('btn-login');
+            const profileArea = document.getElementById('profile-area');
 
-            <div class="card">
-                <p style="font-size: 12px;">Saldo</p>
-                <h3 style="color: var(--primary-green);">$354.400</h3>
-            </div>
+            if (nomeUsuario) {
+                btnLogin.classList.add('hidden');
+                profileArea.classList.remove('hidden');
+                document.getElementById('user-name').innerText = nomeUsuario.split(' ')[0]; // Pega primeiro nome
+                document.getElementById('user-initial').innerText = nomeUsuario.charAt(0).toUpperCase();
+            }
+        };
 
-            <div class="card full">
-                <p style="font-size: 12px; margin-bottom: 10px;">Intagram</p>
-                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
-                    <div style="width: 25px; height: 25px; background: #a5d6a7; border-radius: 50%;"><img src="imagem.pjp/gato-preto.gif" style="width: 25px; height: auto;"></div>
-                    <span style="font-size: 12px;">@GatoPreto</span>
-        
-                </div>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-icon">📊</div>
-            
-            <a href="Home.html" class="home-btn">🏠</a>
-            
-            <div class="nav-icon">⚙️</div>
-        </div>
-    </div>
-</div>
-
+        // Função simples para deslogar ao clicar no perfil
+        function logout() {
+            if(confirm("Deseja sair da conta?")) {
+                localStorage.removeItem('usuarioLogado');
+                window.location.reload();
+            }
+        }
+    </script>
 </body>
 </html>
