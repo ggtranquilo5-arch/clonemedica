@@ -1,0 +1,14 @@
+<script>
+    // Função simples para simular login e salvar no sistema
+    function realizarLogin() {
+        const usuarioPadrao = {
+            nome: "Joaquim Silva",
+            email: "joaquim@gmail.com",
+            nascimento: "1990-01-01",
+            plano: "Medprev Individual"
+        };
+        localStorage.setItem('login.html', JSON.stringify(usuarioPadrao));
+        window.location.href = 'Perfil.htm';
+    }
+    // Chame realizarLogin() em um botão nesta página
+</script>

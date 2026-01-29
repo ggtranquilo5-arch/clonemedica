@@ -215,10 +215,11 @@
         </div>
 
         <div class="user-profile">
-            <span>Meu Perfil</span>
-            <div class="profile-avatar">👤</div>
+            <span>Meu Perfil </span>
+            <div class="profile-avatar"><img src="imagem.pjp/gato-preto.gif" alt="25" width="35"></div>
+
             <div class="profile-dropdown">
-                <button onclick="openModal('modalDados')">Ver Dados</button>
+                <a href="Perfil.htm" class="btn-agendar">Ver Dados</a>
                 <button onclick="openModal('modalConsultas')">Minhas Consultas</button>
                 <button onclick="logout()" style="color: #d9534f;">Sair</button>
             </div>
@@ -284,7 +285,7 @@
 
         function logout() {
             if(confirm("Deseja realmente sair?")) {
-                window.location.reload();
+                window.location.reload("Home.html");
             }
         }
 

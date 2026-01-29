@@ -1,0 +1,34 @@
+<script>
+    // Ao carregar, preenche os inputs com os dados atuais
+    window.onload = function() {
+        const user = JSON.parse(localStorage.getItem('usuarioAtivo')) || {
+            nome: "joaquim",
+            email: "joaquim@gmail.com",
+            nascimento: "1990-01-01"
+        };
+        
+        document.getElementById('nome').value = user.nome;
+        document.getElementById('email').value = user.email;
+        document.getElementById('nascimento').value = user.nascimento;
+    };
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Cria o novo objeto com os dados do formulário
+        const novosDados = {
+            nome: document.getElementById('nome').value,
+            email: document.getElementById('email').value,
+            nascimento: document.getElementById('nascimento').value,
+            plano: "Medprev Individual" // Mantém o plano fixo
+        };
+
+        // SALVA no localStorage
+        localStorage.setItem('usuarioAtivo', JSON.stringify(novosDados));
+
+        alert("Dados de " + novosDados.nome + " atualizados com sucesso!");
+        
+        // Redireciona para a página de perfil
+        window.location.href = 'perfil.html'; 
+    });
+</script>

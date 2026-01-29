@@ -23,7 +23,6 @@
             padding: 20px;
         }
 
-        /* Link Voltar ao Início */
         .back-link {
             align-self: flex-start;
             color: var(--primary-green);
@@ -36,7 +35,6 @@
 
         .back-link:hover { text-decoration: underline; }
 
-        /* Card Principal */
         .card {
             background: white;
             width: 100%;
@@ -46,7 +44,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* Cabeçalho Verde */
         .header {
             background-color: var(--primary-green);
             color: white;
@@ -68,10 +65,9 @@
             margin: 0 auto 15px;
         }
 
-        .header h2 { margin: 5px 0; text-transform: lowercase; }
+        .header h2 { margin: 5px 0; }
         .header p { margin: 0; opacity: 0.9; font-size: 0.9em; }
 
-        /* Conteúdo do Perfil */
         .content { padding: 30px; }
 
         .info-group {
@@ -92,7 +88,6 @@
         .value { color: #333; font-weight: 500; }
         .status { color: var(--primary-green); font-weight: bold; }
 
-        /* Botões */
         .actions {
             display: flex;
             gap: 10px;
@@ -123,31 +118,30 @@
         }
 
         .btn-exit:hover { opacity: 0.8; }
-
     </style>
 </head>
 <body>
 
-    <a href="#" class="back-link" onclick="window.location.href='index.html'">
+    <a href="Home 2.html" class="back-link">
         &larr; Voltar ao Início
     </a>
 
     <div class="card">
         <div class="header">
-            <div class="profile-pic">J</div>
-            <h2>joaquim</h2>
-            <p>joaquim@gmail.com</p>
+            <div class="profile-pic" id="pic">J</div>
+            <h2 id="disp-nome-header">joaquim</h2>
+            <p id="disp-email-header">joaquim@gmail.com</p>
         </div>
 
         <div class="content">
             <div class="info-group">
                 <span class="label">Nome Completo</span>
-                <div class="value">joaquim</div>
+                <div class="value" id="disp-nome-full">joaquim</div>
             </div>
 
             <div class="info-group">
                 <span class="label">E-mail de Acesso</span>
-                <div class="value">joaquim@gmail.com</div>
+                <div class="value" id="disp-email-full">joaquim@gmail.com</div>
             </div>
 
             <div class="info-group" style="border: none;">
@@ -163,18 +157,35 @@
     </div>
 
     <script>
+        function carregarPerfil() {
+            // Busca o que foi salvo na outra página
+            const user = JSON.parse(localStorage.getItem('usuarioAtivo'));
+
+            if (user) {
+                // Atualiza o topo (header)
+                document.getElementById('disp-nome-header').innerText = user.nome;
+                document.getElementById('disp-email-header').innerText = user.email;
+                document.getElementById('pic').innerText = user.nome.charAt(0).toUpperCase();
+
+                // Atualiza o corpo do card
+                document.getElementById('disp-nome-full').innerText = user.nome;
+                document.getElementById('disp-email-full').innerText = user.email;
+            }
+        }
+
         function editarDados() {
-            alert("Redirecionando para a página de edição de perfil...");
-            // Exemplo: window.location.href = 'editar-perfil.html';
             window.location.href = 'editar perfil.html';
         }
 
         function sair() {
             if(confirm("Deseja realmente sair do sistema?")) {
-                alert("Você saiu com sucesso.");
-                window.location.href = 'Home.html';
+                localStorage.removeItem('usuarioAtivo');
+                window.location.href = 'Home 2.html';
             }
         }
+
+        // Roda a função assim que a página carregar
+        window.onload = carregarPerfil;
     </script>
 
 </body>
