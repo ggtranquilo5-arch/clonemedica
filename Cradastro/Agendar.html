@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento TecnoGrande - Clínica de Saúde</title>
+    <style>
+        /* Estilos Globais */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e8f5e9; color: #2e7d32; margin: 0; padding: 40px 20px; }
+        .container { max-width: 850px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); border-top: 8px solid #2ecc71; }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { color: #1b5e20; margin: 0; font-size: 2em; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { color: #4caf50; font-weight: 400; font-size: 1.2em; margin-top: 5px; }
+        fieldset { border: 1px solid #c8e6c9; padding: 25px; margin-bottom: 30px; border-radius: 12px; background-color: #fafafa; }
+        legend { font-size: 1.1em; font-weight: bold; color: #2e7d32; padding: 0 15px; background: #fff; border: 1px solid #c8e6c9; border-radius: 20px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #388e3c; }
+        input[type="text"], input[type="number"], input[type="email"], input[type="date"], textarea, select { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; transition: all 0.3s ease; font-size: 1rem; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #2ecc71; box-shadow: 0 0 8px rgba(46, 204, 113, 0.2); }
+        .radio-group, .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; padding: 10px; background: #fff; border-radius: 8px; border: 1px dashed #c8e6c9; }
+        .radio-group label, .checkbox-group label { font-weight: normal; display: flex; align-items: center; cursor: pointer; }
+        input[type="radio"], input[type="checkbox"] { margin-right: 8px; accent-color: #27ae60; }
+        .submit-button { display: block; width: 100%; padding: 15px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: background 0.3s, transform 0.2s; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+        .submit-button:hover { background-color: #219150; transform: translateY(-2px); }
+        .btn-cancel { display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Agendamento de Análise Digital</h1>
+            <h2>Clínica de Saúde "TecnoGrande"</h2>
+        </header>
+
+        <form action="https://formsubmit.co/joaquim.moura@aluno.ifsertao-pe.edu.br" method="POST">
+            
+            <input type="hidden" name="_subject" value="Novo Agendamento Clínica TecnoGrande">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://seu-usuario.github.io/seu-projeto/Home%202.html">
+
+            <fieldset>
+                <legend>👤 Dados Pessoais</legend>
+                <div class="form-group">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" name="Paciente" required>
+                </div>
+
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label for="nascimento">Data de Nascimento:</label>
+                        <input type="date" id="nascimento" name="Nascimento" required>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label for="genero">Gênero:</label>
+                        <select id="genero" name="Genero" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf">CPF (apenas dígitos):</label>
+                    <input type="number" id="cpf" name="CPF" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail para Retorno:</label>
+                    <input type="email" id="email" name="Email_Contato" required>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>🏥 Histórico de Saúde</legend>
+                <div class="form-group">
+                    <label>Possui alguma doença crônica?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="Doenca_Cronica" value="Sim" required> Sim</label>
+                        <label><input type="radio" name="Doenca_Cronica" value="Não"> Não</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="medicamentos">Medicamentos de uso regular:</label>
+                    <textarea id="medicamentos" name="Medicamentos" rows="3"></textarea>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>📅 Detalhes da Consulta</legend>
+                <div class="form-group">
+                    <label for="motivo_consulta">Principal motivo da consulta:</label>
+                    <textarea id="motivo_consulta" name="Motivo_Consulta" rows="3" required></textarea>
+                </div>
+            </fieldset>
+
+            <button type="submit" class="submit-button">Finalizar e Enviar Agendamento</button>
+            <a href="Home 2.html" class="btn-cancel">Cancelar e Voltar</a>
+        </form>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (user) {
+                document.getElementById('nome').value = user.nome;
+                document.getElementById('email').value = user.email;
+                if(user.nascimento) document.getElementById('nascimento').value = user.nascimento;
+            }
+        };
+    </script>
+</body>
+</html>

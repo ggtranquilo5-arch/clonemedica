@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medprev - Agendamento</title>
+    <title>Fision+ - Agendamento</title>
     <style>
         :root {
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --cinza-fundo: #f8f9fa;
             --texto: #333;
+            /* Caminho da imagem conforme seu modelo */
             --img-fundo: url("imagem.pjp/Logo- prog WEB.png"); 
         }
 
@@ -65,18 +66,19 @@
             margin-right: 10px;
         }
 
-        /* --- Estilização do Perfil --- */
+        /* --- Estilização do Perfil Dinâmico --- */
         .user-profile {
             position: relative;
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 5px 15px;
             border-radius: 25px;
+            background: rgba(62, 142, 99, 0.1); /* Destaque suave */
             transition: background 0.3s;
         }
 
-        .user-profile:hover { background: rgba(0,0,0,0.05); }
+        .user-profile:hover { background: rgba(62, 142, 99, 0.2); }
 
         .profile-avatar {
             width: 35px;
@@ -88,8 +90,11 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            margin-left: 8px;
+            margin-left: 10px;
+            overflow: hidden;
         }
+
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
         .profile-dropdown {
             display: none;
@@ -99,14 +104,14 @@
             background: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 8px;
-            min-width: 180px;
+            min-width: 200px;
             margin-top: 10px;
             overflow: hidden;
         }
 
         .user-profile:hover .profile-dropdown { display: block; }
 
-        .profile-dropdown button {
+        .profile-dropdown a, .profile-dropdown button {
             width: 100%;
             padding: 12px 15px;
             border: none;
@@ -114,34 +119,13 @@
             text-align: left;
             cursor: pointer;
             font-size: 0.9rem;
-            border-bottom: 1px solid #eee;
+            display: block;
+            text-decoration: none;
             color: var(--texto);
+            border-bottom: 1px solid #eee;
         }
 
-        .profile-dropdown button:hover { background: #f8f9fa; color: var(--verde-escuro); }
-
-        /* --- Modais --- */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(3px);
-        }
-
-        .modal-content {
-            background: white;
-            margin: 10% auto;
-            padding: 25px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 450px;
-            position: relative;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .close-btn { position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #666; }
+        .profile-dropdown a:hover, .profile-dropdown button:hover { background: #f8f9fa; color: var(--verde-escuro); }
 
         /* --- Estrutura da Página --- */
         .hero { text-align: center; padding: 80px 20px; animation: fadeIn 1s ease-out; }
@@ -163,6 +147,9 @@
             max-width: 300px;
             padding: 15px 30px;
             transition: transform 0.3s;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
         }
 
         .btn-primary { background-color: var(--verde-escuro); color: white; }
@@ -172,7 +159,7 @@
 
         .card-unidade {
             background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
             margin-bottom: 20px;
             border-left: 5px solid var(--verde-escuro);
@@ -180,7 +167,7 @@
             backdrop-filter: blur(5px);
         }
 
-        .btn-agendar {
+        .btn-agendar-card {
             background-color: var(--verde-escuro);
             color: white;
             padding: 12px;
@@ -190,16 +177,32 @@
             display: block;
             text-decoration: none;
             text-align: center;
+            font-weight: bold;
+        }
+
+        /* Modais */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            header { flex-direction: column; gap: 15px; }
-            .nav-links { justify-content: center; flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -209,21 +212,20 @@
         <div class="nav-links">
             <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
             <a href="#">Paciente</a>
-            <a href="#">Profissional</a>
             <a href="#">Unidades</a>
             <a href="#">Sobre</a>
         </div>
 
         <div class="user-profile">
-            <span>Meu Perfil </span>
-            <div class="profile-avatar"><img src="imagem.pjp/gato-preto.gif" alt="25" width="35"></div>
+            <span>Olá, <strong id="nome-usuario-header">Usuário</strong></span>
+            <div class="profile-avatar" id="avatar-container">
+                <img src="imagem.pjp/gato-preto.gif" alt="Avatar">
+            </div>
 
             <div class="profile-dropdown">
-                <a href="Perfil.htm" class="btn-agendar">Ver Dados</a>
+                <a href="Perfil.htm">Meu Perfil</a>
                 <button onclick="openModal('modalConsultas')">Minhas Consultas</button>
-                <button onclick="logout()" > <a href="Home.html" class="Home.html" style="color: #d9534f;">Sair</a></button> 
-               
-                
+                <button onclick="logout()" style="color: #d9534f; font-weight: bold;">Sair da Conta</button>
             </div>
         </div>
     </header>
@@ -231,10 +233,10 @@
     <main>
         <section class="hero">
             <h1>AGENDE CONSULTAS E EXAMES</h1>
-            <p>Com valores acessíveis em <strong>Fision Floresta</strong></p>
+            <p>Seja bem-vindo(a) à <strong>Fision Floresta</strong></p>
             
             <div class="main-buttons">
-                <button class="btn-primary">Agendamento</button>
+                <a href="Agendar.html" class="btn-primary">Novo Agendamento</a>
                 <button class="btn-secondary">Fale conosco</button>
             </div>
         </section>
@@ -246,37 +248,41 @@
                 <h4>Unidade Digital | Medprev Alta Floresta</h4>
                 <p>ℹ️ Exclusiva para agendamento online</p>
                 <p>🕒 Agende sozinho 24h por dia</p>
-                <p>❗ Disponível em breve</p>
-                <a href="Agendar.html" class="btn-agendar">Agendar Consulta Online</a>
+                <p>✅ Disponível para sua região</p>
+                <a href="Agendar.html" class="btn-agendar-card">Agendar Consulta Online</a>
             </div>
         </section>
     </main>
 
-    <div id="modalDados" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modalDados')">&times;</span>
-            <h3>Meus Dados</h3>
-            <p><strong>Nome:</strong> Usuário Exemplo</p>
-            <p><strong>E-mail:</strong> usuario@fision.com.br</p>
-            <p><strong>Plano:</strong> Medprev Individual</p>
-            <button class="btn-primary" style="width:100%" onclick="closeModal('modalDados')">Fechar</button>
-        </div>
-    </div>
-
     <div id="modalConsultas" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modalConsultas')">&times;</span>
             <h3>Histórico de Consultas</h3>
-            <p>Você ainda não possui consultas agendadas.</p>
-            <button class="btn-primary" style="width:100%" onclick="closeModal('modalConsultas')">Voltar</button>
+            <div id="lista-consultas">
+                <p>Você ainda não possui consultas agendadas.</p>
+            </div>
+            <button class="btn-primary" style="width:100%; margin-top: 15px;" onclick="closeModal('modalConsultas')">Voltar</button>
         </div>
     </div>
 
-    <footer style="background-color: #1a1a1a; color: white; text-align: center; padding: 20px;">
-        <p>&copy; 2026 Fision+ foi desenvolvida pela CLOUTCH Studios.</p>
+    <footer style="background-color: #1a1a1a; color: white; text-align: center; padding: 20px; margin-top: 40px;">
+        <p>&copy; 2026 Fision+ | Desenvolvido pela CLOUTCH Studios.</p>
     </footer>
 
     <script>
+        // Lógica de Carregamento de Usuário
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            
+            if (user) {
+                // Atualiza o nome no header (apenas o primeiro nome)
+                const primeiroNome = user.nome.split(' ')[0];
+                document.getElementById('nome-usuario-header').innerText = primeiroNome;
+            } else {
+                // Se tentar acessar a Home 2 sem estar logado, volta para a Home inicial
+                window.location.href = 'Home.html';
+            }
+        };
+
         function openModal(id) {
             document.getElementById(id).style.display = "block";
         }
@@ -287,11 +293,12 @@
 
         function logout() {
             if(confirm("Deseja realmente sair?")) {
-                window.location.reload("Home.html");
+                localStorage.removeItem('usuarioLogado'); // Limpa a sessão
+                window.location.href = "Home.html"; // Vai para a home de deslogado
             }
         }
 
-        // Fecha modal ao clicar fora da caixa
+        // Fecha modal ao clicar fora
         window.onclick = function(event) {
             if (event.target.className === 'modal') {
                 event.target.style.display = "none";
