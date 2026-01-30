@@ -1,7 +1,7 @@
 <script>
     // Ao carregar, preenche os inputs com os dados atuais
     window.onload = function() {
-        const user = JSON.parse(localStorage.getItem('usuarioAtivo')) || {
+        const user = JSON.parse(localStorage.getItem('login.html')) || {
             nome: "joaquim",
             email: "joaquim@gmail.com",
             nascimento: "1990-01-01"
@@ -24,7 +24,7 @@
         };
 
         // SALVA no localStorage
-        localStorage.setItem('usuarioAtivo', JSON.stringify(novosDados));
+        localStorage.setItem('login2.html', JSON.stringify(novosDados));
 
         alert("Dados de " + novosDados.nome + " atualizados com sucesso!");
         
