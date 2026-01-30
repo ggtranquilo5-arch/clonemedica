@@ -13,7 +13,6 @@
         .btn-edit { background: #3e8e63; color: white; }
         .btn-exit { background: #d9534f; color: white; }
         
-        /* Estilo para o botão de voltar */
         .btn-back { background: transparent; color: #666; border: 1px solid #ccc; margin-top: 20px; font-size: 0.9rem; }
         .btn-back:hover { background: #eee; color: #333; }
     </style>
@@ -46,7 +45,6 @@
             return;
         }
 
-        // Preenchendo os campos com os dados do localStorage
         document.getElementById('display-nome-titulo').innerText = user.nome;
         document.getElementById('display-email-sub').innerText = user.email;
         document.getElementById('info-nome').innerText = user.nome;
@@ -54,7 +52,6 @@
         document.getElementById('info-data').innerText = user.nascimento || "Não informado";
         document.getElementById('info-plano').innerText = user.plano || "Fision+ Individual";
         
-        // Letra inicial no avatar
         if(user.nome) {
             document.getElementById('avatar').innerText = user.nome.charAt(0).toUpperCase();
         }
@@ -63,7 +60,7 @@
     function logout() {
         if(confirm("Deseja sair da sua conta?")) {
             localStorage.removeItem('usuarioLogado');
-            window.location.href = 'Home.html'; // Volta para a tela inicial sem login
+            window.location.href = 'Home.html';
         }
     }
 </script>

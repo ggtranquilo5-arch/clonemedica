@@ -55,7 +55,6 @@
             nascimento: document.getElementById('edit-data').value
         };
 
-        // Atualiza a sessão e o registro principal
         localStorage.setItem('usuarioLogado', JSON.stringify(novosDados));
         localStorage.setItem(novosDados.email, JSON.stringify(novosDados));
 

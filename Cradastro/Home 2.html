@@ -10,7 +10,6 @@
             --verde-claro: #c2dfcc;
             --cinza-fundo: #f8f9fa;
             --texto: #333;
-            /* Caminho da imagem conforme seu modelo */
             --img-fundo: url("imagem.pjp/Logo- prog WEB.png"); 
         }
 
@@ -66,7 +65,6 @@
             margin-right: 10px;
         }
 
-        /* --- Estilização do Perfil Dinâmico --- */
         .user-profile {
             position: relative;
             display: flex;
@@ -74,7 +72,7 @@
             cursor: pointer;
             padding: 5px 15px;
             border-radius: 25px;
-            background: rgba(62, 142, 99, 0.1); /* Destaque suave */
+            background: rgba(62, 142, 99, 0.1);
             transition: background 0.3s;
         }
 
@@ -180,7 +178,6 @@
             font-weight: bold;
         }
 
-        /* Modais */
         .modal {
             display: none;
             position: fixed;
@@ -211,7 +208,6 @@
     <header>
         <div class="nav-links">
             <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
-            <a href="#">Paciente</a>
             <a href="#">Unidades</a>
             <a href="#">Sobre</a>
         </div>
@@ -269,16 +265,14 @@
     </footer>
 
     <script>
-        // Lógica de Carregamento de Usuário
+o
         window.onload = function() {
             const user = JSON.parse(localStorage.getItem('usuarioLogado'));
             
             if (user) {
-                // Atualiza o nome no header (apenas o primeiro nome)
                 const primeiroNome = user.nome.split(' ')[0];
                 document.getElementById('nome-usuario-header').innerText = primeiroNome;
             } else {
-                // Se tentar acessar a Home 2 sem estar logado, volta para a Home inicial
                 window.location.href = 'Home.html';
             }
         };
@@ -293,12 +287,11 @@
 
         function logout() {
             if(confirm("Deseja realmente sair?")) {
-                localStorage.removeItem('usuarioLogado'); // Limpa a sessão
-                window.location.href = "Home.html"; // Vai para a home de deslogado
+                localStorage.removeItem('usuarioLogado');
+                window.location.href = "Home.html";
             }
         }
 
-        // Fecha modal ao clicar fora
         window.onclick = function(event) {
             if (event.target.className === 'modal') {
                 event.target.style.display = "none";
