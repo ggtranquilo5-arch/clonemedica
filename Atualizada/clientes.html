@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fision+ - Base de Clientes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --verde-hover: #2d6a4a;
+            --cinza-fundo: #f8f9fa;
+            --texto: #333;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            background-color: var(--cinza-fundo);
+            background-image: linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9)), url("imagem.pjp/Logo- prog WEB.png");
+            background-size: cover; background-attachment: fixed;
+            min-height: 100vh; padding: 15px;
+        }
+
+        .container {
+            max-width: 1300px; margin: 0 auto;
+            display: grid; grid-template-columns: 380px 1fr; gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98); padding: 25px;
+            border-radius: 15px; box-shadow: var(--shadow); backdrop-filter: blur(10px);
+        }
+
+        h2 { color: var(--verde-escuro); margin-bottom: 20px; font-size: 1.4rem; text-align: center; }
+
+        /* Formulário */
+        .form-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
+        label { font-weight: 600; color: #555; font-size: 0.85rem; }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+
+        .btn-main {
+            background: var(--verde-escuro); color: white; border: none; padding: 15px;
+            border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem;
+            margin-top: 10px; transition: 0.3s;
+        }
+
+        /* Lista de Clientes */
+        .search-box { margin-bottom: 20px; position: relative; }
+        .search-box input { width: 100%; padding-left: 40px; }
+        .search-box i { position: absolute; left: 15px; top: 15px; color: #aaa; }
+
+        .client-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
+
+        .client-card {
+            background: white; border-radius: 12px; padding: 15px;
+            border-left: 5px solid var(--verde-escuro); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .client-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .client-name { font-weight: bold; font-size: 1.1rem; color: var(--texto); }
+        
+        .status-badge {
+            font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; font-weight: bold;
+        }
+        .ativo { background: #d4edda; color: #155724; }
+        .inativo { background: #f8d7da; color: #721c24; }
+
+        .client-info { font-size: 0.9rem; color: #666; display: flex; flex-direction: column; gap: 4px; }
+        .client-info i { color: var(--verde-escuro); width: 20px; }
+
+        .client-footer {
+            margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;
+            display: flex; justify-content: flex-end; gap: 15px;
+        }
+
+        .btn-action { background: none; border: none; cursor: pointer; color: #888; font-size: 1.1rem; }
+        .btn-action:hover { color: var(--verde-escuro); }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <aside class="card">
+            <h2><i class="fas fa-user-plus"></i> Novo Paciente</h2>
+            <input type="hidden" id="clientId">
+            
+            <div class="form-group">
+                <label>Nome do Paciente</label>
+                <input type="text" id="clientNome" placeholder="Nome Completo">
+            </div>
+            
+            <div class="form-group">
+                <label>WhatsApp / Contato</label>
+                <input type="tel" id="clientContato" placeholder="(00) 00000-0000">
+            </div>
+
+            <div class="form-group">
+                <label>Status Inicial</label>
+                <select id="clientStatus">
+                    <option value="ativo">Ativo</option>
+                    <option value="inativo">Inativo</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Última Visita (ou data de início)</label>
+                <input type="date" id="clientVisita">
+            </div>
+
+            <button class="btn-main" id="btnSalvar" onclick="salvarCliente()">Cadastrar Cliente</button>
+            <button class="btn-main" id="btnCancelar" onclick="resetForm()" style="display:none; background:#888;">Cancelar</button>
+
+            <div style="text-align:center; margin-top:20px;">
+                <a href="dashboard.html" style="text-decoration:none; color: var(--verde-escuro); font-weight:bold; font-size: 0.8rem;">
+                    <i class="fas fa-arrow-left"></i> Voltar ao Painel
+                </a>
+            </div>
+        </aside>
+
+        <main class="card">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="filtroNome" placeholder="Buscar paciente por nome..." onkeyup="renderizarClientes()">
+            </div>
+
+            <div id="listaClientes" class="client-grid">
+                </div>
+        </main>
+    </div>
+
+    <script>
+        let clientes = JSON.parse(localStorage.getItem('clientesFision')) || [
+            { id: 1, nome: "Ana Maria Silva", contato: "(11) 98888-7777", visita: "2024-05-20", status: "ativo" },
+            { id: 2, nome: "João Pedro Santos", contato: "(11) 97777-6666", visita: "2024-05-15", status: "inativo" }
+        ];
+
+        function renderizarClientes() {
+            const grid = document.getElementById('listaClientes');
+            const busca = document.getElementById('filtroNome').value.toLowerCase();
+            grid.innerHTML = '';
+
+            clientes.filter(c => c.nome.toLowerCase().includes(busca)).forEach(c => {
+                // Formatar data para PT-BR
+                const dataBR = c.visita.split('-').reverse().join('/');
+
+                grid.innerHTML += `
+                    <div class="client-card">
+                        <div class="client-header">
+                            <span class="client-name">${c.nome}</span>
+                            <span class="status-badge ${c.status}">${c.status.toUpperCase()}</span>
+                        </div>
+                        <div class="client-info">
+                            <span><i class="fab fa-whatsapp"></i> ${c.contato}</span>
+                            <span><i class="far fa-calendar-alt"></i> Última Visita: ${dataBR}</span>
+                        </div>
+                        <div class="client-footer">
+                            <button class="btn-action" onclick="prepararEdicao(${c.id})" title="Editar"><i class="fas fa-user-edit"></i></button>
+                            <button class="btn-action" onclick="removerCliente(${c.id})" style="color:#d9534f"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            localStorage.setItem('clientesFision', JSON.stringify(clientes));
+        }
+
+        function salvarCliente() {
+            const id = document.getElementById('clientId').value;
+            const nome = document.getElementById('clientNome').value;
+            const contato = document.getElementById('clientContato').value;
+            const status = document.getElementById('clientStatus').value;
+            const visita = document.getElementById('clientVisita').value;
+
+            if (!nome || !contato) return alert("Preencha o nome e o contato!");
+
+            const dados = { id: id ? Number(id) : Date.now(), nome, contato, status, visita };
+
+            if (id) {
+                clientes = clientes.map(c => c.id == id ? dados : c);
+            } else {
+                clientes.push(dados);
+            }
+
+            resetForm();
+            renderizarClientes();
+        }
+
+        function prepararEdicao(id) {
+            const c = clientes.find(c => c.id === id);
+            document.getElementById('clientId').value = c.id;
+            document.getElementById('clientNome').value = c.nome;
+            document.getElementById('clientContato').value = c.contato;
+            document.getElementById('clientStatus').value = c.status;
+            document.getElementById('clientVisita').value = c.visita;
+            
+            document.getElementById('btnSalvar').innerText = "Atualizar Cadastro";
+            document.getElementById('btnCancelar').style.display = "block";
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function resetForm() {
+            document.getElementById('clientId').value = "";
+            document.getElementById('clientNome').value = "";
+            document.getElementById('clientContato').value = "";
+            document.getElementById('clientVisita').value = "";
+            document.getElementById('btnSalvar').innerText = "Cadastrar Cliente";
+            document.getElementById('btnCancelar').style.display = "none";
+        }
+
+        function removerCliente(id) {
+            if(confirm("Deseja excluir este paciente da base de dados?")) {
+                clientes = clientes.filter(c => c.id !== id);
+                renderizarClientes();
+            }
+        }
+
+        renderizarClientes();
+    </script>
+</body>
+</html>

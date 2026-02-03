@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fision+ - Gestão Financeira Avançada</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --receita: #28a745;
+            --despesa: #dc3545;
+            --pendente: #ffc107;
+            --cinza-fundo: #f8f9fa;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            background-color: var(--cinza-fundo);
+            background-image: linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9)), url("imagem.pjp/Logo- prog WEB.png");
+            background-size: cover; background-attachment: fixed;
+            min-height: 100vh; padding: 15px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* Cards de Resumo */
+        .summary-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px; margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white; padding: 20px; border-radius: 15px;
+            box-shadow: var(--shadow); border-bottom: 4px solid #ddd;
+        }
+        .stat-card h3 { font-size: 0.8rem; text-transform: uppercase; color: #888; margin-bottom: 5px; }
+        .stat-card p { font-size: 1.6rem; font-weight: bold; }
+
+        /* Layout Principal */
+        .main-layout { display: grid; grid-template-columns: 380px 1fr; gap: 20px; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98); padding: 20px;
+            border-radius: 15px; box-shadow: var(--shadow); backdrop-filter: blur(10px);
+        }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .full { grid-column: span 2; }
+
+        .form-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
+        label { font-weight: 600; font-size: 0.8rem; color: #555; }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; }
+
+        .btn-add {
+            background: var(--verde-escuro); color: white; border: none; padding: 15px;
+            border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px;
+        }
+
+        /* Lista de Transações */
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
+        th { background: #f1f1f1; padding: 12px; text-align: left; font-size: 0.85rem; color: #666; }
+        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+
+        .badge { padding: 4px 8px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
+        .bg-receita { background: #d4edda; color: #155724; }
+        .bg-despesa { background: #f8d7da; color: #721c24; }
+        .status-pago { color: var(--receita); }
+        .status-pendente { color: var(--pendente); }
+
+        .comprovante-link { color: var(--verde-escuro); cursor: pointer; font-size: 1.1rem; }
+
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; }
+            table thead { display: none; }
+            table td { display: block; text-align: right; border: none; position: relative; padding-left: 50%; }
+            table td::before { content: attr(data-label); position: absolute; left: 10px; font-weight: bold; color: #888; }
+            table tr { border-bottom: 2px solid #eee; display: block; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="summary-grid">
+        <div class="stat-card" style="border-color: var(--receita)">
+            <h3>Receitas</h3>
+            <p id="totReceita" style="color: var(--receita)">R$ 0,00</p>
+        </div>
+        <div class="stat-card" style="border-color: var(--despesa)">
+            <h3>Despesas</h3>
+            <p id="totDespesa" style="color: var(--despesa)">R$ 0,00</p>
+        </div>
+        <div class="stat-card" style="border-color: var(--verde-escuro)">
+            <h3>Saldo Líquido</h3>
+            <p id="totSaldo">R$ 0,00</p>
+        </div>
+    </div>
+
+    <div class="main-layout">
+        <aside class="card">
+            <h2 style="margin-bottom:15px; color: var(--verde-escuro)"><i class="fas fa-file-invoice-dollar"></i> Lançamento</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="finData">
+                </div>
+                <div class="form-group">
+                    <label>Valor (R$)</label>
+                    <input type="number" id="finValor" placeholder="0.00">
+                </div>
+                <div class="form-group full">
+                    <label>Descrição</label>
+                    <input type="text" id="finDesc" placeholder="Ex: Pagamento Aluguel">
+                </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="finCat">
+                        <option value="Atendimento">Atendimento</option>
+                        <option value="Material">Material</option>
+                        <option value="Aluguel/Luz">Contas Fixas</option>
+                        <option value="Marketing">Marketing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="finStatus">
+                        <option value="Pago">Confirmado</option>
+                        <option value="Pendente">Pendente</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label>Tipo</label>
+                    <select id="finTipo">
+                        <option value="receita">Receita (+)</option>
+                        <option value="despesa">Despesa (-)</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label>Comprovante (Imagem)</label>
+                    <input type="file" id="finFile" accept="image/*">
+                </div>
+            </div>
+            <button class="btn-add" onclick="salvarFinanceiro()">Registrar Lançamento</button>
+            <div style="text-align:center; margin-top:15px;">
+                <a href="dashboard.html" style="text-decoration:none; color:#666; font-size:0.8rem;"><i class="fas fa-home"></i> Dashboard</a>
+            </div>
+        </aside>
+
+        <main class="card">
+            <h2 style="margin-bottom:15px;"><i class="fas fa-chart-line"></i> Relatório de Movimentações</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th>Status</th>
+                            <th>Valor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabela"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    let financeiro = JSON.parse(localStorage.getItem('financeiroFisionV2')) || [];
+    let imgBase64 = "";
+
+    // Lógica para converter comprovante em Base64
+    document.getElementById('finFile').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function() { imgBase64 = reader.result; };
+        if(e.target.files[0]) reader.readAsDataURL(e.target.files[0]);
+    });
+
+    function renderizar() {
+        const corpo = document.getElementById('corpoTabela');
+        corpo.innerHTML = '';
+        let r = 0, d = 0;
+
+        financeiro.sort((a,b) => new Date(b.data) - new Date(a.data)).forEach(item => {
+            const v = Number(item.valor);
+            if(item.tipo === 'receita') r += v; else d += v;
+
+            corpo.innerHTML += `
+                <tr>
+                    <td data-label="Data">${item.data.split('-').reverse().join('/')}</td>
+                    <td data-label="Descrição"><strong>${item.desc}</strong></td>
+                    <td data-label="Categoria"><span class="badge ${item.tipo === 'receita' ? 'bg-receita' : 'bg-despesa'}">${item.cat}</span></td>
+                    <td data-label="Status" class="${item.status === 'Pago' ? 'status-pago' : 'status-pendente'}">
+                        <i class="fas ${item.status === 'Pago' ? 'fa-check-circle' : 'fa-clock'}"></i> ${item.status}
+                    </td>
+                    <td data-label="Valor" style="font-weight:bold; color: ${item.tipo === 'receita' ? 'var(--receita)' : 'var(--despesa)'}">
+                        R$ ${v.toFixed(2)}
+                    </td>
+                    <td data-label="Ações">
+                        ${item.comprovante ? `<i class="fas fa-image comprovante-link" onclick="verFoto('${item.comprovante}')" title="Ver Comprovante"></i>` : ''}
+                        <i class="fas fa-trash-alt" style="color:#bbb; cursor:pointer; margin-left:10px" onclick="deletar(${item.id})"></i>
+                    </td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('totReceita').innerText = `R$ ${r.toFixed(2)}`;
+        document.getElementById('totDespesa').innerText = `R$ ${d.toFixed(2)}`;
+        document.getElementById('totSaldo').innerText = `R$ ${(r - d).toFixed(2)}`;
+        localStorage.setItem('financeiroFisionV2', JSON.stringify(financeiro));
+    }
+
+    function salvarFinanceiro() {
+        const data = document.getElementById('finData').value;
+        const valor = document.getElementById('finValor').value;
+        const desc = document.getElementById('finDesc').value;
+        if(!data || !valor || !desc) return alert("Preencha Data, Valor e Descrição!");
+
+        financeiro.push({
+            id: Date.now(),
+            data, valor, desc,
+            cat: document.getElementById('finCat').value,
+            status: document.getElementById('finStatus').value,
+            tipo: document.getElementById('finTipo').value,
+            comprovante: imgBase64
+        });
+
+        // Limpar
+        imgBase64 = "";
+        document.getElementById('finFile').value = "";
+        document.getElementById('finValor').value = "";
+        document.getElementById('finDesc').value = "";
+        renderizar();
+    }
+
+    function deletar(id) {
+        if(confirm("Excluir este registro financeiro?")) {
+            financeiro = financeiro.filter(f => f.id !== id);
+            renderizar();
+        }
+    }
+
+    function verFoto(base64) {
+        const win = window.open();
+        win.document.write(`<img src="${base64}" style="max-width:100%">`);
+    }
+
+    // Setar data de hoje por padrão
+    document.getElementById('finData').valueAsDate = new Date();
+    renderizar();
+</script>
+
+</body>
+</html>

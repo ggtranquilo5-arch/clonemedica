@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fision+ - Dashboard Completo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --verde-hover: #2d6a4a;
+            --cinza-fundo: #f8f9fa;
+            --texto: #333;
+            --branco: #ffffff;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --img-fundo: url("imagem.pjp/Logo- prog WEB.png"); 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            color: var(--texto);
+            background-color: var(--cinza-fundo);
+            background-image: linear-gradient(rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.85)), var(--img-fundo);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand { display: flex; align-items: center; gap: 10px; }
+        .logo-img { width: 40px; height: auto; }
+
+        .nav-links { display: flex; gap: 12px; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--texto);
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--branco);
+            background-color: var(--verde-escuro);
+            border-color: var(--verde-escuro);
+        }
+
+        /* PERFIL E DROPDOWN EXPANDIDO */
+        .user-profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 25px;
+            background: rgba(62, 142, 99, 0.1);
+            transition: background 0.3s;
+        }
+
+        .profile-avatar {
+            width: 35px; height: 35px;
+            background-color: var(--verde-escuro);
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-left: 10px; border: 2px solid var(--branco);
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: var(--branco);
+            box-shadow: var(--shadow);
+            border-radius: 12px;
+            min-width: 280px;
+            max-height: 450px;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-profile:hover .profile-dropdown { display: block; }
+
+        .dropdown-search {
+            padding: 12px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .dropdown-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .dropdown-section-title {
+            padding: 10px 18px 5px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .profile-dropdown a, .profile-dropdown button {
+            width: 100%;
+            padding: 10px 18px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--texto);
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .profile-dropdown a i, .profile-dropdown button i {
+            width: 18px;
+            color: var(--verde-escuro);
+            text-align: center;
+        }
+
+        .profile-dropdown a:hover, .profile-dropdown button:hover { 
+            background: #f0f7f3; 
+            color: var(--verde-hover); 
+        }
+
+        /* Layout Grid */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .hero-section { grid-column: 1 / -1; text-align: center; padding-bottom: 30px; }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card-action {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            border-bottom: 4px solid var(--verde-escuro);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: 0.3s;
+        }
+        
+        .card-action:hover { transform: translateY(-5px); }
+
+        .btn-main {
+            display: block;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: var(--verde-escuro);
+            color: var(--branco);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 992px) {
+            main { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-brand">
+            <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Fision+ Logo">
+            <nav class="nav-links">
+                <a href="dashboard.html" class="active">Painel</a>
+                <a href="unidades.html">Unidades</a>
+            </nav>
+        </div>
+
+        <div class="user-profile">
+            <span>Olá, <strong id="nome-usuario-header">Usuário</strong></span>
+            <div class="profile-avatar"><i class="fas fa-user"></i></div>
+
+            <div class="profile-dropdown" id="myDropdown">
+                <div class="dropdown-search">
+                    <input type="text" placeholder="O que você procura?" id="searchDropdown">
+                </div>
+                
+                <div class="dropdown-section-title">Pessoal</div>
+                <a href="Perfil.htm"><i class="fas fa-user-circle"></i> Meu Perfil</a>
+                <button onclick="openModal('modalConsultas')"><i class="fas fa-calendar-alt"></i> Minhas Consultas</button>
+                <a href="config.html"><i class="fas fa-cog"></i> Configurações</a>
+
+                <div class="dropdown-section-title">Gestão e Cadastro</div>
+                <a href="cadastro-clientes.html"><i class="fas fa-user-plus"></i> Cadastro de Clientes</a>
+                <a href="cadastro-profissionais.html"><i class="fas fa-user-md"></i> Cadastro Profissionais</a>
+                <a href="checkin.html"><i class="fas fa-map-marker-check"></i> Realizar Check-in</a>
+                
+                <div class="dropdown-section-title">Financeiro e Saúde</div>
+                <a href="mensalidades.html"><i class="fas fa-hand-holding-usd"></i> Mensalidades</a>
+                <a href="prontuario.html"><i class="fas fa-file-medical-alt"></i> Prontuários</a>
+                <a href="relatorios.html"><i class="fas fa-chart-line"></i> Relatórios</a>
+                
+                <button onclick="logout()" style="color: #d9534f; border-top: 1px solid #eee; margin-top: 5px;">
+                    <i class="fas fa-sign-out-alt"></i> Sair da Conta
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h1>Painel Administrativo / Paciente</h1>
+            <p>Acesse rapidamente as funcionalidades da <strong>Fision+</strong></p>
+        </section>
+
+        <section class="services-grid">
+            <div class="card-action">
+                <i class="fas fa-calendar-check" style="font-size: 2.5rem; color: var(--verde-escuro); margin-bottom: 15px;"></i>
+                <h3>Agendamentos</h3>
+                <p>Gerencie horários e sessões.</p>
+                <a href="Agendar.html" class="btn-main">Acessar</a>
+            </div>
+
+            <div class="card-action">
+                <i class="fas fa-qrcode" style="font-size: 2.5rem; color: var(--verde-escuro); margin-bottom: 15px;"></i>
+                <h3>Check-in Rápido</h3>
+                <p>Confirme sua presença na unidade.</p>
+                <a href="checkin.html" class="btn-main" style="background: var(--verde-claro); color: var(--verde-escuro);">Iniciar</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Lógica de pesquisa no dropdown
+        document.getElementById('searchDropdown').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let items = document.querySelectorAll('.profile-dropdown a, .profile-dropdown button');
+            let titles = document.querySelectorAll('.dropdown-section-title');
+            
+            items.forEach(item => {
+                let text = item.textContent.toLowerCase();
+                if(text.includes(filter)) {
+                    item.style.display = "flex";
+                } else {
+                    if(!item.parentNode.classList.contains('dropdown-search')) {
+                        item.style.display = "none";
+                    }
+                }
+            });
+
+            // Esconde títulos de seção se não houver pesquisa neles
+            if(filter !== "") {
+                titles.forEach(t => t.style.display = "none");
+            } else {
+                titles.forEach(t => t.style.display = "block");
+            }
+        });
+
+        function logout() {
+            if(confirm("Deseja sair?")) {
+                localStorage.removeItem('usuarioLogado');
+                window.location.href = "index.html";
+            }
+        }
+
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (user) document.getElementById('nome-usuario-header').innerText = user.nome.split(' ')[0];
+        };
+    </script>
+</body>
+</html>

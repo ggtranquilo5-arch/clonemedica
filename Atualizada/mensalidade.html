@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fision+ - Gestão de Planos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --pago: #28a745;
+            --pendente: #ffc107;
+            --cinza-fundo: #f8f9fa;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Prevenção de quebra de layout */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            background-color: var(--cinza-fundo);
+            background-image: linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9)), url("imagem.pjp/Logo- prog WEB.png");
+            background-size: cover; background-attachment: fixed;
+            min-height: 100vh;
+            padding: 10px; /* Padding reduzido para evitar corte lateral */
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column; /* Coluna por padrão para mobile */
+            gap: 15px;
+        }
+
+        /* Cards Principais */
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            width: 100%; /* Garante que não ultrapasse a tela */
+        }
+
+        h2 { color: var(--verde-escuro); margin-bottom: 15px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
+
+        /* Formulário em Grid Compacto */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .full { grid-column: span 2; }
+        
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        label { font-weight: 600; font-size: 0.75rem; color: #555; }
+        
+        input, select { 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            font-size: 0.9rem; 
+            width: 100%; /* Evita que o input estique o card */
+        }
+
+        .btn-add {
+            background: var(--verde-escuro); color: white; border: none; padding: 12px;
+            border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px;
+        }
+
+        /* Lista de Planos Responsiva */
+        .mensalidade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); /* Tamanho mínimo menor para não cortar */
+            gap: 12px;
+            width: 100%;
+        }
+
+        .m-card {
+            background: white; border-radius: 12px; padding: 15px;
+            border-top: 4px solid var(--verde-escuro);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .m-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .m-paciente { font-weight: bold; font-size: 1rem; color: #333; overflow-wrap: break-word; }
+        
+        .badge-status { font-size: 0.6rem; padding: 3px 8px; border-radius: 12px; font-weight: bold; }
+        .pago { background: #d4edda; color: #155724; }
+        .pendente { background: #fff3cd; color: #856404; }
+
+        /* Progresso */
+        .progress-container { margin: 10px 0; }
+        .progress-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: #666; margin-bottom: 3px; }
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--verde-escuro); transition: 0.4s; }
+
+        .m-details { font-size: 0.85rem; color: #666; }
+        .m-details div { margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+
+        .m-actions {
+            margin-top: 12px; padding-top: 10px; border-top: 1px solid #eee;
+            display: flex; justify-content: space-between;
+        }
+
+        .btn-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: none;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+
+        /* Media Query para Telas Maiores */
+        @media (min-width: 900px) {
+            .container { flex-direction: row; align-items: flex-start; }
+            aside { width: 380px; position: sticky; top: 10px; }
+            main { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <aside class="card">
+        <h2 id="formTitle"><i class="fas fa-file-signature"></i> Plano</h2>
+        <input type="hidden" id="editId">
+        
+        <div class="form-grid">
+            <div class="form-group full">
+                <label>Paciente</label>
+                <input type="text" id="mNome" placeholder="Nome do Paciente">
+            </div>
+            <div class="form-group full">
+                <label>Plano</label>
+                <select id="mPlano">
+                    <option value="Pilates Mensal">Pilates Mensal</option>
+                    <option value="Pacote 10 Sessões">Pacote 10 Sessões</option>
+                    <option value="Fisioterapia">Fisioterapia</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sessões Totais</label>
+                <input type="number" id="mTotalSessoes" value="10">
+            </div>
+            <div class="form-group">
+                <label>Realizadas</label>
+                <input type="number" id="mRealizadas" value="0">
+            </div>
+            <div class="form-group">
+                <label>Vencimento</label>
+                <input type="date" id="mVencimento">
+            </div>
+            <div class="form-group">
+                <label>Valor (R$)</label>
+                <input type="number" id="mValor">
+            </div>
+            <div class="form-group full">
+                <label>Status</label>
+                <select id="mStatus">
+                    <option value="pago">Pago</option>
+                    <option value="pendente">Pendente</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn-add" id="btnSalvar" onclick="salvarMensalidade()">Salvar Plano</button>
+        <button class="btn-add" id="btnCancelar" onclick="resetForm()" style="display:none; background:#888; margin-top:5px;">Cancelar</button>
+        <div style="text-align:center; margin-top:15px;">
+            <a href="dashboard.html" style="text-decoration:none; color: var(--verde-escuro); font-size: 0.8rem; font-weight: bold;">
+                <i class="fas fa-home"></i> Menu Principal
+            </a>
+        </div>
+    </aside>
+
+    <main class="card">
+        <h2><i class="fas fa-tasks"></i> Planos Ativos</h2>
+        <div id="listaMensalidades" class="mensalidade-grid"></div>
+    </main>
+</div>
+
+<script>
+    let mensalidades = JSON.parse(localStorage.getItem('mensalidadesV3')) || [];
+
+    function renderizar() {
+        const grid = document.getElementById('listaMensalidades');
+        grid.innerHTML = '';
+
+        mensalidades.forEach(m => {
+            const perc = Math.min((m.realizadas / m.total) * 100, 100).toFixed(0);
+            const dataBR = m.vencimento ? m.vencimento.split('-').reverse().join('/') : '--/--/--';
+
+            grid.innerHTML += `
+                <div class="m-card">
+                    <div class="m-header">
+                        <div>
+                            <div class="m-paciente">${m.nome}</div>
+                            <small style="color:var(--verde-escuro)">${m.plano}</small>
+                        </div>
+                        <span class="badge-status ${m.status}">${m.status}</span>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-labels">
+                            <span>Sessões: ${m.realizadas}/${m.total}</span>
+                            <span>${perc}%</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: ${perc}%"></div></div>
+                    </div>
+
+                    <div class="m-details">
+                        <div><i class="far fa-calendar-alt"></i> ${dataBR}</div>
+                        <div><i class="fas fa-wallet"></i> R$ ${Number(m.valor).toFixed(2)}</div>
+                    </div>
+
+                    <div class="m-actions">
+                        <button class="btn-circle" style="background:var(--verde-claro); color:var(--verde-escuro)" onclick="addSessao(${m.id})">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <div style="display:flex; gap:8px">
+                            <button class="btn-circle" style="background:#e3f2fd; color:#1976d2" onclick="editarPlano(${m.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn-circle" style="background:#ffebee; color:#d32f2f" onclick="removerPlano(${m.id})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        localStorage.setItem('mensalidadesV3', JSON.stringify(mensalidades));
+    }
+
+    function salvarMensalidade() {
+        const id = document.getElementById('editId').value;
+        const dados = {
+            id: id ? Number(id) : Date.now(),
+            nome: document.getElementById('mNome').value,
+            plano: document.getElementById('mPlano').value,
+            total: Number(document.getElementById('mTotalSessoes').value) || 0,
+            realizadas: Number(document.getElementById('mRealizadas').value) || 0,
+            vencimento: document.getElementById('mVencimento').value,
+            valor: document.getElementById('mValor').value || 0,
+            status: document.getElementById('mStatus').value
+        };
+
+        if(!dados.nome) return alert("Digite o nome do paciente!");
+
+        if(id) {
+            mensalidades = mensalidades.map(m => m.id == id ? dados : m);
+        } else {
+            mensalidades.push(dados);
+        }
+
+        resetForm();
+        renderizar();
+    }
+
+    function addSessao(id) {
+        mensalidades = mensalidades.map(m => {
+            if(m.id === id && m.realizadas < m.total) m.realizadas++;
+            return m;
+        });
+        renderizar();
+    }
+
+    function editarPlano(id) {
+        const m = mensalidades.find(m => m.id === id);
+        document.getElementById('editId').value = m.id;
+        document.getElementById('mNome').value = m.nome;
+        document.getElementById('mPlano').value = m.plano;
+        document.getElementById('mTotalSessoes').value = m.total;
+        document.getElementById('mRealizadas').value = m.realizadas;
+        document.getElementById('mVencimento').value = m.vencimento;
+        document.getElementById('mValor').value = m.valor;
+        document.getElementById('mStatus').value = m.status;
+
+        document.getElementById('btnSalvar').innerText = "Atualizar";
+        document.getElementById('btnCancelar').style.display = "block";
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function resetForm() {
+        document.getElementById('editId').value = "";
+        document.getElementById('mNome').value = "";
+        document.getElementById('mRealizadas').value = "0";
+        document.getElementById('btnSalvar').innerText = "Salvar Plano";
+        document.getElementById('btnCancelar').style.display = "none";
+    }
+
+    function removerPlano(id) {
+        if(confirm("Excluir?")) {
+            mensalidades = mensalidades.filter(m => m.id !== id);
+            renderizar();
+        }
+    }
+
+    renderizar();
+</script>
+
+</body>
+</html>
