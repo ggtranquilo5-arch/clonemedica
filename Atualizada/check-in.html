@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fision+ - Gerenciamento de Fila</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --verde-hover: #2d6a4a;
+            --verde-suave: #e8f5e9;
+            --cinza-fundo: #f8f9fa;
+            --texto: #333;
+            --branco: #ffffff;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --img-fundo: url("imagem.pjp/Logo- prog WEB.png");
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; max-width: 100%; }
+
+        body {
+            background-color: var(--cinza-fundo);
+            background-image: linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9)), var(--img-fundo);
+            background-size: cover; background-attachment: fixed;
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+        .logo-img { width: 40px; }
+
+        .user-profile { 
+            position: relative; cursor: pointer; display: flex; align-items: center; gap: 10px; 
+            padding: 5px 15px; border-radius: 30px; background: #eee; 
+        }
+        
+        .profile-dropdown {
+            display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
+            box-shadow: var(--shadow); border-radius: 12px; min-width: 200px; z-index: 2000;
+        }
+        .profile-dropdown.show { display: block; }
+        .profile-dropdown a { display: block; padding: 15px; text-decoration: none; color: var(--texto); font-weight: 600; }
+
+        .container {
+            max-width: 1200px; margin: 20px auto;
+            display: grid; grid-template-columns: 350px 1fr; gap: 20px;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98); padding: 25px;
+            border-radius: 15px; box-shadow: var(--shadow); backdrop-filter: blur(10px);
+        }
+
+        h2 { color: var(--verde-escuro); margin-bottom: 20px; font-size: 1.4rem; }
+
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; }
+        label { font-weight: 600; color: #555; font-size: 0.85rem; }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; width: 100%; }
+
+        .btn-add {
+            background: var(--verde-escuro); color: white; border: none; padding: 16px;
+            border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s;
+        }
+
+        .grid-table { display: grid; grid-template-columns: 90px 1.5fr 1.2fr 130px 120px; gap: 10px; align-items: center; }
+        .table-header { font-weight: bold; color: var(--verde-escuro); border-bottom: 2px solid var(--verde-claro); padding-bottom: 10px; margin-bottom: 10px; font-size: 0.8rem; }
+        .table-row { background: white; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 12px; }
+
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-align: center; text-transform: uppercase; }
+        .status-aguardando { background: #fff3cd; color: #856404; }
+        .status-em-atendimento { background: #d4edda; color: #155724; }
+        .status-finalizado { background: #e2e3e5; color: #383d41; }
+
+        .btn-action { border: none; background: #f1f1f1; padding: 10px; border-radius: 8px; cursor: pointer; color: var(--verde-escuro); }
+        
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .table-header { display: none; }
+            .grid-table { grid-template-columns: 1fr 1fr; }
+            .row-name { grid-column: span 2; font-weight: bold; color: var(--verde-escuro); }
+            .row-actions { text-align: right; grid-column: span 2; margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="telainicial.html" class="nav-brand">
+            <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
+            <h2 style="font-size: 1.2rem; margin:0;">Fision+</h2>
+        </a>
+        <div class="user-profile" onclick="toggleMenu(event)">
+            <span>Check-in / Fila</span>
+            <div style="width:35px; height:35px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;"><i class="fas fa-qrcode"></i></div>
+            <div class="profile-dropdown" id="queueDropdown">
+                <a href="telainicial.html"><i class="fas fa-home"></i> Voltar ao Início</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="card">
+            <h2 id="formTitle"><i class="fas fa-calendar-plus"></i> Novo Check-in</h2>
+            <input type="hidden" id="editId">
+            
+            <div class="form-group">
+                <label>Horário de Entrada (ou agendado)</label>
+                <input type="time" id="pHora">
+            </div>
+
+            <div class="form-group">
+                <label>Paciente</label>
+                <input type="text" id="pNome" placeholder="Nome do paciente">
+            </div>
+
+            <div class="form-group">
+                <label>Profissional</label>
+                <select id="pProf">
+                    <option value="Dr. Ricardo">Dr. Ricardo (Fisio)</option>
+                    <option value="Dra. Helena">Dra. Helena (Pilates)</option>
+                    <option value="Dr. Marcos">Dr. Marcos (RPG)</option>
+                </select>
+            </div>
+
+            <button class="btn-add" id="btnSalvar" onclick="salvarPaciente()">Registrar Entrada</button>
+            <button class="btn-add" id="btnCancelar" onclick="resetForm()" style="display:none; background:#888; margin-top:10px;">Cancelar Edição</button>
+        </aside>
+
+        <main class="card">
+            <h2><i class="fas fa-users"></i> Fila de Espera</h2>
+            <div class="grid-table table-header">
+                <div>Horário</div><div>Paciente</div><div>Profissional</div><div>Status</div><div>Ações</div>
+            </div>
+            <div id="listaPacientes"></div>
+        </main>
+    </div>
+
+    <script>
+        function toggleMenu(event) {
+            event.stopPropagation();
+            document.getElementById("queueDropdown").classList.toggle("show");
+        }
+        window.onclick = () => document.getElementById("queueDropdown").classList.remove("show");
+
+        let pacientes = JSON.parse(localStorage.getItem('filaFision')) || [];
+
+        function renderizarFila() {
+            const lista = document.getElementById('listaPacientes');
+            lista.innerHTML = '';
+            pacientes.sort((a, b) => a.hora.localeCompare(b.hora)).forEach(p => {
+                lista.innerHTML += `
+                    <div class="grid-table table-row">
+                        <div class="row-time"><i class="far fa-clock"></i> ${p.hora}</div>
+                        <div class="row-name">${p.nome}</div>
+                        <div class="row-prof"><i class="fas fa-user-md"></i> ${p.prof}</div>
+                        <div class="row-status"><span class="badge status-${p.status}">${p.status.replace('-', ' ')}</span></div>
+                        <div class="row-actions">
+                            <button class="btn-action" onclick="prepararEdicao(${p.id})" title="Editar Horário/Dados"><i class="fas fa-edit"></i></button>
+                            <button class="btn-action" onclick="proximoStatus(${p.id})" title="Girar Status"><i class="fas fa-sync"></i></button>
+                            <button class="btn-action" onclick="remover(${p.id})" style="color:#d9534f" title="Remover"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>`;
+            });
+            localStorage.setItem('filaFision', JSON.stringify(pacientes));
+        }
+
+        function salvarPaciente() {
+            const id = document.getElementById('editId').value;
+            const nome = document.getElementById('pNome').value;
+            const prof = document.getElementById('pProf').value;
+            const hora = document.getElementById('pHora').value;
+
+            if (!nome || !hora) return alert("Preencha o nome e o horário.");
+
+            if (id) {
+                // Atualizar existente
+                pacientes = pacientes.map(p => p.id == id ? { ...p, nome, prof, hora } : p);
+            } else {
+                // Criar novo
+                pacientes.push({ id: Date.now(), hora, nome, prof, status: "aguardando" });
+            }
+
+            resetForm();
+            renderizarFila();
+        }
+
+        function prepararEdicao(id) {
+            const p = pacientes.find(p => p.id === id);
+            document.getElementById('editId').value = p.id;
+            document.getElementById('pNome').value = p.nome;
+            document.getElementById('pProf').value = p.prof;
+            document.getElementById('pHora').value = p.hora;
+            
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Editar Registro';
+            document.getElementById('btnSalvar').innerText = "Atualizar Registro";
+            document.getElementById('btnCancelar').style.display = "block";
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function resetForm() {
+            document.getElementById('editId').value = '';
+            document.getElementById('pNome').value = '';
+            document.getElementById('pHora').value = '';
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-calendar-plus"></i> Novo Check-in';
+            document.getElementById('btnSalvar').innerText = "Registrar Entrada";
+            document.getElementById('btnCancelar').style.display = "none";
+        }
+
+        function proximoStatus(id) {
+            pacientes = pacientes.map(p => {
+                if(p.id === id) {
+                    const flux = { 'aguardando': 'em-atendimento', 'em-atendimento': 'finalizado', 'finalizado': 'aguardando' };
+                    p.status = flux[p.status];
+                }
+                return p;
+            });
+            renderizarFila();
+        }
+
+        function remover(id) {
+            if(confirm("Remover da fila?")) {
+                pacientes = pacientes.filter(p => p.id !== id);
+                renderizarFila();
+            }
+        }
+
+        // Define hora atual por padrão ao carregar
+        document.getElementById('pHora').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+        renderizarFila();
+    </script>
+</body>
+</html>

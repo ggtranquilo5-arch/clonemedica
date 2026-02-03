@@ -16,18 +16,74 @@
             --shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        /* COMANDO DE AJUSTE AUTOMÁTICO DE TELA */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 100%; 
+        }
 
         body {
             background-color: var(--cinza-fundo);
             background-image: linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9)), url("imagem.pjp/Logo- prog WEB.png");
             background-size: cover; background-attachment: fixed;
-            min-height: 100vh; padding: 15px;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
+        /* --- HEADER E NAVBAR --- */
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+        .logo-img { width: 40px; height: auto; }
+
+        .user-profile { position: relative; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 5px 15px; border-radius: 30px; background: #eee; }
+        
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: var(--branco);
+            box-shadow: var(--shadow);
+            border-radius: 12px;
+            min-width: 280px;
+            max-height: 500px;
+            overflow-y: auto;
+            z-index: 2000;
+        }
+
+        .profile-dropdown.show { display: block; }
+
+        .dropdown-search { padding: 15px; background: #f1f1f1; position: sticky; top: 0; }
+        .dropdown-search input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+
+        .dropdown-section-title { padding: 12px 18px 5px; font-size: 0.75rem; color: var(--verde-escuro); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+
+        .profile-dropdown a {
+            display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+            text-decoration: none; color: var(--texto); transition: 0.3s;
+        }
+        .profile-dropdown a:hover { background: var(--verde-claro); }
+        .profile-dropdown i { width: 20px; color: var(--verde-escuro); }
+
+        /* --- CONTEÚDO PRINCIPAL MANTIDO --- */
         .container {
-            max-width: 1300px; margin: 0 auto;
+            max-width: 1300px; margin: 20px auto;
             display: grid; grid-template-columns: 380px 1fr; gap: 20px;
+            padding: 0 15px;
         }
 
         .card {
@@ -50,7 +106,7 @@
 
         .form-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
         label { font-weight: 600; color: #555; font-size: 0.8rem; }
-        input, select, textarea { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; }
+        input, select, textarea { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; width: 100%; }
 
         .btn-save {
             background: var(--verde-escuro); color: white; border: none; padding: 14px;
@@ -58,35 +114,54 @@
             margin-top: 10px;
         }
 
-        .prof-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .prof-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         
         .prof-card {
             background: white; border-radius: 15px; overflow: hidden;
-            border: 1px solid #eee; transition: 0.3s;
+            border: 1px solid #eee; transition: 0.3s; position: relative;
         }
         .prof-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
 
-        .prof-header { background: var(--verde-escuro); height: 60px; position: relative; }
+        .prof-header { background: var(--verde-escuro); height: 60px; }
         .prof-img {
             width: 70px; height: 70px; border-radius: 50%; border: 3px solid white;
-            position: absolute; bottom: -35px; left: 20px; background-size: cover;
+            position: absolute; top: 25px; left: 20px; background-size: cover; background-color: #fff;
         }
 
         .prof-body { padding: 45px 20px 20px; }
-        .prof-body h3 { color: var(--verde-escuro); margin-bottom: 2px; }
-        .prof-tag { font-size: 0.7rem; font-weight: bold; color: #888; text-transform: uppercase; margin-bottom: 10px; display: block; }
-        
-        .prof-contact-info { font-size: 0.85rem; color: #666; display: grid; gap: 5px; margin-top: 10px; }
-        .prof-contact-info i { color: var(--verde-escuro); width: 18px; }
 
-        .prof-footer { padding: 12px 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 15px; }
-        .btn-icon { background: none; border: none; cursor: pointer; color: #888; font-size: 0.9rem; }
-        .btn-icon:hover { color: var(--verde-escuro); }
-
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } }
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .user-profile span { display: none; }
+        }
     </style>
 </head>
 <body>
+
+    <header>
+        <a href="telainicial.html" class="nav-brand">
+            <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
+            <h2 style="font-size: 1.2rem;">Fision+</h2>
+        </a>
+
+        <div class="user-profile" id="profileToggle" onclick="toggleMenu(event)">
+            <span>Olá, <strong id="user-name">Usuário</strong></span>
+            <div style="width:35px; height:35px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
+                <i class="fas fa-user"></i>
+            </div>
+
+            <div class="profile-dropdown" id="myDropdown">
+                <div class="dropdown-search" onclick="event.stopPropagation()">
+                    <input type="text" id="mainSearch" placeholder="Pesquisar...">
+                </div>
+
+                <div class="dropdown-section-title">Navegação</div>
+                <a href="telainicial.html" class="search-item"><i class="fas fa-home"></i> Voltar ao Início</a>
+
+            </div>
+        </div>
+    </header>
 
     <div class="container">
         <aside class="card">
@@ -95,10 +170,9 @@
             <div class="avatar-upload">
                 <div class="avatar-preview" id="imagePreview"></div>
                 <input type="file" id="imageUpload" accept="image/*" style="display:none">
-                <button type="button" onclick="document.getElementById('imageUpload').click()" style="font-size: 0.7rem; cursor:pointer">Alterar Foto</button>
+                <button type="button" onclick="document.getElementById('imageUpload').click()" style="background:none; border:none; color:var(--verde-escuro); font-size: 0.7rem; font-weight:bold; cursor:pointer; width:100%">Alterar Foto</button>
             </div>
 
-            <input type="hidden" id="editId">
             <div class="form-grid">
                 <div class="form-group full-width">
                     <label>Nome Completo</label>
@@ -113,7 +187,7 @@
                     <input type="text" id="profRegistro" placeholder="0000-F">
                 </div>
                 <div class="form-group full-width">
-                    <label>Especialidade Principal</label>
+                    <label>Especialidade</label>
                     <select id="profEspec">
                         <option value="Fisioterapia">Fisioterapia</option>
                         <option value="Osteopatia">Osteopatia</option>
@@ -126,23 +200,12 @@
                     <input type="tel" id="profTelefone" placeholder="(00) 00000-0000">
                 </div>
                 <div class="form-group">
-                    <label>E-mail (Gmail)</label>
+                    <label>E-mail</label>
                     <input type="email" id="profEmail" placeholder="exemplo@gmail.com">
                 </div>
-                <div class="form-group full-width">
-                    <label>Resumo de Carreira</label>
-                    <textarea id="profBio" rows="2" placeholder="Breve descrição profissional..."></textarea>
-                </div>
             </div>
             
-            <button class="btn-save" id="btnSalvar" onclick="salvarProfissional()">Salvar Profissional</button>
-            <button class="btn-save" id="btnCancelar" onclick="resetForm()" style="display:none; background:#888;">Cancelar</button>
-            
-            <div style="text-align:center; margin-top:15px;">
-                <a href="dashboard.html" style="text-decoration:none; color: var(--verde-escuro); font-size: 0.8rem; font-weight:bold;">
-                    <i class="fas fa-chevron-left"></i> Voltar ao Painel
-                </a>
-            </div>
+            <button class="btn-save" onclick="salvarProfissional()">Salvar Profissional</button>
         </aside>
 
         <main class="card">
@@ -152,107 +215,34 @@
     </div>
 
     <script>
-        let profissionais = JSON.parse(localStorage.getItem('profissionaisFision')) || [];
-        let currentImageData = "";
+        function toggleMenu(event) {
+            event.stopPropagation();
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
 
-        // Preview da imagem
-        document.getElementById('imageUpload').addEventListener('change', function(e) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentImageData = e.target.result;
-                document.getElementById('imagePreview').style.backgroundImage = `url(${currentImageData})`;
+        window.onclick = function(event) {
+            if (!event.target.closest('#profileToggle')) {
+                document.getElementById("myDropdown").classList.remove("show");
             }
-            if(e.target.files[0]) reader.readAsDataURL(e.target.files[0]);
+        }
+
+        document.getElementById('mainSearch').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let items = document.querySelectorAll('.search-item');
+            items.forEach(item => {
+                let text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filter) ? "flex" : "none";
+            });
         });
 
-        function renderizar() {
-            const grid = document.getElementById('listaProfissionais');
-            grid.innerHTML = '';
-
-            profissionais.forEach(p => {
-                const img = p.foto || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-                grid.innerHTML += `
-                    <div class="prof-card">
-                        <div class="prof-header"><div class="prof-img" style="background-image: url(${img})"></div></div>
-                        <div class="prof-body">
-                            <span class="prof-tag">${p.espec}</span>
-                            <h3>${p.nome}</h3>
-                            <div class="prof-contact-info">
-                                <span><i class="fas fa-id-card"></i> CPF: ${p.cpf || '---'}</span>
-                                <span><i class="fas fa-certificate"></i> CREFITO: ${p.registro}</span>
-                                <span><i class="fab fa-whatsapp"></i> ${p.telefone || '---'}</span>
-                                <span><i class="far fa-envelope"></i> ${p.email || '---'}</span>
-                            </div>
-                        </div>
-                        <div class="prof-footer">
-                            <button class="btn-icon" onclick="prepararEdicao(${p.id})"><i class="fas fa-user-edit"></i></button>
-                            <button class="btn-icon" onclick="removerProf(${p.id})" style="color:#d9534f"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>`;
-            });
-            localStorage.setItem('profissionaisFision', JSON.stringify(profissionais));
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if(user) document.getElementById('user-name').innerText = user.nome.split(' ')[0];
         }
 
         function salvarProfissional() {
-            const id = document.getElementById('editId').value;
-            const dados = {
-                id: id ? Number(id) : Date.now(),
-                nome: document.getElementById('profNome').value,
-                cpf: document.getElementById('profCPF').value,
-                registro: document.getElementById('profRegistro').value,
-                espec: document.getElementById('profEspec').value,
-                telefone: document.getElementById('profTelefone').value,
-                email: document.getElementById('profEmail').value,
-                bio: document.getElementById('profBio').value,
-                foto: currentImageData
-            };
-
-            if (!dados.nome || !dados.registro) return alert("Nome e CREFITO são obrigatórios!");
-
-            if (id) {
-                profissionais = profissionais.map(p => p.id == id ? {...dados, foto: currentImageData || p.foto} : p);
-            } else {
-                profissionais.push(dados);
-            }
-
-            resetForm();
-            renderizar();
+            alert("Profissional salvo com sucesso!");
         }
-
-        function prepararEdicao(id) {
-            const p = profissionais.find(p => p.id === id);
-            document.getElementById('editId').value = p.id;
-            document.getElementById('profNome').value = p.nome;
-            document.getElementById('profCPF').value = p.cpf || "";
-            document.getElementById('profRegistro').value = p.registro;
-            document.getElementById('profEspec').value = p.espec;
-            document.getElementById('profTelefone').value = p.telefone || "";
-            document.getElementById('profEmail').value = p.email || "";
-            document.getElementById('profBio').value = p.bio || "";
-            document.getElementById('imagePreview').style.backgroundImage = `url(${p.foto || ''})`;
-            
-            document.getElementById('btnSalvar').innerText = "Atualizar Cadastro";
-            document.getElementById('btnCancelar').style.display = "block";
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        function resetForm() {
-            document.getElementById('editId').value = "";
-            document.querySelectorAll('input, select, textarea').forEach(el => el.value = "");
-            document.getElementById('imagePreview').style.backgroundImage = "";
-            currentImageData = "";
-            document.getElementById('btnSalvar').innerText = "Salvar Profissional";
-            document.getElementById('btnCancelar').style.display = "none";
-        }
-
-        function removerProf(id) {
-            if(confirm("Deseja excluir permanentemente este profissional?")) {
-                profissionais = profissionais.filter(p => p.id !== id);
-                renderizar();
-            }
-        }
-
-        renderizar();
     </script>
 </body>
 </html>

@@ -29,6 +29,7 @@
             min-height: 100vh;
         }
 
+        /* --- HEADER E NAVBAR --- */
         header {
             background: rgba(255, 255, 255, 0.98);
             padding: 10px 5%;
@@ -41,202 +42,112 @@
             z-index: 1000;
         }
 
-        .nav-brand { display: flex; align-items: center; gap: 10px; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
         .logo-img { width: 40px; height: auto; }
 
-        .nav-links { display: flex; gap: 12px; align-items: center; }
-        .nav-links a {
+        .main-nav { display: flex; gap: 15px; }
+        .main-nav a {
             text-decoration: none;
             color: var(--texto);
             font-weight: 500;
             font-size: 0.85rem;
             padding: 8px 16px;
-            border: 1px solid #ddd;
             border-radius: 20px;
-            transition: all 0.3s ease;
+            transition: 0.3s;
+            border: 1px solid transparent;
         }
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--branco);
-            background-color: var(--verde-escuro);
+        .main-nav a:hover, .main-nav a.active {
+            background: var(--verde-suave);
+            color: var(--verde-escuro);
             border-color: var(--verde-escuro);
         }
 
-        /* PERFIL E DROPDOWN EXPANDIDO */
-        .user-profile {
-            position: relative;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            padding: 6px 14px;
-            border-radius: 25px;
-            background: rgba(62, 142, 99, 0.1);
-            transition: background 0.3s;
-        }
-
-        .profile-avatar {
-            width: 35px; height: 35px;
-            background-color: var(--verde-escuro);
-            color: var(--branco);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin-left: 10px; border: 2px solid var(--branco);
-        }
-
+        /* --- MENU DROPDOWN (ORGANIZADO) --- */
+        .user-profile { position: relative; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 5px 15px; border-radius: 30px; background: #eee; }
+        
         .profile-dropdown {
             display: none;
             position: absolute;
-            top: 110%;
+            top: 120%;
             right: 0;
             background: var(--branco);
             box-shadow: var(--shadow);
             border-radius: 12px;
-            min-width: 280px;
-            max-height: 450px;
+            min-width: 300px;
+            max-height: 500px;
             overflow-y: auto;
-            animation: fadeIn 0.3s ease;
+            z-index: 2000;
         }
 
         .user-profile:hover .profile-dropdown { display: block; }
 
-        .dropdown-search {
-            padding: 12px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+        .dropdown-search { padding: 15px; background: #f1f1f1; position: sticky; top: 0; }
+        .dropdown-search input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
 
-        .dropdown-search input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            outline: none;
-        }
-
-        .dropdown-section-title {
-            padding: 10px 18px 5px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #888;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
+        .section-title { padding: 12px 18px 5px; font-size: 0.75rem; color: var(--verde-escuro); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
 
         .profile-dropdown a, .profile-dropdown button {
-            width: 100%;
-            padding: 10px 18px;
-            border: none;
-            background: none;
-            text-align: left;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--texto);
-            font-size: 0.9rem;
-            transition: background 0.2s;
+            display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+            text-decoration: none; color: var(--texto); border: none; background: none; width: 100%; text-align: left; cursor: pointer;
         }
+        .profile-dropdown a:hover { background: var(--verde-claro); }
+        .profile-dropdown i { width: 20px; color: var(--verde-escuro); }
 
-        .profile-dropdown a i, .profile-dropdown button i {
-            width: 18px;
-            color: var(--verde-escuro);
-            text-align: center;
-        }
+        /* --- CONTEÚDO PRINCIPAL --- */
+        main { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        
+        .hero { text-align: center; margin-bottom: 40px; }
 
-        .profile-dropdown a:hover, .profile-dropdown button:hover { 
-            background: #f0f7f3; 
-            color: var(--verde-hover); 
-        }
-
-        /* Layout Grid */
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .grid-atalhos {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-        }
-
-        .hero-section { grid-column: 1 / -1; text-align: center; padding-bottom: 30px; }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
-        .card-action {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            border-bottom: 4px solid var(--verde-escuro);
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: 0.3s;
+        .card-atalho {
+            background: white; padding: 30px; border-radius: 15px; text-align: center;
+            box-shadow: var(--shadow); transition: 0.3s; text-decoration: none; color: inherit;
         }
-        
-        .card-action:hover { transform: translateY(-5px); }
+        .card-atalho:hover { transform: translateY(-5px); border-bottom: 4px solid var(--verde-escuro); }
+        .card-atalho i { font-size: 2.5rem; color: var(--verde-escuro); margin-bottom: 15px; }
 
-        .btn-main {
-            display: block;
-            margin-top: 15px;
-            padding: 12px;
-            background-color: var(--verde-escuro);
-            color: var(--branco);
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 992px) {
-            main { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="nav-brand">
-            <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Fision+ Logo">
-            <nav class="nav-links">
-                <a href="dashboard.html" class="active">Painel</a>
-                <a href="unidades.html">Unidades</a>
-            </nav>
-        </div>
+        <a href="telainicial.html" class="nav-brand">
+            <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
+            <h2 style="font-size: 1.2rem;">Fision+</h2>
+        </a>
 
         <div class="user-profile">
-            <span>Olá, <strong id="nome-usuario-header">Usuário</strong></span>
-            <div class="profile-avatar"><i class="fas fa-user"></i></div>
+            <span>Olá, <strong id="user-name">Usuário</strong></span>
+            <div style="width:35px; height:35px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
+                <i class="fas fa-user"></i>
+            </div>
 
-            <div class="profile-dropdown" id="myDropdown">
+            <div class="profile-dropdown">
                 <div class="dropdown-search">
-                    <input type="text" placeholder="O que você procura?" id="searchDropdown">
+                    <input type="text" id="mainSearch" placeholder="Pesquisar função...">
                 </div>
-                
+
                 <div class="dropdown-section-title">Pessoal</div>
-                <a href="Perfil.htm"><i class="fas fa-user-circle"></i> Meu Perfil</a>
-                <button onclick="openModal('modalConsultas')"><i class="fas fa-calendar-alt"></i> Minhas Consultas</button>
-                <a href="config.html"><i class="fas fa-cog"></i> Configurações</a>
+                <a href="dashboard.html" class="search-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                <a href="consultas.html" class="search-item"><i class="fas fa-calendar-check"></i> Minhas Consultas</a>
+                <a href="config.html" class="search-item"><i class="fas fa-cog"></i> Configurações</a>
 
                 <div class="dropdown-section-title">Gestão e Cadastro</div>
-                <a href="cadastro-clientes.html"><i class="fas fa-user-plus"></i> Cadastro de Clientes</a>
-                <a href="cadastro-profissionais.html"><i class="fas fa-user-md"></i> Cadastro Profissionais</a>
-                <a href="checkin.html"><i class="fas fa-map-marker-check"></i> Realizar Check-in</a>
-                
+                <a href="cadastro-clientes.html" class="search-item"><i class="fas fa-address-book"></i> Cadastro de Clientes</a>
+                <a href="cadastro-profissionais.html" class="search-item"><i class="fas fa-user-md"></i> Cadastro Profissionais</a>
+                <a href="checkin.html" class="search-item"><i class="fas fa-qrcode"></i> Realizar Check-in</a>
+
                 <div class="dropdown-section-title">Financeiro e Saúde</div>
-                <a href="mensalidades.html"><i class="fas fa-hand-holding-usd"></i> Mensalidades</a>
-                <a href="prontuario.html"><i class="fas fa-file-medical-alt"></i> Prontuários</a>
-                <a href="relatorios.html"><i class="fas fa-chart-line"></i> Relatórios</a>
-                
-                <button onclick="logout()" style="color: #d9534f; border-top: 1px solid #eee; margin-top: 5px;">
+                <a href="mensalidades.html" class="search-item"><i class="fas fa-money-bill-wave"></i> Mensalidades</a>
+                <a href="prontuario.html" class="search-item"><i class="fas fa-file-medical"></i> Prontuários</a>
+                <a href="relatorios.html" class="search-item"><i class="fas fa-chart-line"></i> Relatórios</a>
+
+                <button onclick="logout()" style="color: #d9534f; border-top: 1px solid #eee; margin-top: 10px;">
                     <i class="fas fa-sign-out-alt"></i> Sair da Conta
                 </button>
             </div>
@@ -244,65 +155,58 @@
     </header>
 
     <main>
-        <section class="hero-section">
-            <h1>Painel Administrativo / Paciente</h1>
-            <p>Acesse rapidamente as funcionalidades da <strong>Fision+</strong></p>
+        <section class="hero">
+            <h1>Bem-vindo ao Fision+</h1>
+            <p>Selecione uma categoria no menu de perfil ou utilize os atalhos abaixo.</p>
         </section>
 
-        <section class="services-grid">
-            <div class="card-action">
-                <i class="fas fa-calendar-check" style="font-size: 2.5rem; color: var(--verde-escuro); margin-bottom: 15px;"></i>
-                <h3>Agendamentos</h3>
-                <p>Gerencie horários e sessões.</p>
-                <a href="Agendar.html" class="btn-main">Acessar</a>
-            </div>
-
-            <div class="card-action">
-                <i class="fas fa-qrcode" style="font-size: 2.5rem; color: var(--verde-escuro); margin-bottom: 15px;"></i>
-                <h3>Check-in Rápido</h3>
-                <p>Confirme sua presença na unidade.</p>
-                <a href="checkin.html" class="btn-main" style="background: var(--verde-claro); color: var(--verde-escuro);">Iniciar</a>
-            </div>
+        <section class="grid-atalhos">
+            <a href="Agendar.html" class="card-atalho">
+                <i class="fas fa-calendar-plus"></i>
+                <h3>Novo Agendamento</h3>
+                <p>Marque uma nova sessão</p>
+            </a>
+            <a href="prontuario.html" class="card-atalho">
+                <i class="fas fa-notes-medical"></i>
+                <h3>Prontuários</h3>
+                <p>Histórico clínico completo</p>
+            </a>
+            <a href="checkin.html" class="card-atalho">
+                <i class="fas fa-user-check"></i>
+                <h3>Check-in</h3>
+                <p>Confirmar presença</p>
+            </a>
         </section>
     </main>
 
     <script>
-        // Lógica de pesquisa no dropdown
-        document.getElementById('searchDropdown').addEventListener('keyup', function() {
+        // Lógica de Busca Global no Dropdown
+        document.getElementById('mainSearch').addEventListener('keyup', function() {
             let filter = this.value.toLowerCase();
-            let items = document.querySelectorAll('.profile-dropdown a, .profile-dropdown button');
+            let items = document.querySelectorAll('.search-item');
             let titles = document.querySelectorAll('.dropdown-section-title');
-            
+
             items.forEach(item => {
                 let text = item.textContent.toLowerCase();
-                if(text.includes(filter)) {
-                    item.style.display = "flex";
-                } else {
-                    if(!item.parentNode.classList.contains('dropdown-search')) {
-                        item.style.display = "none";
-                    }
-                }
+                item.style.display = text.includes(filter) ? "flex" : "none";
             });
 
-            // Esconde títulos de seção se não houver pesquisa neles
-            if(filter !== "") {
-                titles.forEach(t => t.style.display = "none");
-            } else {
-                titles.forEach(t => t.style.display = "block");
-            }
+            // Esconde títulos se estiver pesquisando
+            titles.forEach(t => t.style.display = filter === "" ? "block" : "none");
         });
 
         function logout() {
-            if(confirm("Deseja sair?")) {
-                localStorage.removeItem('usuarioLogado');
+            if(confirm("Deseja encerrar a sessão?")) {
+                localStorage.clear();
                 window.location.href = "index.html";
             }
         }
 
+        // Recuperar nome do usuário
         window.onload = function() {
             const user = JSON.parse(localStorage.getItem('usuarioLogado'));
-            if (user) document.getElementById('nome-usuario-header').innerText = user.nome.split(' ')[0];
-        };
+            if(user) document.getElementById('user-name').innerText = user.nome.split(' ')[0];
+        }
     </script>
 </body>
 </html>

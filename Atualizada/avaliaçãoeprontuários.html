@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fision+ | Gestão de Prontuários</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --verde-primario: #3e8e63;
+            --verde-secundario: #2d6a4a;
+            --verde-suave: #e8f5e9;
+            --bg-corpo: #f8f9fa;
+            --branco: #ffffff;
+            --texto-escuro: #2c3e50;
+            --texto-suave: #7f8c8d;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --img-fundo: url("imagem.pjp/Logo- prog WEB.png");
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; max-width: 100%; }
+
+        body {
+            background-color: var(--bg-corpo);
+            background-image: linear-gradient(rgba(248, 249, 250, 0.92), rgba(248, 249, 250, 0.92)), var(--img-fundo);
+            background-size: cover; background-attachment: fixed;
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+        .logo-img { width: 38px; }
+
+        .user-profile { 
+            position: relative; cursor: pointer; display: flex; align-items: center; gap: 10px; 
+            padding: 5px 15px; border-radius: 30px; background: #eee; 
+        }
+        
+        .profile-dropdown {
+            display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
+            box-shadow: var(--shadow); border-radius: 12px; min-width: 180px; z-index: 2000;
+        }
+        .profile-dropdown.show { display: block; }
+        .profile-dropdown a { display: block; padding: 12px 15px; text-decoration: none; color: var(--texto-escuro); font-weight: 600; }
+        .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-primario); }
+
+        main { max-width: 1200px; margin: 20px auto; padding: 0 15px; display: grid; gap: 25px; }
+
+        .header-page h1 { color: var(--verde-primario); font-size: 1.8rem; }
+        .header-page p { color: var(--texto-suave); margin-top: 5px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+        .stat-card { background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 15px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px; }
+        .stat-icon { width: 48px; height: 48px; background: var(--verde-suave); color: var(--verde-primario); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+        .stat-card h4 { font-size: 1.4rem; color: var(--texto-escuro); }
+        .stat-card p { font-size: 0.85rem; color: var(--texto-suave); }
+
+        .content-card { background: rgba(255, 255, 255, 0.98); border-radius: 15px; box-shadow: var(--shadow); padding: 25px; }
+        .card-header { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .card-header h3 { color: var(--verde-primario); font-size: 1.1rem; }
+
+        .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+        .full-row { grid-column: 1 / -1; }
+        .input-field { display: flex; flex-direction: column; gap: 6px; }
+        .input-field label { font-weight: 600; font-size: 0.85rem; color: #444; }
+
+        input, select, textarea { padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 0.95rem; outline: none; }
+        input:focus { border-color: var(--verde-primario); }
+
+        .btn-primary { background: var(--verde-primario); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-primary:hover { background: var(--verde-secundario); transform: translateY(-2px); }
+        .btn-cancel { background: #888; color: white; border: none; padding: 14px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; display: none; margin-right: 10px; }
+
+        .table-wrap { overflow-x: auto; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        th { text-align: left; padding: 15px; color: var(--texto-suave); font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid #eee; }
+        td { padding: 15px; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; }
+
+        .btn-action { border: none; background: none; cursor: pointer; font-size: 1.1rem; margin-right: 8px; transition: 0.2s; }
+        .btn-edit { color: #2980b9; }
+        .btn-view { color: var(--verde-primario); }
+        .btn-delete { color: #d63031; }
+        .btn-action:hover { opacity: 0.7; }
+
+        @media (max-width: 600px) { .btn-primary, .btn-cancel { width: 100%; margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="telainicial.html" class="nav-brand">
+            <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
+            <h2 style="font-size: 1.2rem; margin:0;">Fision+</h2>
+        </a>
+        <div class="user-profile" onclick="toggleMenu(event)">
+            <span>Prontuários</span>
+            <div style="width:35px; height:35px; background:var(--verde-primario); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
+                <i class="fas fa-file-medical"></i>
+            </div>
+            <div class="profile-dropdown" id="menuDrop">
+                <a href="telainicial.html"><i class="fas fa-home"></i> Início</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="header-page">
+            <h1>Gestão de Prontuários</h1>
+            <p>Adicione ou edite avaliações clínicas</p>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-user-injured"></i></div>
+                <div>
+                    <h4 id="count-total">0</h4>
+                    <p>Registros Totais</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #2980b9; background: #e1f5fe;"><i class="fas fa-clock"></i></div>
+                <div>
+                    <h4>Hoje</h4>
+                    <p>4 Atendimentos Pendentes</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-card">
+            <div class="card-header">
+                <h3 id="formTitle"><i class="fas fa-plus-circle"></i> Novo Registro</h3>
+            </div>
+            <form id="formProntuario" class="grid-form">
+                <input type="hidden" id="editId">
+                <div class="input-field">
+                    <label>Data</label>
+                    <input type="date" id="data" required>
+                </div>
+                <div class="input-field">
+                    <label>Paciente</label>
+                    <input type="text" id="paciente" placeholder="Nome completo" required>
+                </div>
+                <div class="input-field">
+                    <label>Tipo</label>
+                    <select id="tipo">
+                        <option>Avaliação Inicial</option>
+                        <option>Sessão Fisioterapia</option>
+                        <option>Evolução</option>
+                        <option>Alta Clínica</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label>Profissional</label>
+                    <input type="text" id="profissional" placeholder="Dr(a). Responsável">
+                </div>
+                <div class="input-field full-row">
+                    <label>Resumo Clínico / Queixa</label>
+                    <textarea id="resumo" rows="3" placeholder="Descreva os achados clínicos..."></textarea>
+                </div>
+                <div class="full-row" style="text-align: right;">
+                    <button type="button" class="btn-cancel" id="btnCancel" onclick="resetForm()">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="btnSubmit">Salvar Informações</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="content-card">
+            <div class="card-header">
+                <h3><i class="fas fa-list"></i> Prontuários Recentes</h3>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DATA</th>
+                            <th>PACIENTE</th>
+                            <th>TIPO</th>
+                            <th>PROFISSIONAL</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaRegistros"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function toggleMenu(e) { e.stopPropagation(); document.getElementById("menuDrop").classList.toggle("show"); }
+        window.onclick = () => document.getElementById("menuDrop").classList.remove("show");
+
+        let prontuarios = JSON.parse(localStorage.getItem('prontuariosFision')) || [];
+        const form = document.getElementById('formProntuario');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editId').value;
+            const dados = {
+                data: document.getElementById('data').value,
+                paciente: document.getElementById('paciente').value,
+                tipo: document.getElementById('tipo').value,
+                profissional: document.getElementById('profissional').value,
+                resumo: document.getElementById('resumo').value
+            };
+
+            if (id) {
+                // Modo Edição
+                prontuarios = prontuarios.map(p => p.id == id ? { ...dados, id: Number(id) } : p);
+            } else {
+                // Novo Registro
+                prontuarios.unshift({ ...dados, id: Date.now() });
+            }
+
+            salvar();
+            resetForm();
+        });
+
+        function prepararEdicao(id) {
+            const p = prontuarios.find(p => p.id === id);
+            if (!p) return;
+
+            document.getElementById('editId').value = p.id;
+            document.getElementById('data').value = p.data;
+            document.getElementById('paciente').value = p.paciente;
+            document.getElementById('tipo').value = p.tipo;
+            document.getElementById('profissional').value = p.profissional;
+            document.getElementById('resumo').value = p.resumo;
+
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Editando Registro';
+            document.getElementById('btnSubmit').innerText = 'Atualizar Prontuário';
+            document.getElementById('btnCancel').style.display = 'inline-block';
+            
+            window.scrollTo({ top: 150, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            form.reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Novo Registro';
+            document.getElementById('btnSubmit').innerText = 'Salvar Informações';
+            document.getElementById('btnCancel').style.display = 'none';
+            document.getElementById('data').valueAsDate = new Date();
+        }
+
+        function salvar() {
+            localStorage.setItem('prontuariosFision', JSON.stringify(prontuarios));
+            renderTable();
+        }
+
+        function renderTable() {
+            const lista = document.getElementById('listaRegistros');
+            document.getElementById('count-total').innerText = prontuarios.length;
+            lista.innerHTML = '';
+
+            prontuarios.forEach((p) => {
+                lista.innerHTML += `
+                    <tr>
+                        <td>${p.data.split('-').reverse().join('/')}</td>
+                        <td><strong>${p.paciente}</strong></td>
+                        <td>${p.tipo}</td>
+                        <td>${p.profissional}</td>
+                        <td>
+                            <button onclick="prepararEdicao(${p.id})" class="btn-action btn-edit" title="Editar"><i class="fas fa-edit"></i></button>
+                            <button onclick="alert('Resumo: '+ prontuarios.find(x=>x.id===${p.id}).resumo)" class="btn-action btn-view" title="Ver Resumo"><i class="fas fa-eye"></i></button>
+                            <button onclick="remover(${p.id})" class="btn-action btn-delete" title="Excluir"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function remover(id) {
+            if(confirm("Excluir este prontuário permanentemente?")) {
+                prontuarios = prontuarios.filter(p => p.id !== id);
+                salvar();
+            }
+        }
+
+        function logout() { window.location.href = 'index.html'; }
+
+        document.getElementById('data').valueAsDate = new Date();
+        renderTable();
+    </script>
+</body>
+</html>
