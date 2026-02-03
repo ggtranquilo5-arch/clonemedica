@@ -36,102 +36,78 @@
         /* --- PERFIL HEADER --- */
         .profile-header {
             background: var(--verde-primario);
-            height: 200px;
-            width: 100%;
-            position: relative;
-            margin-bottom: 80px;
+            height: 200px; width: 100%;
+            position: relative; margin-bottom: 80px;
         }
 
         .profile-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
+            max-width: 900px; margin: 0 auto;
+            padding: 0 20px; position: relative;
         }
 
         .profile-avatar {
-            width: 150px;
-            height: 150px;
-            background: white;
-            border-radius: 20px;
-            position: absolute;
-            bottom: -75px;
-            left: 20px;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 150px; height: 150px; background: white;
+            border-radius: 20px; position: absolute;
+            bottom: -75px; left: 20px;
+            box-shadow: var(--shadow); display: flex;
+            align-items: center; justify-content: center;
             border: 5px solid white;
         }
 
         .profile-avatar img { width: 80%; }
 
         .profile-main-info {
-            padding-left: 190px;
-            padding-top: 15px;
-            color: white;
+            padding-left: 190px; padding-top: 15px; color: white;
         }
 
         /* --- CONTEÚDO --- */
         .grid-perfil {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
-            margin-top: 20px;
+            display: grid; grid-template-columns: 1fr 2fr;
+            gap: 30px; margin-top: 20px;
         }
 
         .card-info {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
+            background: white; padding: 25px;
+            border-radius: 15px; box-shadow: var(--shadow);
             margin-bottom: 20px;
         }
 
         .card-info h3 {
-            font-size: 1.1rem;
-            color: var(--verde-secundario);
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--verde-suave);
-            padding-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.1rem; color: var(--verde-secundario);
+            margin-bottom: 15px; border-bottom: 2px solid var(--verde-suave);
+            padding-bottom: 8px; display: flex; align-items: center; gap: 10px;
         }
 
         .info-item { margin-bottom: 15px; }
         .info-item label { font-size: 0.75rem; color: var(--texto-suave); font-weight: bold; text-transform: uppercase; }
         .info-item p { color: var(--texto-escuro); font-weight: 500; font-size: 1rem; }
 
+        /* Estilo para campos de edição */
+        .edit-input {
+            width: 100%; padding: 8px; border: 1px solid #ddd;
+            border-radius: 6px; display: none; margin-top: 5px;
+            font-size: 0.95rem; font-family: inherit;
+        }
+
         .badge-status {
-            background: #27ae60;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            background: #27ae60; color: white;
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: bold;
         }
 
         .btn-edit-perfil {
-            background: var(--verde-primario);
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.3s;
+            background: var(--verde-primario); color: white;
+            border: none; padding: 10px 20px; border-radius: 8px;
+            font-weight: bold; display: inline-flex; align-items: center;
+            gap: 10px; transition: 0.3s; cursor: pointer; text-decoration: none;
         }
 
-        .btn-edit-perfil:hover { background: var(--verde-secundario); }
+        .btn-edit-perfil:hover { background: var(--verde-secundario); transform: translateY(-2px); }
 
         @media (max-width: 768px) {
             .grid-perfil { grid-template-columns: 1fr; }
-            .profile-header { text-align: center; }
             .profile-avatar { left: 50%; transform: translateX(-50%); }
-            .profile-main-info { padding-left: 0; padding-top: 90px; color: var(--texto-escuro); }
+            .profile-main-info { padding-left: 0; padding-top: 90px; color: var(--texto-escuro); text-align: center; }
             .profile-header { background: var(--verde-suave); }
         }
     </style>
@@ -152,6 +128,7 @@
             </div>
             <div class="profile-main-info">
                 <h1 id="viewClinicaNome">Nome da Clínica</h1>
+                <input type="text" id="editNome" class="edit-input" style="font-size: 1.5rem; color: #333;">
                 <p><i class="fas fa-check-circle"></i> Unidade Verificada <span class="badge-status">Ativa</span></p>
             </div>
         </div>
@@ -165,14 +142,17 @@
                     <div class="info-item">
                         <label>WhatsApp / Telefone</label>
                         <p id="viewClinicaTel">---</p>
+                        <input type="text" id="editTel" class="edit-input">
                     </div>
                     <div class="info-item">
                         <label>E-mail Oficial</label>
                         <p id="viewClinicaEmail">---</p>
+                        <input type="email" id="editEmail" class="edit-input">
                     </div>
                     <div class="info-item">
                         <label>CNPJ</label>
                         <p id="viewClinicaCnpj">---</p>
+                        <input type="text" id="editCnpj" class="edit-input">
                     </div>
                 </div>
 
@@ -188,39 +168,124 @@
 
             <section>
                 <div class="card-info">
-                    <h3><i class="fas fa-map-marker-alt"></i> Localização</h3>
+                    <h3><i class="fas fa-map-marker-alt"></i> Localização Detalhada</h3>
                     <div class="info-item">
-                        <label>Endereço de Atendimento</label>
+                        <label>Logradouro (Rua e Número)</label>
                         <p id="viewClinicaEnd">---</p>
+                        <input type="text" id="editEnd" class="edit-input">
+                    </div>
+                    <div class="info-item">
+                        <label>Bairro</label>
+                        <p id="viewClinicaBairro">---</p>
+                        <input type="text" id="editBairro" class="edit-input">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                        <div class="info-item">
+                            <label>Cidade</label>
+                            <p id="viewClinicaCidade">---</p>
+                            <input type="text" id="editCidade" class="edit-input">
+                        </div>
+                        <div class="info-item">
+                            <label>UF</label>
+                            <p id="viewClinicaUF">---</p>
+                            <input type="text" id="editUF" class="edit-input" maxlength="2">
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <label>CEP</label>
+                        <p id="viewClinicaCep">---</p>
+                        <input type="text" id="editCep" class="edit-input">
                     </div>
                 </div>
 
                 <div class="card-info">
-                    <h3><i class="fas fa-info-circle"></i> Sobre a Unidade</h3>
-                    <p style="color: var(--texto-suave); line-height: 1.6;">
-                        Esta unidade utiliza o sistema <strong>Fision+</strong> para gestão de prontuários e agendamentos. 
-                        Todos os dados aqui contidos são protegidos e seguem os padrões de segurança LocalStorage ativos.
+                    <h3><i class="fas fa-info-circle"></i> Gestão do Perfil</h3>
+                    <p style="color: var(--texto-suave); line-height: 1.6; margin-bottom: 20px;">
+                        Mantenha os dados da unidade atualizados para garantir a precisão nos relatórios e documentos.
                     </p>
-                    <br>
-                    <a href="configuracoes.html" class="btn-edit-perfil">
-                        <i class="fas fa-user-edit"></i> Editar Perfil
-                    </a>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-edit-perfil" id="btnAcaoPerfil" onclick="toggleEdicaoPerfil()">
+                            <i class="fas fa-edit"></i> Editar Perfil
+                        </button>
+                        <button class="btn-edit-perfil" style="background: #4285F4;" onclick="abrirGoogleMaps()">
+                            <i class="fas fa-map-marked-alt"></i> Google Maps
+                        </button>
+                    </div>
                 </div>
             </section>
         </div>
     </main>
 
     <script>
-        // Função para carregar os dados que foram salvos na página de Configurações
+        let modoEdicao = false;
+
+        // Mapeamento: { ID do texto, ID do input, chave no localStorage }
+        const campos = [
+            { txt: 'viewClinicaNome', input: 'editNome', chave: 'nome' },
+            { txt: 'viewClinicaTel', input: 'editTel', chave: 'tel' },
+            { txt: 'viewClinicaEmail', input: 'editEmail', chave: 'email' },
+            { txt: 'viewClinicaCnpj', input: 'editCnpj', chave: 'cnpj' },
+            { txt: 'viewClinicaEnd', input: 'editEnd', chave: 'end' },
+            { txt: 'viewClinicaBairro', input: 'editBairro', chave: 'bairro' },
+            { txt: 'viewClinicaCidade', input: 'editCidade', chave: 'cidade' },
+            { txt: 'viewClinicaUF', input: 'editUF', chave: 'uf' },
+            { txt: 'viewClinicaCep', input: 'editCep', chave: 'cep' }
+        ];
+
         window.onload = () => {
-            const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
-            
-            document.getElementById('viewClinicaNome').innerText = dados.nome || 'Clínica Fision+';
-            document.getElementById('viewClinicaCnpj').innerText = dados.cnpj || 'Não informado';
-            document.getElementById('viewClinicaTel').innerText = dados.tel || 'Não informado';
-            document.getElementById('viewClinicaEmail').innerText = dados.email || 'Não informado';
-            document.getElementById('viewClinicaEnd').innerText = dados.end || 'Endereço não configurado';
+            carregarDados();
         };
+
+        function carregarDados() {
+            const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
+            campos.forEach(item => {
+                const valor = dados[item.chave] || (item.chave === 'nome' ? 'Clínica Fision+' : '---');
+                document.getElementById(item.txt).innerText = valor;
+            });
+        }
+
+        function toggleEdicaoPerfil() {
+            modoEdicao = !modoEdicao;
+            const btn = document.getElementById('btnAcaoPerfil');
+
+            if (modoEdicao) {
+                // Entrar no modo de edição
+                campos.forEach(item => {
+                    const txtEl = document.getElementById(item.txt);
+                    const inputEl = document.getElementById(item.input);
+                    inputEl.value = txtEl.innerText === '---' ? '' : txtEl.innerText;
+                    txtEl.style.display = 'none';
+                    inputEl.style.display = 'block';
+                });
+                btn.innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
+                btn.style.background = '#27ae60';
+            } else {
+                // Salvar dados
+                const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
+                campos.forEach(item => {
+                    const txtEl = document.getElementById(item.txt);
+                    const inputEl = document.getElementById(item.input);
+                    txtEl.innerText = inputEl.value || '---';
+                    dados[item.chave] = inputEl.value;
+                    txtEl.style.display = 'block';
+                    inputEl.style.display = 'none';
+                });
+
+                localStorage.setItem('dadosClinica', JSON.stringify(dados));
+                btn.innerHTML = '<i class="fas fa-edit"></i> Editar Perfil';
+                btn.style.background = 'var(--verde-primario)';
+                alert("Perfil atualizado com sucesso!");
+            }
+        }
+
+        function abrirGoogleMaps() {
+            const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
+            if(!dados.end) return alert("Por favor, preencha o endereço primeiro.");
+            
+            const enderecoCompleto = `${dados.end}, ${dados.bairro || ''}, ${dados.cidade || ''} - ${dados.uf || ''}`;
+            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(enderecoCompleto)}`;
+            window.open(url, '_blank');
+        }
     </script>
 </body>
 </html>

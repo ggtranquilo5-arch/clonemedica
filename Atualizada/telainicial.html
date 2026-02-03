@@ -10,11 +10,11 @@
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --verde-hover: #2d6a4a;
+            --verde-suave: #e8f5e9;
             --cinza-fundo: #f8f9fa;
             --texto: #333;
             --branco: #ffffff;
             --shadow: 0 4px 12px rgba(0,0,0,0.1);
-            --img-fundo: url("imagem.pjp/Logo- prog WEB.png"); 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
@@ -22,10 +22,6 @@
         body {
             color: var(--texto);
             background-color: var(--cinza-fundo);
-            background-image: linear-gradient(rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.85)), var(--img-fundo);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
             min-height: 100vh;
         }
 
@@ -45,26 +41,21 @@
         .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
         .logo-img { width: 40px; height: auto; }
 
-        .main-nav { display: flex; gap: 15px; }
-        .main-nav a {
-            text-decoration: none;
-            color: var(--texto);
-            font-weight: 500;
-            font-size: 0.85rem;
-            padding: 8px 16px;
-            border-radius: 20px;
+        /* --- MENU DROPDOWN --- */
+        .user-profile { 
+            position: relative; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            padding: 5px 15px; 
+            border-radius: 30px; 
+            background: #eee; 
             transition: 0.3s;
-            border: 1px solid transparent;
         }
-        .main-nav a:hover, .main-nav a.active {
-            background: var(--verde-suave);
-            color: var(--verde-escuro);
-            border-color: var(--verde-escuro);
-        }
-
-        /* --- MENU DROPDOWN (ORGANIZADO) --- */
-        .user-profile { position: relative; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 5px 15px; border-radius: 30px; background: #eee; }
         
+        .user-profile:hover { background: #e0e0e0; }
+
         .profile-dropdown {
             display: none;
             position: absolute;
@@ -73,30 +64,63 @@
             background: var(--branco);
             box-shadow: var(--shadow);
             border-radius: 12px;
-            min-width: 300px;
-            max-height: 500px;
+            min-width: 280px;
+            max-height: 80vh;
             overflow-y: auto;
             z-index: 2000;
         }
 
         .user-profile:hover .profile-dropdown { display: block; }
 
-        .dropdown-search { padding: 15px; background: #f1f1f1; position: sticky; top: 0; }
-        .dropdown-search input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .dropdown-search { 
+            padding: 15px; 
+            background: #f1f1f1; 
+            position: sticky; 
+            top: 0; 
+            z-index: 10;
+        }
+        
+        .dropdown-search input { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            outline: none;
+        }
 
-        .section-title { padding: 12px 18px 5px; font-size: 0.75rem; color: var(--verde-escuro); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .dropdown-section-title { 
+            padding: 15px 18px 5px; 
+            font-size: 0.7rem; 
+            color: var(--verde-escuro); 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
 
         .profile-dropdown a, .profile-dropdown button {
-            display: flex; align-items: center; gap: 12px; padding: 12px 20px;
-            text-decoration: none; color: var(--texto); border: none; background: none; width: 100%; text-align: left; cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 12px 20px;
+            text-decoration: none; 
+            color: var(--texto); 
+            border: none; 
+            background: none; 
+            width: 100%; 
+            text-align: left; 
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
         }
+
         .profile-dropdown a:hover { background: var(--verde-claro); }
-        .profile-dropdown i { width: 20px; color: var(--verde-escuro); }
+        .profile-dropdown i { width: 20px; color: var(--verde-escuro); text-align: center; }
 
         /* --- CONTEÚDO PRINCIPAL --- */
         main { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         
         .hero { text-align: center; margin-bottom: 40px; }
+        .hero h1 { color: var(--verde-escuro); margin-bottom: 10px; }
 
         .grid-atalhos {
             display: grid;
@@ -105,10 +129,21 @@
         }
 
         .card-atalho {
-            background: white; padding: 30px; border-radius: 15px; text-align: center;
-            box-shadow: var(--shadow); transition: 0.3s; text-decoration: none; color: inherit;
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            text-align: center;
+            box-shadow: var(--shadow); 
+            transition: 0.3s; 
+            text-decoration: none; 
+            color: inherit;
         }
-        .card-atalho:hover { transform: translateY(-5px); border-bottom: 4px solid var(--verde-escuro); }
+
+        .card-atalho:hover { 
+            transform: translateY(-5px); 
+            border-bottom: 4px solid var(--verde-escuro); 
+        }
+
         .card-atalho i { font-size: 2.5rem; color: var(--verde-escuro); margin-bottom: 15px; }
 
     </style>
@@ -116,23 +151,24 @@
 <body>
 
     <header>
-        <a href="telainicial.html" class="nav-brand">
+        <a href="dashboard.html" class="nav-brand">
             <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
             <h2 style="font-size: 1.2rem;">Fision+</h2>
         </a>
 
         <div class="user-profile">
             <span>Olá, <strong id="user-name">Usuário</strong></span>
-            <div style="width:35px; height:35px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
+            <div id="user-avatar" style="width:35px; height:35px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; overflow: hidden;">
                 <i class="fas fa-user"></i>
             </div>
 
             <div class="profile-dropdown">
                 <div class="dropdown-search">
-                    <input type="text" id="mainSearch" placeholder="Pesquisar função...">
+                    <input type="text" id="mainSearch" placeholder="Pesquisar função..." autocomplete="off">
                 </div>
 
                 <div class="dropdown-section-title">Pessoal</div>
+                <a href="perfil.html" class="search-item"><i class="fas fa-user-circle"></i> Meu Perfil</a>
                 <a href="dashboard.html" class="search-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
                 <a href="consultas.html" class="search-item"><i class="fas fa-calendar-check"></i> Minhas Consultas</a>
                 <a href="config.html" class="search-item"><i class="fas fa-cog"></i> Configurações</a>
@@ -156,8 +192,8 @@
 
     <main>
         <section class="hero">
-            <h1>Bem-vindo ao Fision+</h1>
-            <p>Selecione uma categoria no menu de perfil ou utilize os atalhos abaixo.</p>
+            <h1>Painel de Controle</h1>
+            <p>Selecione uma categoria no menu de perfil ou utilize os atalhos rápidos.</p>
         </section>
 
         <section class="grid-atalhos">
@@ -174,13 +210,13 @@
             <a href="checkin.html" class="card-atalho">
                 <i class="fas fa-user-check"></i>
                 <h3>Check-in</h3>
-                <p>Confirmar presença</p>
+                <p>Confirmar presença do paciente</p>
             </a>
         </section>
     </main>
 
     <script>
-        // Lógica de Busca Global no Dropdown
+        // --- LOGICA DE BUSCA ---
         document.getElementById('mainSearch').addEventListener('keyup', function() {
             let filter = this.value.toLowerCase();
             let items = document.querySelectorAll('.search-item');
@@ -191,21 +227,33 @@
                 item.style.display = text.includes(filter) ? "flex" : "none";
             });
 
-            // Esconde títulos se estiver pesquisando
+            // Esconde os títulos das seções durante a busca para o visual ficar limpo
             titles.forEach(t => t.style.display = filter === "" ? "block" : "none");
         });
 
+        // --- LOGICA DE LOGOUT ---
         function logout() {
-            if(confirm("Deseja encerrar a sessão?")) {
-                localStorage.clear();
-                window.location.href = "index.html";
+            if(confirm("Deseja realmente encerrar a sessão?")) {
+                localStorage.removeItem('session');
+                window.location.href = "login.html"; // Ajuste para o nome do seu arquivo de login
             }
         }
 
-        // Recuperar nome do usuário
+        // --- CARREGAR DADOS DO USUÁRIO ---
         window.onload = function() {
-            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
-            if(user) document.getElementById('user-name').innerText = user.nome.split(' ')[0];
+            // Tenta pegar a sessão (que configuramos no código do botão Google anterior)
+            const session = JSON.parse(localStorage.getItem('session'));
+            
+            if(session) {
+                // Atualiza o nome (pega apenas o primeiro nome)
+                document.getElementById('user-name').innerText = session.nome.split(' ')[0];
+                
+                // Se o usuário veio do Google e tem foto, atualiza o avatar
+                if(session.foto) {
+                    const avatarDiv = document.getElementById('user-avatar');
+                    avatarDiv.innerHTML = `<img src="${session.foto}" style="width:100%; height:100%; object-fit:cover;">`;
+                }
+            }
         }
     </script>
 </body>
