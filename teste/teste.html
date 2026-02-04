@@ -2,254 +2,246 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clínica Fision+ | Login e Cadastro</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Fision+ - Mobile Funcional</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
-            --primary-color: #00796b;
-            --secondary-color: #004d40;
-            --bg-gradient: linear-gradient(135deg, #e0f2f1 0%, #b2ebf2 100%);
-            --white: #ffffff;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --verde-suave: #f1f8f4;
+            --texto: #2d3436;
+            --branco: #ffffff;
+            --perigo: #ff7675;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --radius: 16px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
 
-        body {
-            background: var(--bg-gradient);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
+        body { background-color: #f8fafc; color: var(--texto); -webkit-font-smoothing: antialiased; line-height: 1.5; }
 
-        .auth-card {
-            background-color: var(--white);
-            width: 100%;
-            max-width: 450px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* --- Header & Dropdown --- */
         header {
-            background-color: var(--primary-color);
-            color: var(--white);
-            padding: 1.5rem 1rem;
-            text-align: center;
+            background: var(--branco);
+            padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 1000;
         }
 
-        /* ÁREA DA IMAGEM DA CLÍNICA */
-        .clinic-logo {
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.2);
-            margin: 0 auto 10px;
-            border-radius: 50%;
-            border: 2px solid white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+        .nav-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--verde-escuro); }
+        .logo-img { width: 32px; height: auto; }
+
+        .user-menu-container { position: relative; }
+        .user-profile { 
+            display: flex; align-items: center; gap: 8px; background: var(--verde-suave);
+            padding: 4px 4px 4px 12px; border-radius: 25px; border: 1px solid var(--verde-claro);
+            cursor: pointer; transition: 0.2s; user-select: none;
         }
-        .clinic-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .user-profile:active { transform: scale(0.95); background: var(--verde-claro); }
 
-        header h1 { font-size: 1.8rem; margin-bottom: 5px; }
-        header p { font-size: 0.9rem; opacity: 0.9; }
-
-        .tabs { display: flex; background: #f8f9fa; border-bottom: 1px solid #eee; }
-
-        .tab-btn {
-            flex: 1; padding: 15px; border: none; background: none;
-            cursor: pointer; font-weight: 600; color: #666; transition: var(--transition);
+        .dropdown-menu {
+            position: absolute; top: calc(100% + 8px); right: 0;
+            background: var(--branco); min-width: 200px; border-radius: 12px;
+            box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.05);
+            display: none; flex-direction: column; overflow: hidden; animation: fadeIn 0.2s ease-out;
         }
+        .dropdown-menu.show { display: flex; }
 
-        .tab-btn.active {
-            color: var(--primary-color); background: var(--white);
-            border-bottom: 3px solid var(--primary-color);
+        .dropdown-item {
+            padding: 14px 16px; text-decoration: none; color: var(--texto);
+            font-size: 0.9rem; display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid #f1f2f6; transition: background 0.2s;
         }
+        .dropdown-item:hover { background: var(--verde-suave); }
+        .dropdown-item i { width: 18px; color: var(--verde-escuro); }
 
-        .form-container { padding: 2rem; }
-        form { display: grid; gap: 1.2rem; }
-        .field { display: flex; flex-direction: column; gap: 5px; }
-        label { font-size: 0.85rem; font-weight: 700; color: #444; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        input {
-            padding: 12px; border: 1.5px solid #ddd; border-radius: 8px;
-            font-size: 1rem; transition: var(--transition);
+        /* --- Grid & Cards --- */
+        main { padding: 16px; max-width: 1200px; margin: 0 auto; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+        
+        .stat-card {
+            background: var(--branco); padding: 16px; border-radius: var(--radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column;
         }
+        .stat-card i { color: var(--verde-escuro); font-size: 1.2rem; margin-bottom: 8px; }
+        .stat-card h3 { font-size: 1.5rem; font-weight: 800; }
+        .stat-card p { font-size: 0.7rem; color: #636e72; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        input:focus {
-            outline: none; border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.1);
+        /* --- Agenda Section --- */
+        .agenda-section { background: var(--branco); border-radius: 20px; padding: 20px; box-shadow: var(--shadow); }
+        .agenda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        .appointment-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 0; border-bottom: 1px solid #f1f2f6; transition: all 0.3s ease;
         }
+        .appointment-item:last-child { border-bottom: none; }
+        .appointment-item.active { background: var(--verde-suave); margin: 0 -10px; padding: 16px 10px; border-radius: 12px; }
+        .appointment-item.finished { opacity: 0.5; filter: grayscale(0.5); }
 
-        .form-utils {
-            display: flex; justify-content: space-between;
-            align-items: center; font-size: 0.8rem;
+        .patient-info { display: flex; flex-direction: column; gap: 4px; }
+        .patient-name { font-weight: 700; font-size: 1rem; }
+        .appointment-time { font-size: 0.8rem; color: #636e72; display: flex; align-items: center; gap: 5px; }
+
+        .status-pill {
+            font-size: 0.65rem; padding: 4px 10px; border-radius: 20px;
+            font-weight: 800; text-transform: uppercase; margin-top: 4px; display: inline-block;
         }
+        .status-confirmado { background: #e3fcef; color: #00b894; }
+        .status-andamento { background: #fff3cd; color: #856404; animation: pulse 2s infinite; }
 
-        .btn-submit {
-            background-color: var(--primary-color); color: var(--white);
-            padding: 14px; border: none; border-radius: 8px;
-            font-weight: bold; font-size: 1rem; cursor: pointer; transition: var(--transition);
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .btn-action {
+            background: var(--verde-escuro); color: white; border: none;
+            padding: 10px 18px; border-radius: 10px; font-weight: 700;
+            cursor: pointer; transition: 0.2s; font-size: 0.85rem;
         }
+        .btn-action:active { transform: scale(0.9); }
+        .btn-action.btn-finish { background: var(--perigo); }
 
-        .divider {
-            text-align: center; margin: 1.5rem 0; position: relative;
-            font-size: 0.8rem; color: #aaa;
-        }
-        .divider::before, .divider::after {
-            content: ""; position: absolute; top: 50%; width: 35%; border-bottom: 1px solid #eee;
-        }
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
-
-        .social-grid { display: flex; flex-direction: column; gap: 10px; }
-
-        #googleBtn { display: flex; justify-content: center; width: 100%; }
-
-        .facebook-btn {
-            padding: 10px; border: 1px solid #ddd; background: white;
-            border-radius: 8px; display: flex; justify-content: center;
-            align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;
-        }
-
-        .hidden { display: none; }
-
-        /* AJUSTE MOBILE AUTOMÁTICO */
-        @media (max-width: 480px) {
-            .form-container { padding: 1.2rem; }
-            .form-utils { flex-direction: column; gap: 10px; align-items: flex-start; }
-            header h1 { font-size: 1.5rem; }
-        }
+        @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
 <body>
 
-<main class="auth-card">
     <header>
-        <div class="clinic-logo">
-            <img src="https://via.placeholder.com/80" alt="Logo Clínica">
+        <a href="#" class="nav-brand">
+            <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
+            <h1 style="font-size: 1.2rem; font-weight: 900;">Fision+</h1>
+        </a>
+
+        <div class="user-menu-container">
+            <div class="user-profile" id="userProfileBtn" aria-haspopup="true">
+                <span style="font-size: 0.85rem; font-weight: 600;">Olá, <span id="user-name">Fisio</span></span>
+                <div style="width:32px; height:32px; background:var(--verde-escuro); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;">
+                    <i class="fas fa-user" style="font-size: 0.8rem;"></i>
+                </div>
+            </div>
+
+            <div class="dropdown-menu" id="userDropdown">
+                <a href="telainicial.html" class="dropdown-item"><i class="fas fa-home"></i> Início</a>
+            </div>
         </div>
-        <h1>Fision+</h1>
-        <p>Sistema Integrado de Fisioterapia</p>
     </header>
 
-    <nav class="tabs">
-        <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">LOGIN</button>
-        <button class="tab-btn" id="tab-register" onclick="switchTab('register')">CADASTRO</button>
-    </nav>
+    <main>
+        <section class="stats-grid">
+            <div class="stat-card"><i class="fas fa-users"></i><h3>12</h3><p>Pacientes</p></div>
+            <div class="stat-card"><i class="fas fa-check-double"></i><h3 id="concluidos-count">08</h3><p>Concluídos</p></div>
+            <div class="stat-card"><i class="fas fa-hourglass-half"></i><h3 id="espera-count">03</h3><p>Em Espera</p></div>
+            <div class="stat-card"><i class="fas fa-chart-pie"></i><h3>85%</h3><p>Ocupação</p></div>
+        </section>
 
-    <div class="form-container">
-        <form id="form-login">
-            <div class="field">
-                <label for="l-email">E-mail Profissional/Paciente</label>
-                <input type="email" id="l-email" placeholder="nome@exemplo.com" required>
-            </div>
-            <div class="field">
-                <label for="l-pass">Senha</label>
-                <input type="password" id="l-pass" placeholder="••••••••" required>
-            </div>
-            
-            <div class="form-utils">
-                <label><input type="checkbox"> Lembrar acesso</label>
-                <a href="#" style="color: var(--primary-color); text-decoration: none;">Esqueceu a senha?</a>
+        <section class="agenda-section">
+            <div class="agenda-header">
+                <h2 style="font-weight: 800;">Agenda de Hoje</h2>
+                <i class="fas fa-filter" style="color: var(--verde-escuro); cursor: pointer;"></i>
             </div>
 
-            <button type="submit" class="btn-submit">ENTRAR NO SISTEMA</button>
+            <div id="agenda-lista">
+                </div>
+        </section>
+    </main>
 
-            <div class="divider">OU ACESSE COM</div>
+    <script>
+        // Dados Mockados (Simulando um banco de dados)
+        const pacientes = [
+            { id: 1, nome: "Ana Beatriz Souza", hora: "09:00", tipo: "Fisioterapia" },
+            { id: 2, nome: "Carlos Eduardo Lima", hora: "10:30", tipo: "RPG" },
+            { id: 3, nome: "Mariana Costa", hora: "13:00", tipo: "Pilates" }
+        ];
 
-            <div class="social-grid">
-                <div id="googleBtn"></div>
-                <button type="button" class="facebook-btn">
-                    <i class="fab fa-facebook" style="color: #1877F2;"></i> Facebook
-                </button>
-            </div>
-        </form>
+        const atendimentosAtivos = new Set();
+        const listaAgenda = document.getElementById('agenda-lista');
 
-        <form id="form-register" class="hidden">
-            <div class="field">
-                <label for="r-name">Nome Completo</label>
-                <input type="text" id="r-name" placeholder="Como deseja ser chamado?" required>
-            </div>
-            <div class="field">
-                <label for="r-email">E-mail</label>
-                <input type="email" id="r-email" placeholder="seu@email.com" required>
-            </div>
-            <div class="field">
-                <label for="r-pass">Crie uma Senha</label>
-                <input type="password" id="r-pass" minlength="6" placeholder="Mín. 6 caracteres" required>
-            </div>
-            <button type="submit" class="btn-submit">FINALIZAR CADASTRO</button>
-        </form>
-    </div>
-</main>
-
-<script>
-    // TROCAR ABAS
-    function switchTab(mode) {
-        const isLogin = mode === 'login';
-        document.getElementById('tab-login').classList.toggle('active', isLogin);
-        document.getElementById('tab-register').classList.toggle('active', !isLogin);
-        document.getElementById('form-login').classList.toggle('hidden', !isLogin);
-        document.getElementById('form-register').classList.toggle('hidden', isLogin);
-    }
-
-    // --- LÓGICA DE MEMÓRIA (CADASTRO PARA LOGIN) ---
-
-    // 1. Salvar cadastro
-    document.getElementById('form-register').onsubmit = function(e) {
-        e.preventDefault();
-        const email = document.getElementById('r-email').value;
-        const password = document.getElementById('r-pass').value;
-
-        localStorage.setItem(email, password); // Guarda o e-mail como chave e a senha como valor
-        alert("Cadastro realizado! Agora faça login.");
-        switchTab('login');
-    };
-
-    // 2. Verificar Login
-    document.getElementById('form-login').onsubmit = function(e) {
-        e.preventDefault();
-        const email = document.getElementById('l-email').value;
-        const pass = document.getElementById('l-pass').value;
-
-        const savedPass = localStorage.getItem(email);
-
-        if (savedPass === null) {
-            alert("E-mail não encontrado. Por favor, cadastre-se primeiro!");
-            switchTab('register');
-        } else if (savedPass !== pass) {
-            alert("Senha incorreta!");
-        } else {
-            alert("Login realizado com sucesso!");
-            window.location.href = 'telainicial.html';
+        // Renderização Dinâmica
+        function renderAgenda() {
+            listaAgenda.innerHTML = pacientes.map(p => `
+                <div class="appointment-item" id="app-${p.id}">
+                    <div class="patient-info">
+                        <span class="patient-name">${p.nome}</span>
+                        <span class="appointment-time"><i class="far fa-clock"></i> ${p.hora} - ${p.tipo}</span>
+                        <span id="badge-${p.id}" class="status-pill status-confirmado">Confirmado</span>
+                    </div>
+                    <button class="btn-action" id="btn-${p.id}" onclick="handleAtendimento(${p.id}, '${p.nome}')">Atender</button>
+                </div>
+            `).join('');
         }
-    };
 
-    // CONFIG GOOGLE
-    window.onload = function () {
-        google.accounts.id.initialize({
-            client_id: "SEU_ID.apps.googleusercontent.com", 
-            callback: (res) => { alert("Login Google bem-sucedido!"); window.location.href = 'telainicial.html'; }
-        });
-        google.accounts.id.renderButton(document.getElementById("googleBtn"), { theme: "outline", size: "large", width: "350" });
-    };
-</script>
+        // Lógica do Dropdown
+        const profileBtn = document.getElementById('userProfileBtn');
+        const dropdown = document.getElementById('userDropdown');
+
+        profileBtn.onclick = (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        };
+
+        document.onclick = () => dropdown.classList.remove('show');
+
+        // Lógica de Atendimento
+        function handleAtendimento(id, nome) {
+            const btn = document.getElementById(`btn-${id}`);
+            const badge = document.getElementById(`badge-${id}`);
+            const item = document.getElementById(`app-${id}`);
+
+            if (!atendimentosAtivos.has(id)) {
+                // Iniciar
+                atendimentosAtivos.add(id);
+                btn.innerText = "Finalizar";
+                btn.classList.add("btn-finish");
+                badge.innerText = "Em Andamento";
+                badge.className = "status-pill status-andamento";
+                item.classList.add("active");
+                updateCount('espera-count', -1);
+
+                Swal.fire({
+                    title: 'Iniciado!',
+                    text: `Atendimento de ${nome} em curso.`,
+                    icon: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                // Finalizar
+                Swal.fire({
+                    title: 'Finalizar?',
+                    text: `Deseja concluir a sessão de ${nome}?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: 'var(--verde-escuro)',
+                    cancelButtonColor: 'var(--perigo)',
+                    confirmButtonText: 'Sim, concluir',
+                    cancelButtonText: 'Voltar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        item.classList.remove("active");
+                        item.classList.add("finished");
+                        btn.style.display = 'none';
+                        badge.innerText = "Concluído";
+                        badge.className = "status-pill";
+                        atendimentosAtivos.delete(id);
+                        updateCount('concluidos-count', 1);
+                        Swal.fire('Concluído!', '', 'success');
+                    }
+                });
+            }
+        }
+
+        function updateCount(id, val) {
+            const el = document.getElementById(id);
+            el.innerText = (parseInt(el.innerText) + val).toString().padStart(2, '0');
+        }
+
+        renderAgenda();
+    </script>
 </body>
 </html>
