@@ -33,11 +33,12 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* --- PERFIL HEADER --- */
         .profile-header {
             background: var(--verde-primario);
-            height: 200px; width: 100%;
-            position: relative; margin-bottom: 80px;
+            height: 140px;
+            width: 100%;
+            position: relative; 
+            margin-bottom: 50px;
         }
 
         .profile-container {
@@ -46,21 +47,23 @@
         }
 
         .profile-avatar {
-            width: 150px; height: 150px; background: white;
-            border-radius: 20px; position: absolute;
-            bottom: -75px; left: 20px;
+            width: 100px; height: 100px;
+            background: white;
+            border-radius: 15px;
+            position: absolute;
+            bottom: -30px; left: 20px; 
             box-shadow: var(--shadow); display: flex;
             align-items: center; justify-content: center;
-            border: 5px solid white;
+            border: 4px solid white;
+            z-index: 10;
         }
 
-        .profile-avatar img { width: 80%; }
+        .profile-avatar img { width: 85%; height: 85%; object-fit: contain; }
 
         .profile-main-info {
-            padding-left: 190px; padding-top: 15px; color: white;
+            padding-left: 120px; padding-top: 25px; color: white;
         }
 
-        /* --- CONTEÚDO --- */
         .grid-perfil {
             display: grid; grid-template-columns: 1fr 2fr;
             gap: 30px; margin-top: 20px;
@@ -82,7 +85,6 @@
         .info-item label { font-size: 0.75rem; color: var(--texto-suave); font-weight: bold; text-transform: uppercase; }
         .info-item p { color: var(--texto-escuro); font-weight: 500; font-size: 1rem; }
 
-        /* Estilo para campos de edição */
         .edit-input {
             width: 100%; padding: 8px; border: 1px solid #ddd;
             border-radius: 6px; display: none; margin-top: 5px;
@@ -106,9 +108,22 @@
 
         @media (max-width: 768px) {
             .grid-perfil { grid-template-columns: 1fr; }
-            .profile-avatar { left: 50%; transform: translateX(-50%); }
-            .profile-main-info { padding-left: 0; padding-top: 90px; color: var(--texto-escuro); text-align: center; }
-            .profile-header { background: var(--verde-suave); }
+            
+            .profile-header { height: 100px; }
+            
+            .profile-avatar { 
+                width: 80px; height: 80px;
+                left: 15px; bottom: -25px;
+                transform: none;
+            }
+            
+            .profile-main-info { 
+                padding-left: 100px;
+                padding-top: 15px; 
+                text-align: left;
+            }
+
+            .profile-main-info h1 { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -129,7 +144,7 @@
             <div class="profile-main-info">
                 <h1 id="viewClinicaNome">Nome da Clínica</h1>
                 <input type="text" id="editNome" class="edit-input" style="font-size: 1.5rem; color: #333;">
-                <p><i class="fas fa-check-circle"></i> Unidade Verificada <span class="badge-status">Ativa</span></p>
+                <p><i class="fas fa-check-circle"></i> Verificada <span class="badge-status">Ativa</span></p>
             </div>
         </div>
     </section>
@@ -218,8 +233,6 @@
 
     <script>
         let modoEdicao = false;
-
-        // Mapeamento: { ID do texto, ID do input, chave no localStorage }
         const campos = [
             { txt: 'viewClinicaNome', input: 'editNome', chave: 'nome' },
             { txt: 'viewClinicaTel', input: 'editTel', chave: 'tel' },
@@ -232,9 +245,7 @@
             { txt: 'viewClinicaCep', input: 'editCep', chave: 'cep' }
         ];
 
-        window.onload = () => {
-            carregarDados();
-        };
+        window.onload = () => { carregarDados(); };
 
         function carregarDados() {
             const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
@@ -247,9 +258,7 @@
         function toggleEdicaoPerfil() {
             modoEdicao = !modoEdicao;
             const btn = document.getElementById('btnAcaoPerfil');
-
             if (modoEdicao) {
-                // Entrar no modo de edição
                 campos.forEach(item => {
                     const txtEl = document.getElementById(item.txt);
                     const inputEl = document.getElementById(item.input);
@@ -260,7 +269,6 @@
                 btn.innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
                 btn.style.background = '#27ae60';
             } else {
-                // Salvar dados
                 const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
                 campos.forEach(item => {
                     const txtEl = document.getElementById(item.txt);
@@ -270,7 +278,6 @@
                     txtEl.style.display = 'block';
                     inputEl.style.display = 'none';
                 });
-
                 localStorage.setItem('dadosClinica', JSON.stringify(dados));
                 btn.innerHTML = '<i class="fas fa-edit"></i> Editar Perfil';
                 btn.style.background = 'var(--verde-primario)';
@@ -281,7 +288,6 @@
         function abrirGoogleMaps() {
             const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
             if(!dados.end) return alert("Por favor, preencha o endereço primeiro.");
-            
             const enderecoCompleto = `${dados.end}, ${dados.bairro || ''}, ${dados.cidade || ''} - ${dados.uf || ''}`;
             const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(enderecoCompleto)}`;
             window.open(url, '_blank');
