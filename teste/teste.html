@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fision+ | Base de Clientes</title>
+    <title>Fision+ | Agendamentos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
-            /* Cores Padronizadas */
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --verde-hover: #2d6a4a;
@@ -18,7 +17,6 @@
             --texto: #2c3e50;
             --texto-suave: #7f8c8d;
             --danger: #d63031;
-            --amarelo: #f1c40f;
             --azul: #3498db;
             --shadow: 0 4px 12px rgba(0,0,0,0.1);
             --radius: 15px;
@@ -32,10 +30,10 @@
             background-image: linear-gradient(rgba(248, 249, 250, 0.92), rgba(248, 249, 250, 0.92)), var(--img-fundo);
             background-size: cover; background-attachment: fixed;
             min-height: 100vh;
-            padding-bottom: 30px;
+            padding-bottom: 40px;
         }
 
-        /* --- HEADER PADRÃO --- */
+        /* --- HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -51,117 +49,105 @@
         }
         .user-profile:hover { background: #e0e0e0; }
 
-        /* MENU DROPDOWN COMPLETO */
+        /* MENU DROPDOWN */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
             box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
             overflow: hidden; padding-bottom: 8px; max-height: 80vh; overflow-y: auto;
         }
         .profile-dropdown.show { display: block; }
-
         .dropdown-search {
             padding: 10px 15px; border-bottom: 1px solid #eee; background: #fafafa;
             display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 10;
         }
         .dropdown-search input { width: 100%; border: none; background: transparent; outline: none; font-size: 0.9rem; color: var(--texto); padding: 0;}
         .dropdown-section-title { padding: 12px 15px 5px; font-size: 0.75rem; color: var(--texto-suave); font-weight: 700; text-transform: uppercase; }
-
         .profile-dropdown a { 
             display: flex; align-items: center; gap: 10px; padding: 10px 15px; 
             text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.9rem; transition: 0.2s;
         }
         .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-escuro); }
 
-        /* --- LAYOUT PRINCIPAL (GRID) --- */
-        .main-container {
-            max-width: 1200px; margin: 25px auto; padding: 0 15px;
+        /* --- MAIN LAYOUT --- */
+        main { 
+            max-width: 1200px; margin: 30px auto; padding: 0 15px; 
             display: grid; grid-template-columns: 350px 1fr; gap: 25px;
-            align-items: start;
         }
 
-        @media (max-width: 900px) {
-            .main-container { grid-template-columns: 1fr; }
+        @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+
+        .header-full { grid-column: 1 / -1; margin-bottom: 10px; }
+        .header-full h1 { color: var(--verde-escuro); font-size: 1.8rem; }
+        .header-full p { color: var(--texto-suave); }
+
+        /* CARDS */
+        .card { background: var(--branco); border-radius: var(--radius); box-shadow: var(--shadow); padding: 25px; height: fit-content; }
+        .card-title { 
+            font-size: 1.1rem; color: var(--verde-escuro); font-weight: bold; margin-bottom: 20px; 
+            display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;
         }
 
-        /* --- FORMULÁRIO (ESQUERDA) - CORRIGIDO (SEM STICKY) --- */
-        .card-form {
-            background: var(--branco); padding: 25px; border-radius: var(--radius);
-            box-shadow: var(--shadow); 
-            /* position: sticky; removido para rolar normalmente */
-            /* top: 85px; removido */
-        }
-
-        .form-header { margin-bottom: 20px; text-align: center; color: var(--verde-escuro); }
-        .form-header i { font-size: 2rem; margin-bottom: 10px; display: block; }
-
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: var(--texto-suave); margin-bottom: 5px; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
-            font-size: 0.95rem; outline: none; transition: 0.3s;
-        }
-        .form-group input:focus { border-color: var(--verde-escuro); box-shadow: 0 0 0 3px var(--verde-suave); }
-
-        .btn-submit {
-            width: 100%; padding: 14px; background: var(--verde-escuro); color: white;
-            border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer;
-            transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
-        }
-        .btn-submit:hover { background: var(--verde-hover); transform: translateY(-2px); }
-
-        .btn-cancel {
-            width: 100%; padding: 10px; background: #eee; color: #666;
-            border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer;
-            display: none; /* Só aparece ao editar */
-        }
-
-        /* --- LISTA DE CLIENTES (DIREITA) --- */
-        .search-bar {
-            background: var(--branco); padding: 15px; border-radius: var(--radius);
-            box-shadow: var(--shadow); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
-        }
-        .search-bar input { border: none; outline: none; flex: 1; font-size: 1rem; color: var(--texto); }
-        .search-bar i { color: var(--texto-suave); }
-
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
-
-        .client-card {
-            background: var(--branco); border-radius: var(--radius); padding: 20px;
-            box-shadow: var(--shadow); border-left: 5px solid transparent;
-            transition: 0.3s; position: relative; overflow: hidden;
-        }
-        .client-card:hover { transform: translateY(-5px); }
+        /* FORMULÁRIO */
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 0.85rem; font-weight: 700; color: var(--texto-suave); }
         
-        /* Status Colors */
-        .status-ativo { border-left-color: var(--verde-escuro); }
-        .status-inativo { border-left-color: var(--danger); }
-        .status-pendente { border-left-color: var(--amarelo); }
-
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .card-top h4 { font-size: 1.1rem; color: var(--texto); margin: 0; }
-        
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
-        .badge.ativo { background: var(--verde-suave); color: var(--verde-escuro); }
-        .badge.inativo { background: #ffeaea; color: var(--danger); }
-        .badge.pendente { background: #fff8e1; color: #f39c12; }
-
-        .card-info { font-size: 0.9rem; color: #555; display: flex; flex-direction: column; gap: 6px; }
-        .card-info i { width: 20px; color: var(--verde-escuro); text-align: center; }
-
-        .card-actions {
-            margin-top: 15px; padding-top: 15px; border-top: 1px solid #f0f0f0;
-            display: flex; justify-content: flex-end; gap: 10px;
+        input, select { 
+            padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; 
+            font-size: 0.95rem; width: 100%; transition: 0.3s;
         }
-        .btn-mini {
-            width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
-            transition: 0.2s;
+        input:focus, select:focus { border-color: var(--verde-escuro); box-shadow: 0 0 0 3px var(--verde-suave); }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .btn-schedule { 
+            background: var(--verde-escuro); color: white; border: none; padding: 14px; 
+            border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; transition: 0.3s; 
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-schedule:hover { background: var(--verde-hover); transform: translateY(-2px); }
+
+        .btn-cancel { 
+            background: white; color: var(--texto-suave); border: 1px solid #ddd; padding: 10px; 
+            border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; 
+            display: none; transition: 0.3s;
+        }
+        .btn-cancel:hover { background: #eee; }
+
+        /* LISTA DE AGENDAMENTOS */
+        .appointment-item {
+            background: #fff; padding: 15px 20px; border-radius: 12px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid #eee; border-left: 5px solid var(--verde-escuro);
+            transition: 0.3s;
+        }
+        .appointment-item:hover { transform: translateX(5px); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        .app-date-box {
+            background: var(--verde-suave); color: var(--verde-escuro);
+            padding: 8px 15px; border-radius: 8px; text-align: center; margin-right: 15px;
+            min-width: 80px;
+        }
+        .app-date-box strong { display: block; font-size: 1.2rem; line-height: 1; }
+        .app-date-box span { font-size: 0.75rem; text-transform: uppercase; font-weight: bold; }
+
+        .app-info { flex-grow: 1; }
+        .app-info h4 { color: var(--texto); font-size: 1.05rem; margin-bottom: 4px; }
+        .app-info p { font-size: 0.85rem; color: var(--texto-suave); display: flex; align-items: center; gap: 6px; }
+        .badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; background: #eee; color: #555; }
+
+        .app-actions { display: flex; gap: 8px; }
+        .btn-icon { 
+            width: 35px; height: 35px; border-radius: 50%; border: none; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; transition: 0.2s;
         }
         .btn-edit { background: #e3f2fd; color: var(--azul); }
         .btn-edit:hover { background: var(--azul); color: white; }
         
-        .btn-del { background: #ffeaea; color: var(--danger); }
-        .btn-del:hover { background: var(--danger); color: white; }
+        .btn-delete { background: #ffebee; color: var(--danger); }
+        .btn-delete:hover { background: var(--danger); color: white; }
+
+        .empty-state { text-align: center; padding: 50px 20px; color: #ccc; }
+        .empty-state i { font-size: 3rem; margin-bottom: 15px; color: #e0e0e0; }
 
     </style>
 </head>
@@ -170,173 +156,249 @@
     <header>
         <a href="telainicial.html" class="nav-brand">
             <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
-            <h2 style="font-size: 1.2rem; margin:0;">Fision+ Clientes</h2>
+            <h2 style="font-size: 1.2rem; margin:0;">Fision+</h2>
         </a>
-
         <div class="user-profile" onclick="toggleMenu(event)">
-            <span>Olá, <strong id="user-name">Fision</strong></span>
+            <span>Agenda</span>
             <div style="width:32px; height:32px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
-                <i class="fas fa-users"></i>
+                <i class="fas fa-calendar-alt"></i>
             </div>
-            
             <div class="profile-dropdown" id="menuDrop">
                 <div class="dropdown-search" onclick="event.stopPropagation()">
                     <i class="fas fa-search"></i>
                     <input type="text" id="menuSearch" onkeyup="filterMenu()" placeholder="Pesquisar...">
                 </div>
-
                 <div class="dropdown-section-title">Navegação</div>
                 <a href="telainicial.html" class="search-item"><i class="fas fa-home"></i> Início</a>
                 <a href="Perfilcliica.html" class="search-item"><i class="fas fa-user-circle"></i> Perfil</a>
                 <a href="dashboard.html" class="search-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
                 <a href="agendamentos.html" class="search-item"><i class="fas fa-calendar-check"></i> Agendamentos</a>
-                <a href="clientes.html" class="search-item"><i class="fas fa-address-book"></i> Cadastro de Clientes</a>
-                <a href="proficionais.html" class="search-item"><i class="fas fa-user-md"></i> Cadastro Profissionais</a>
-                <a href="check-in.html" class="search-item"><i class="fas fa-qrcode"></i> Realizar Check-in</a>
-                <a href="mensalidade.html" class="search-item"><i class="fas fa-money-bill-wave"></i> Mensalidades</a>
-                <a href="avaliaçãoeprontuários.html" class="search-item"><i class="fas fa-file-medical"></i> Prontuários</a>
-                <a href="relatorios.html" class="search-item"><i class="fas fa-chart-line"></i> Relatórios</a> 
+                <a href="clientes.html" class="search-item"><i class="fas fa-address-book"></i> Clientes</a>
                 <a href="ajustesistema.html" class="search-item"><i class="fas fa-cog"></i> Configurações</a>
-                
                 <div style="border-top:1px solid #eee; margin-top:5px;"></div>
                 <a href="#" onclick="logout(event)" class="search-item" style="color:var(--danger)"><i class="fas fa-sign-out-alt"></i> Sair</a>
             </div>
         </div>
     </header>
 
-    <div class="main-container">
-        
-        <aside class="card-form">
-            <div class="form-header">
-                <i class="fas fa-user-plus"></i>
-                <h3>Novo Paciente</h3>
-            </div>
-            <form id="formCliente">
-                <input type="hidden" id="clientId">
+    <main>
+        <div class="header-full">
+            <h1>Agenda de Atendimentos</h1>
+            <p>Organize os horários e procedimentos da clínica</p>
+        </div>
+
+        <section class="card">
+            <div class="card-title" id="formTitle"><i class="fas fa-plus-circle"></i> Novo Horário</div>
+            <form id="formAgenda">
+                <input type="hidden" id="editId">
                 
                 <div class="form-group">
-                    <label>Nome Completo</label>
-                    <input type="text" id="clientNome" required placeholder="Ex: Maria Silva">
+                    <label>Paciente</label>
+                    <input type="text" id="paciente" placeholder="Nome completo" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" id="cpf" placeholder="000.000.000-00" oninput="mascaraCPF(this)" maxlength="14">
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp</label>
+                        <input type="text" id="whatsapp" placeholder="(00) 00000-0000" oninput="mascaraTel(this)" maxlength="15">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label>CPF</label>
-                    <input type="text" id="clientCpf" oninput="mascaraCPF(this)" maxlength="14" placeholder="000.000.000-00">
+                    <label>E-mail (Opcional)</label>
+                    <input type="email" id="email" placeholder="cliente@email.com">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" id="data" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Horário</label>
+                        <input type="time" id="hora" required>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label>WhatsApp / Contato</label>
-                    <input type="tel" id="clientContato" oninput="mascaraTel(this)" maxlength="15" required placeholder="(00) 00000-0000">
-                </div>
-
-                <div class="form-group">
-                    <label>Última Visita (Data)</label>
-                    <input type="date" id="clientVisita">
-                </div>
-
-                <div class="form-group">
-                    <label>Status</label>
-                    <select id="clientStatus">
-                        <option value="ativo">Ativo</option>
-                        <option value="pendente">Pendente / Avaliação</option>
-                        <option value="inativo">Inativo</option>
+                    <label>Procedimento</label>
+                    <select id="procedimento">
+                        <option>Fisioterapia Traumato-Ortopédica</option>
+                        <option>Fisioterapia Esportiva</option>
+                        <option>RPG / Osteopatia</option>
+                        <option>Pilates Clínico</option>
+                        <option>Avaliação Inicial</option>
+                        <option>Massoterapia</option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn-submit" id="btnSalvar">
-                    <i class="fas fa-save"></i> Salvar Cliente
+                <button type="submit" class="btn-schedule" id="btnSubmit">
+                    <i class="fas fa-check"></i> Agendar
                 </button>
-                <button type="button" class="btn-cancel" id="btnCancelar" onclick="resetForm()">
+                <button type="button" class="btn-cancel" id="btnCancel" onclick="cancelarEdicao()">
                     Cancelar Edição
                 </button>
             </form>
-        </aside>
+        </section>
 
-        <main>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" id="filtroBusca" placeholder="Pesquisar por nome ou CPF..." onkeyup="renderizarClientes()">
-            </div>
-
-            <div id="listaClientes" class="grid-cards">
+        <section class="card">
+            <div class="card-title"><i class="fas fa-calendar-day"></i> Próximos Atendimentos</div>
+            <div id="listaAgenda">
                 </div>
-        </main>
-
-    </div>
+        </section>
+    </main>
 
     <script>
-        // --- 1. MENU DROPDOWN ---
+        // --- MÁSCARAS DE INPUT ---
+        function mascaraCPF(i){
+            var v = i.value;
+            if(isNaN(v[v.length-1])){ i.value = v.substring(0, v.length-1); return; }
+            i.setAttribute("maxlength", "14");
+            if (v.length == 3 || v.length == 7) i.value += ".";
+            if (v.length == 11) i.value += "-";
+        }
+        function mascaraTel(i){
+            var v = i.value;
+            v=v.replace(/\D/g,"");
+            v=v.replace(/^(\d{2})(\d)/g,"($1) $2");
+            v=v.replace(/(\d)(\d{4})$/,"$1-$2");
+            i.value = v;
+        }
+
+        // --- LÓGICA DO MENU ---
         function toggleMenu(e) { 
-            e.stopPropagation(); 
-            document.getElementById("menuDrop").classList.toggle("show");
-            setTimeout(() => { document.getElementById("menuSearch")?.focus(); }, 100);
+            e.stopPropagation(); document.getElementById("menuDrop").classList.toggle("show");
+            setTimeout(() => document.getElementById("menuSearch")?.focus(), 100);
         }
         window.onclick = (e) => {
             if (!e.target.closest('.user-profile')) document.getElementById("menuDrop").classList.remove("show");
         }
         function filterMenu() {
             let val = document.getElementById("menuSearch").value.toUpperCase();
-            let items = document.querySelectorAll(".search-item");
-            items.forEach(item => {
+            document.querySelectorAll(".search-item").forEach(item => {
                 item.style.display = item.innerText.toUpperCase().includes(val) ? "flex" : "none";
             });
         }
         function logout(e) {
             e.preventDefault();
             Swal.fire({
-                title: 'Sair?', text: "Deseja encerrar a sessão?", icon: 'warning',
-                showCancelButton: true, confirmButtonColor: '#3e8e63', cancelButtonColor: '#d63031',
-                confirmButtonText: 'Sim, sair'
+                title: 'Sair?', icon: 'warning', showCancelButton: true,
+                confirmButtonColor: '#3e8e63', confirmButtonText: 'Sim'
             }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
         }
 
-        // --- 2. LÓGICA DE CLIENTES ---
-        
-        // Dados Iniciais ou LocalStorage
-        let clientes = JSON.parse(localStorage.getItem('clientesFision')) || [
-            { id: 1, nome: "Ana Beatriz Souza", cpf: "123.456.789-00", contato: "(11) 98888-7777", visita: "2024-05-20", status: "ativo" },
-            { id: 2, nome: "Carlos Eduardo", cpf: "987.654.321-11", contato: "(11) 97777-6666", visita: "2024-02-15", status: "inativo" }
-        ];
+        // --- LÓGICA DA AGENDA ---
+        let agenda = JSON.parse(localStorage.getItem('agendaFision')) || [];
+        const form = document.getElementById('formAgenda');
 
-        function salvarDados() {
-            localStorage.setItem('clientesFision', JSON.stringify(clientes));
-        }
+        // Configurar data mínima como hoje
+        document.getElementById('data').valueAsDate = new Date();
 
-        function renderizarClientes() {
-            const grid = document.getElementById('listaClientes');
-            const termo = document.getElementById('filtroBusca').value.toLowerCase();
-            grid.innerHTML = '';
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editId').value;
+            
+            const dados = {
+                paciente: document.getElementById('paciente').value,
+                cpf: document.getElementById('cpf').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                email: document.getElementById('email').value,
+                data: document.getElementById('data').value,
+                hora: document.getElementById('hora').value,
+                procedimento: document.getElementById('procedimento').value
+            };
 
-            const filtrados = clientes.filter(c => 
-                c.nome.toLowerCase().includes(termo) || 
-                (c.cpf && c.cpf.includes(termo))
-            );
-
-            if (filtrados.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#999; padding:20px;">Nenhum cliente encontrado.</div>';
-                return;
+            if (id) {
+                agenda = agenda.map(item => item.id == id ? { ...dados, id: Number(id) } : item);
+                Swal.fire({ icon: 'success', title: 'Atualizado!', timer: 1500, showConfirmButton: false });
+            } else {
+                agenda.push({ ...dados, id: Date.now() });
+                Swal.fire({ icon: 'success', title: 'Agendado!', timer: 1500, showConfirmButton: false });
             }
 
-            filtrados.forEach(c => {
-                const dataFormatada = c.visita ? c.visita.split('-').reverse().join('/') : '--/--/----';
-                
-                grid.innerHTML += `
-                    <div class="client-card status-${c.status}">
-                        <div class="card-top">
-                            <h4>${c.nome}</h4>
-                            <span class="badge ${c.status}">${c.status}</span>
+            // Ordenar por data e hora
+            agenda.sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+            
+            salvar();
+            cancelarEdicao();
+        });
+
+        function prepararEdicao(id) {
+            const item = agenda.find(a => a.id === id);
+            if (!item) return;
+
+            document.getElementById('editId').value = item.id;
+            document.getElementById('paciente').value = item.paciente;
+            document.getElementById('cpf').value = item.cpf || '';
+            document.getElementById('whatsapp').value = item.whatsapp || '';
+            document.getElementById('email').value = item.email || '';
+            document.getElementById('data').value = item.data;
+            document.getElementById('hora').value = item.hora;
+            document.getElementById('procedimento').value = item.procedimento;
+
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Editando Agendamento';
+            document.getElementById('btnSubmit').innerHTML = '<i class="fas fa-sync"></i> Atualizar';
+            document.getElementById('btnSubmit').style.background = '#3498db';
+            document.getElementById('btnCancel').style.display = 'block';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelarEdicao() {
+            form.reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Novo Horário';
+            document.getElementById('btnSubmit').innerHTML = '<i class="fas fa-check"></i> Agendar';
+            document.getElementById('btnSubmit').style.background = 'var(--verde-escuro)';
+            document.getElementById('btnCancel').style.display = 'none';
+            document.getElementById('data').valueAsDate = new Date();
+        }
+
+        function salvar() {
+            localStorage.setItem('agendaFision', JSON.stringify(agenda));
+            renderAgenda();
+        }
+
+        function renderAgenda() {
+            const container = document.getElementById('listaAgenda');
+            if (agenda.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <p>Nenhum atendimento agendado.</p>
+                    </div>`;
+                return;
+            }
+            container.innerHTML = '';
+            agenda.forEach(item => {
+                // Formatar Data
+                const dataObj = new Date(item.data + 'T00:00:00');
+                const dia = dataObj.getDate().toString().padStart(2, '0');
+                const mes = dataObj.toLocaleString('pt-BR', { month: 'short' }).toUpperCase();
+
+                container.innerHTML += `
+                    <div class="appointment-item">
+                        <div style="display:flex; align-items:center;">
+                            <div class="app-date-box">
+                                <strong>${dia}</strong>
+                                <span>${mes}</span>
+                            </div>
+                            <div class="app-info">
+                                <h4>${item.paciente} <span class="badge">${item.hora}</span></h4>
+                                <p style="color:var(--verde-escuro); font-weight:600; margin-bottom:2px;">${item.procedimento}</p>
+                                <p><i class="fab fa-whatsapp"></i> ${item.whatsapp || '---'}</p>
+                            </div>
                         </div>
-                        <div class="card-info">
-                            <span><i class="fas fa-id-card"></i> ${c.cpf || 'Não inf.'}</span>
-                            <span><i class="fab fa-whatsapp"></i> ${c.contato}</span>
-                            <span><i class="fas fa-calendar-alt"></i> Última: ${dataFormatada}</span>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-mini btn-edit" onclick="editarCliente(${c.id})" title="Editar">
+                        <div class="app-actions">
+                            <button class="btn-icon btn-edit" onclick="prepararEdicao(${item.id})" title="Editar">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
-                            <button class="btn-mini btn-del" onclick="removerCliente(${c.id})" title="Excluir">
-                                <i class="fas fa-trash-alt"></i>
+                            <button class="btn-icon btn-delete" onclick="remover(${item.id})" title="Cancelar">
+                                <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
@@ -344,97 +406,25 @@
             });
         }
 
-        // --- 3. CRUD (Adicionar / Editar / Remover) ---
-
-        document.getElementById('formCliente').onsubmit = function(e) {
-            e.preventDefault();
-            
-            const id = document.getElementById('clientId').value;
-            const dados = {
-                id: id ? Number(id) : Date.now(),
-                nome: document.getElementById('clientNome').value,
-                cpf: document.getElementById('clientCpf').value,
-                contato: document.getElementById('clientContato').value,
-                visita: document.getElementById('clientVisita').value,
-                status: document.getElementById('clientStatus').value
-            };
-
-            if (id) {
-                // Editar
-                const index = clientes.findIndex(c => c.id == id);
-                clientes[index] = dados;
-                Swal.fire('Atualizado!', 'Dados do cliente atualizados.', 'success');
-            } else {
-                // Novo
-                clientes.push(dados);
-                Swal.fire('Sucesso!', 'Novo cliente cadastrado.', 'success');
-            }
-
-            salvarDados();
-            resetForm();
-            renderizarClientes();
-        };
-
-        function editarCliente(id) {
-            const c = clientes.find(item => item.id === id);
-            if(c) {
-                document.getElementById('clientId').value = c.id;
-                document.getElementById('clientNome').value = c.nome;
-                document.getElementById('clientCpf').value = c.cpf || '';
-                document.getElementById('clientContato').value = c.contato;
-                document.getElementById('clientVisita').value = c.visita;
-                document.getElementById('clientStatus').value = c.status;
-
-                document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-sync"></i> Atualizar';
-                document.getElementById('btnCancelar').style.display = 'block';
-                document.querySelector('.card-form').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function removerCliente(id) {
+        function remover(id) {
             Swal.fire({
-                title: 'Tem certeza?', text: "Não será possível reverter isso!", icon: 'warning',
-                showCancelButton: true, confirmButtonColor: '#d63031', cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sim, excluir'
+                title: 'Cancelar agendamento?',
+                text: "O horário ficará vago novamente.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d63031',
+                confirmButtonText: 'Sim, cancelar',
+                cancelButtonText: 'Voltar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    clientes = clientes.filter(c => c.id !== id);
-                    salvarDados();
-                    renderizarClientes();
-                    Swal.fire('Excluído!', 'O registro foi apagado.', 'success');
+                    agenda = agenda.filter(i => i.id !== id);
+                    salvar();
+                    Swal.fire('Cancelado!', 'Agendamento removido.', 'success');
                 }
             });
         }
 
-        function resetForm() {
-            document.getElementById('formCliente').reset();
-            document.getElementById('clientId').value = '';
-            document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-save"></i> Salvar Cliente';
-            document.getElementById('btnCancelar').style.display = 'none';
-        }
-
-        // --- 4. MÁSCARAS DE INPUT ---
-        function mascaraCPF(i){
-            let v = i.value.replace(/\D/g,"");
-            v=v.replace(/(\d{3})(\d)/,"$1.$2");
-            v=v.replace(/(\d{3})(\d)/,"$1.$2");
-            v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
-            i.value = v;
-        }
-        function mascaraTel(i){
-            let v = i.value.replace(/\D/g,"");
-            v=v.replace(/^(\d{2})(\d)/g,"($1) $2");
-            v=v.replace(/(\d)(\d{4})$/,"$1-$2");
-            i.value = v;
-        }
-
-        // Inicializar
-        window.onload = function() {
-            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
-            if(user) document.getElementById('user-name').innerText = user.nome.split(' ')[0];
-            renderizarClientes();
-        };
-
+        renderAgenda();
     </script>
 </body>
 </html>

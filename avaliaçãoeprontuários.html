@@ -3,90 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fision+ | Gestão de Prontuários</title>
+    <title>Fision+ | Prontuários</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
-            --verde-primario: #3e8e63;
-            --verde-secundario: #2d6a4a;
+            /* Cores Padronizadas */
+            --verde-escuro: #3e8e63;
+            --verde-claro: #c2dfcc;
+            --verde-hover: #2d6a4a;
             --verde-suave: #e8f5e9;
             --bg-corpo: #f8f9fa;
             --branco: #ffffff;
-            --texto-escuro: #2c3e50;
+            --texto: #2c3e50;
             --texto-suave: #7f8c8d;
+            --danger: #d63031;
+            --amarelo: #f1c40f;
+            --azul: #3498db;
+            --roxo: #9b59b6;
             --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --radius: 15px;
             --img-fundo: url("imagem.pjp/Logo- prog WEB.png");
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; max-width: 100%; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
 
         body {
             background-color: var(--bg-corpo);
             background-image: linear-gradient(rgba(248, 249, 250, 0.92), rgba(248, 249, 250, 0.92)), var(--img-fundo);
             background-size: cover; background-attachment: fixed;
-            min-height: 100vh; overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 30px;
         }
 
+        /* --- HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
             box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
         }
+
         .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-        .logo-img { width: 38px; }
+        .logo-img { width: 35px; }
 
         .user-profile { 
             position: relative; cursor: pointer; display: flex; align-items: center; gap: 10px; 
-            padding: 5px 15px; border-radius: 30px; background: #eee; 
+            padding: 5px 12px; border-radius: 30px; background: #eee; transition: 0.3s;
         }
-        
+        .user-profile:hover { background: #e0e0e0; }
+
+        /* MENU DROPDOWN */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
-            box-shadow: var(--shadow); border-radius: 12px; min-width: 180px; z-index: 2000;
+            box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
+            overflow: hidden; padding-bottom: 8px; max-height: 80vh; overflow-y: auto;
         }
         .profile-dropdown.show { display: block; }
-        .profile-dropdown a { display: block; padding: 12px 15px; text-decoration: none; color: var(--texto-escuro); font-weight: 600; }
-        .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-primario); }
 
-        main { max-width: 1200px; margin: 20px auto; padding: 0 15px; display: grid; gap: 25px; }
+        .dropdown-search {
+            padding: 10px 15px; border-bottom: 1px solid #eee; background: #fafafa;
+            display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 10;
+        }
+        .dropdown-search input { width: 100%; border: none; background: transparent; outline: none; font-size: 0.9rem; color: var(--texto); padding: 0;}
+        .dropdown-section-title { padding: 12px 15px 5px; font-size: 0.75rem; color: var(--texto-suave); font-weight: 700; text-transform: uppercase; }
 
-        .header-page h1 { color: var(--verde-primario); font-size: 1.8rem; }
-        .header-page p { color: var(--texto-suave); margin-top: 5px; }
+        .profile-dropdown a { 
+            display: flex; align-items: center; gap: 10px; padding: 10px 15px; 
+            text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.9rem; transition: 0.2s;
+        }
+        .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-escuro); }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-        .stat-card { background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 15px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px; }
-        .stat-icon { width: 48px; height: 48px; background: var(--verde-suave); color: var(--verde-primario); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-        .stat-card h4 { font-size: 1.4rem; color: var(--texto-escuro); }
-        .stat-card p { font-size: 0.85rem; color: var(--texto-suave); }
+        /* --- LAYOUT PRINCIPAL --- */
+        .main-container {
+            max-width: 1200px; margin: 25px auto; padding: 0 15px;
+            display: grid; grid-template-columns: 350px 1fr; gap: 25px;
+            align-items: start;
+        }
 
-        .content-card { background: rgba(255, 255, 255, 0.98); border-radius: 15px; box-shadow: var(--shadow); padding: 25px; }
-        .card-header { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .card-header h3 { color: var(--verde-primario); font-size: 1.1rem; }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
 
-        .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
-        .full-row { grid-column: 1 / -1; }
-        .input-field { display: flex; flex-direction: column; gap: 6px; }
-        .input-field label { font-weight: 600; font-size: 0.85rem; color: #444; }
+        /* --- FORMULÁRIO (SIDEBAR) --- */
+        .card-form {
+            background: var(--branco); padding: 25px; border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
 
-        input, select, textarea { padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 0.95rem; outline: none; }
-        input:focus { border-color: var(--verde-primario); }
+        .form-header { margin-bottom: 20px; text-align: center; color: var(--verde-escuro); }
+        .form-header i { font-size: 2rem; margin-bottom: 10px; display: block; }
 
-        .btn-primary { background: var(--verde-primario); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-primary:hover { background: var(--verde-secundario); transform: translateY(-2px); }
-        .btn-cancel { background: #888; color: white; border: none; padding: 14px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; display: none; margin-right: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: var(--texto-suave); margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
+            font-size: 0.95rem; outline: none; transition: 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--verde-escuro); box-shadow: 0 0 0 3px var(--verde-suave); }
 
-        .table-wrap { overflow-x: auto; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; min-width: 700px; }
-        th { text-align: left; padding: 15px; color: var(--texto-suave); font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid #eee; }
-        td { padding: 15px; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; }
+        .btn-submit {
+            width: 100%; padding: 14px; background: var(--verde-escuro); color: white;
+            border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer;
+            transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-submit:hover { background: var(--verde-hover); transform: translateY(-2px); }
 
-        .btn-action { border: none; background: none; cursor: pointer; font-size: 1.1rem; margin-right: 8px; transition: 0.2s; }
-        .btn-edit { color: #2980b9; }
-        .btn-view { color: var(--verde-primario); }
-        .btn-delete { color: #d63031; }
-        .btn-action:hover { opacity: 0.7; }
+        .btn-cancel {
+            width: 100%; padding: 10px; background: #eee; color: #666;
+            border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer;
+            display: none; 
+        }
 
-        @media (max-width: 600px) { .btn-primary, .btn-cancel { width: 100%; margin-top: 10px; } }
+        /* --- ÁREA DE CONTEÚDO (DIREITA) --- */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;
+        }
+        .mini-card {
+            background: var(--branco); padding: 15px; border-radius: var(--radius);
+            box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px;
+        }
+        .mini-icon {
+            width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .search-bar {
+            background: var(--branco); padding: 15px; border-radius: var(--radius);
+            box-shadow: var(--shadow); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+        }
+        .search-bar input { border: none; outline: none; flex: 1; font-size: 1rem; color: var(--texto); }
+
+        /* --- CARDS DE PRONTUÁRIOS --- */
+        .grid-cards { display: grid; grid-template-columns: 1fr; gap: 15px; }
+
+        .record-card {
+            background: var(--branco); border-radius: var(--radius); padding: 20px;
+            box-shadow: var(--shadow); border-left: 5px solid transparent;
+            transition: 0.3s; position: relative;
+            display: grid; grid-template-columns: 1fr auto; gap: 10px;
+        }
+        .record-card:hover { transform: translateY(-3px); }
+
+        /* Bordas Coloridas por Tipo */
+        .border-avaliacao { border-left-color: var(--roxo); }
+        .border-sessao { border-left-color: var(--azul); }
+        .border-evolucao { border-left-color: var(--verde-escuro); }
+        .border-alta { border-left-color: var(--amarelo); }
+
+        .card-content h4 { color: var(--texto); margin-bottom: 5px; font-size: 1.1rem; }
+        .card-content p { color: var(--texto-suave); font-size: 0.9rem; margin-bottom: 3px; display: flex; align-items: center; gap: 8px; }
+        
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; display: inline-block; margin-top: 5px; }
+        .bg-avaliacao { background: #f3e5f5; color: var(--roxo); }
+        .bg-sessao { background: #e3f2fd; color: var(--azul); }
+        .bg-evolucao { background: var(--verde-suave); color: var(--verde-escuro); }
+        .bg-alta { background: #fff8e1; color: #f39c12; }
+
+        .card-actions { display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+        
+        .btn-mini {
+            width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .btn-view { background: #e0f2f1; color: var(--verde-escuro); }
+        .btn-edit { background: #e3f2fd; color: var(--azul); }
+        .btn-del { background: #ffeaea; color: var(--danger); }
+        .btn-mini:hover { transform: scale(1.1); filter: brightness(0.95); }
+
     </style>
 </head>
 <body>
@@ -94,112 +178,228 @@
     <header>
         <a href="telainicial.html" class="nav-brand">
             <img src="imagem.pjp/Logo- prog WEB.png" class="logo-img" alt="Logo">
-            <h2 style="font-size: 1.2rem; margin:0;">Fision+</h2>
+            <h2 style="font-size: 1.2rem; margin:0;">Fision+ Prontuários</h2>
         </a>
+
         <div class="user-profile" onclick="toggleMenu(event)">
-            <span>Prontuários</span>
-            <div style="width:35px; height:35px; background:var(--verde-primario); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
-                <i class="fas fa-file-medical"></i>
+            <span>Olá, <strong id="user-name">Fision</strong></span>
+            <div style="width:32px; height:32px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
+                <i class="fas fa-file-medical-alt"></i>
             </div>
+            
             <div class="profile-dropdown" id="menuDrop">
-                <a href="telainicial.html"><i class="fas fa-home"></i> Início</a>
+                <div class="dropdown-search" onclick="event.stopPropagation()">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="menuSearch" onkeyup="filterMenu()" placeholder="Pesquisar...">
+                </div>
+
+                <div class="dropdown-section-title">Navegação</div>
+                <a href="telainicial.html" class="search-item"><i class="fas fa-home"></i> Início</a>
+                <a href="Perfilcliica.html" class="search-item"><i class="fas fa-user-circle"></i> Perfil</a>
+                <a href="dashboard.html" class="search-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                <a href="agendamentos.html" class="search-item"><i class="fas fa-calendar-check"></i> Agendamentos</a>
+                <a href="clientes.html" class="search-item"><i class="fas fa-address-book"></i> Cadastro de Clientes</a>
+                <a href="proficionais.html" class="search-item"><i class="fas fa-user-md"></i> Cadastro Profissionais</a>
+                <a href="check-in.html" class="search-item"><i class="fas fa-qrcode"></i> Realizar Check-in</a>
+                <a href="mensalidade.html" class="search-item"><i class="fas fa-money-bill-wave"></i> Mensalidades</a>
+                <a href="avaliaçãoeprontuários.html" class="search-item"><i class="fas fa-file-medical"></i> Prontuários</a>
+                <a href="relatorios.html" class="search-item"><i class="fas fa-chart-line"></i> Relatórios</a> 
+                <a href="ajustesistema.html" class="search-item"><i class="fas fa-cog"></i> Configurações</a>
+                
+                <div style="border-top:1px solid #eee; margin-top:5px;"></div>
+                <a href="#" onclick="logout(event)" class="search-item" style="color:var(--danger)"><i class="fas fa-sign-out-alt"></i> Sair</a>
             </div>
         </div>
     </header>
 
-    <main>
-        <section class="header-page">
-            <h1>Gestão de Prontuários</h1>
-            <p>Adicione ou edite avaliações clínicas</p>
-        </section>
-
-        <section class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-user-injured"></i></div>
-                <div>
-                    <h4 id="count-total">0</h4>
-                    <p>Registros Totais</p>
-                </div>
+    <div class="main-container">
+        
+        <aside class="card-form">
+            <div class="form-header">
+                <i class="fas fa-notes-medical"></i>
+                <h3>Novo Prontuário</h3>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="color: #2980b9; background: #e1f5fe;"><i class="fas fa-clock"></i></div>
-                <div>
-                    <h4>Hoje</h4>
-                    <p>4 Atendimentos Pendentes</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="content-card">
-            <div class="card-header">
-                <h3 id="formTitle"><i class="fas fa-plus-circle"></i> Novo Registro</h3>
-            </div>
-            <form id="formProntuario" class="grid-form">
+            <form id="formProntuario">
                 <input type="hidden" id="editId">
-                <div class="input-field">
-                    <label>Data</label>
+                
+                <div class="form-group">
+                    <label>Data do Atendimento</label>
                     <input type="date" id="data" required>
                 </div>
-                <div class="input-field">
-                    <label>Paciente</label>
-                    <input type="text" id="paciente" placeholder="Nome completo" required>
+
+                <div class="form-group">
+                    <label>Nome do Paciente</label>
+                    <input type="text" id="paciente" placeholder="Ex: João Souza" required>
                 </div>
-                <div class="input-field">
-                    <label>Tipo</label>
+
+                <div class="form-group">
+                    <label>Tipo de Registro</label>
                     <select id="tipo">
-                        <option>Avaliação Inicial</option>
-                        <option>Sessão Fisioterapia</option>
-                        <option>Evolução</option>
-                        <option>Alta Clínica</option>
+                        <option value="avaliacao">Avaliação Inicial</option>
+                        <option value="sessao">Sessão Fisioterapia</option>
+                        <option value="evolucao">Evolução Clínica</option>
+                        <option value="alta">Alta / Encerramento</option>
                     </select>
                 </div>
-                <div class="input-field">
-                    <label>Profissional</label>
-                    <input type="text" id="profissional" placeholder="Dr(a). Responsável">
-                </div>
-                <div class="input-field full-row">
-                    <label>Resumo Clínico / Queixa</label>
-                    <textarea id="resumo" rows="3" placeholder="Descreva os achados clínicos..."></textarea>
-                </div>
-                <div class="full-row" style="text-align: right;">
-                    <button type="button" class="btn-cancel" id="btnCancel" onclick="resetForm()">Cancelar</button>
-                    <button type="submit" class="btn-primary" id="btnSubmit">Salvar Informações</button>
-                </div>
-            </form>
-        </section>
 
-        <section class="content-card">
-            <div class="card-header">
-                <h3><i class="fas fa-list"></i> Prontuários Recentes</h3>
+                <div class="form-group">
+                    <label>Profissional Responsável</label>
+                    <input type="text" id="profissional" placeholder="Ex: Dr. Ricardo">
+                </div>
+
+                <div class="form-group">
+                    <label>Resumo Clínico / Queixa</label>
+                    <textarea id="resumo" rows="4" placeholder="Descreva os procedimentos, queixas e evoluções..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit" id="btnSalvar">
+                    <i class="fas fa-save"></i> Salvar Registro
+                </button>
+                <button type="button" class="btn-cancel" id="btnCancelar" onclick="resetForm()">
+                    Cancelar Edição
+                </button>
+            </form>
+        </aside>
+
+        <main>
+            <div class="stats-row">
+                <div class="mini-card">
+                    <div class="mini-icon" style="background:#e8f5e9; color:var(--verde-escuro)"><i class="fas fa-folder-open"></i></div>
+                    <div>
+                        <h3 id="count-total" style="font-size:1.5rem; margin:0">0</h3>
+                        <small style="color:#777">Total Registros</small>
+                    </div>
+                </div>
+                <div class="mini-card">
+                    <div class="mini-icon" style="background:#e3f2fd; color:var(--azul)"><i class="fas fa-calendar-day"></i></div>
+                    <div>
+                        <h3 style="font-size:1.5rem; margin:0">Hoje</h3>
+                        <small style="color:#777">Novos Prontuários</small>
+                    </div>
+                </div>
             </div>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>DATA</th>
-                            <th>PACIENTE</th>
-                            <th>TIPO</th>
-                            <th>PROFISSIONAL</th>
-                            <th>AÇÕES</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listaRegistros"></tbody>
-                </table>
+
+            <div class="search-bar">
+                <i class="fas fa-search" style="color:#999"></i>
+                <input type="text" id="filtroBusca" placeholder="Buscar por paciente, tipo ou profissional..." onkeyup="renderizarProntuarios()">
             </div>
-        </section>
-    </main>
+
+            <div id="listaRegistros" class="grid-cards">
+                </div>
+        </main>
+
+    </div>
 
     <script>
-        function toggleMenu(e) { e.stopPropagation(); document.getElementById("menuDrop").classList.toggle("show"); }
-        window.onclick = () => document.getElementById("menuDrop").classList.remove("show");
-
-        let prontuarios = JSON.parse(localStorage.getItem('prontuariosFision')) || [];
-        const form = document.getElementById('formProntuario');
-
-        form.addEventListener('submit', (e) => {
+        // --- 1. MENU COMPLETO ---
+        function toggleMenu(e) { 
+            e.stopPropagation(); 
+            document.getElementById("menuDrop").classList.toggle("show");
+            setTimeout(() => { document.getElementById("menuSearch")?.focus(); }, 100);
+        }
+        window.onclick = (e) => {
+            if (!e.target.closest('.user-profile')) document.getElementById("menuDrop").classList.remove("show");
+        }
+        function filterMenu() {
+            let val = document.getElementById("menuSearch").value.toUpperCase();
+            let items = document.querySelectorAll(".search-item");
+            items.forEach(item => {
+                item.style.display = item.innerText.toUpperCase().includes(val) ? "flex" : "none";
+            });
+        }
+        function logout(e) {
             e.preventDefault();
+            Swal.fire({
+                title: 'Sair?', text: "Deseja encerrar?", icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#3e8e63', cancelButtonColor: '#d63031',
+                confirmButtonText: 'Sim'
+            }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
+        }
+
+        // --- 2. LÓGICA DE PRONTUÁRIOS ---
+        
+        // Dados Iniciais (Exemplo)
+        let prontuarios = JSON.parse(localStorage.getItem('prontuariosFision')) || [
+            { id: 1, data: "2024-05-20", paciente: "Maria Silva", tipo: "avaliacao", profissional: "Dra. Helena", resumo: "Paciente relata dor lombar aguda ao realizar movimentos de flexão..." },
+            { id: 2, data: "2024-05-21", paciente: "Carlos Eduardo", tipo: "sessao", profissional: "Dr. Ricardo", resumo: "Realizada liberação miofascial e exercícios de fortalecimento de core." }
+        ];
+
+        function salvarDados() {
+            localStorage.setItem('prontuariosFision', JSON.stringify(prontuarios));
+        }
+
+        function renderizarProntuarios() {
+            const container = document.getElementById('listaRegistros');
+            const termo = document.getElementById('filtroBusca').value.toLowerCase();
+            
+            // Atualizar contador
+            document.getElementById('count-total').innerText = prontuarios.length;
+            
+            container.innerHTML = '';
+
+            const filtrados = prontuarios.filter(p => 
+                p.paciente.toLowerCase().includes(termo) || 
+                p.profissional.toLowerCase().includes(termo) ||
+                p.tipo.toLowerCase().includes(termo)
+            );
+            
+            // Ordenar por data (mais recente primeiro)
+            filtrados.sort((a,b) => new Date(b.data) - new Date(a.data));
+
+            if (filtrados.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:#999; padding:30px;">Nenhum prontuário encontrado.</div>';
+                return;
+            }
+
+            filtrados.forEach(p => {
+                const dataFormatada = p.data.split('-').reverse().join('/');
+                
+                // Configuração visual por tipo
+                let labelTipo = p.tipo.charAt(0).toUpperCase() + p.tipo.slice(1);
+                if(p.tipo === 'avaliacao') labelTipo = 'Avaliação Inicial';
+                if(p.tipo === 'sessao') labelTipo = 'Sessão';
+                
+                container.innerHTML += `
+                    <div class="record-card border-${p.tipo}">
+                        <div class="card-content">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <h4>${p.paciente}</h4>
+                                <small style="color:#888"><i class="far fa-calendar-alt"></i> ${dataFormatada}</small>
+                            </div>
+                            
+                            <p><i class="fas fa-user-md"></i> ${p.profissional}</p>
+                            
+                            <span class="badge bg-${p.tipo}">${labelTipo}</span>
+                            
+                            <div style="margin-top:10px; font-size:0.85rem; color:#666; display:-webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                ${p.resumo}
+                            </div>
+                        </div>
+
+                        <div class="card-actions">
+                            <button class="btn-mini btn-view" onclick="verDetalhes(${p.id})" title="Ver Resumo Completo">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-mini btn-edit" onclick="editar(${p.id})" title="Editar">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button class="btn-mini btn-del" onclick="remover(${p.id})" title="Excluir">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- 3. CRUD ---
+
+        document.getElementById('formProntuario').onsubmit = function(e) {
+            e.preventDefault();
+            
             const id = document.getElementById('editId').value;
             const dados = {
+                id: id ? Number(id) : Date.now(),
                 data: document.getElementById('data').value,
                 paciente: document.getElementById('paciente').value,
                 tipo: document.getElementById('tipo').value,
@@ -208,82 +408,87 @@
             };
 
             if (id) {
-                // Modo Edição
-                prontuarios = prontuarios.map(p => p.id == id ? { ...dados, id: Number(id) } : p);
+                const index = prontuarios.findIndex(p => p.id == id);
+                prontuarios[index] = dados;
+                Swal.fire('Atualizado!', 'Prontuário salvo com sucesso.', 'success');
             } else {
-                // Novo Registro
-                prontuarios.unshift({ ...dados, id: Date.now() });
+                prontuarios.unshift(dados); // Adiciona no começo
+                Swal.fire('Sucesso!', 'Novo registro adicionado.', 'success');
             }
 
-            salvar();
+            salvarDados();
             resetForm();
-        });
+            renderizarProntuarios();
+        };
 
-        function prepararEdicao(id) {
-            const p = prontuarios.find(p => p.id === id);
-            if (!p) return;
+        function editar(id) {
+            const p = prontuarios.find(item => item.id === id);
+            if(p) {
+                document.getElementById('editId').value = p.id;
+                document.getElementById('data').value = p.data;
+                document.getElementById('paciente').value = p.paciente;
+                document.getElementById('tipo').value = p.tipo;
+                document.getElementById('profissional').value = p.profissional;
+                document.getElementById('resumo').value = p.resumo;
 
-            document.getElementById('editId').value = p.id;
-            document.getElementById('data').value = p.data;
-            document.getElementById('paciente').value = p.paciente;
-            document.getElementById('tipo').value = p.tipo;
-            document.getElementById('profissional').value = p.profissional;
-            document.getElementById('resumo').value = p.resumo;
-
-            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Editando Registro';
-            document.getElementById('btnSubmit').innerText = 'Atualizar Prontuário';
-            document.getElementById('btnCancel').style.display = 'inline-block';
-            
-            window.scrollTo({ top: 150, behavior: 'smooth' });
+                document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-sync"></i> Atualizar';
+                document.getElementById('btnCancelar').style.display = 'block';
+                document.querySelector('.card-form').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
-        function resetForm() {
-            form.reset();
-            document.getElementById('editId').value = '';
-            document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Novo Registro';
-            document.getElementById('btnSubmit').innerText = 'Salvar Informações';
-            document.getElementById('btnCancel').style.display = 'none';
-            document.getElementById('data').valueAsDate = new Date();
-        }
-
-        function salvar() {
-            localStorage.setItem('prontuariosFision', JSON.stringify(prontuarios));
-            renderTable();
-        }
-
-        function renderTable() {
-            const lista = document.getElementById('listaRegistros');
-            document.getElementById('count-total').innerText = prontuarios.length;
-            lista.innerHTML = '';
-
-            prontuarios.forEach((p) => {
-                lista.innerHTML += `
-                    <tr>
-                        <td>${p.data.split('-').reverse().join('/')}</td>
-                        <td><strong>${p.paciente}</strong></td>
-                        <td>${p.tipo}</td>
-                        <td>${p.profissional}</td>
-                        <td>
-                            <button onclick="prepararEdicao(${p.id})" class="btn-action btn-edit" title="Editar"><i class="fas fa-edit"></i></button>
-                            <button onclick="alert('Resumo: '+ prontuarios.find(x=>x.id===${p.id}).resumo)" class="btn-action btn-view" title="Ver Resumo"><i class="fas fa-eye"></i></button>
-                            <button onclick="remover(${p.id})" class="btn-action btn-delete" title="Excluir"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
+        function verDetalhes(id) {
+            const p = prontuarios.find(item => item.id === id);
+            Swal.fire({
+                title: `Prontuário: ${p.paciente}`,
+                html: `
+                    <div style="text-align:left; font-size:0.95rem;">
+                        <p><strong>Data:</strong> ${p.data.split('-').reverse().join('/')}</p>
+                        <p><strong>Profissional:</strong> ${p.profissional}</p>
+                        <p><strong>Tipo:</strong> ${p.tipo.toUpperCase()}</p>
+                        <hr style="margin:10px 0; border:0; border-top:1px solid #eee;">
+                        <p><strong>Resumo Clínico:</strong></p>
+                        <p style="background:#f9f9f9; padding:10px; border-radius:5px; white-space: pre-wrap;">${p.resumo}</p>
+                    </div>
+                `,
+                confirmButtonText: 'Fechar',
+                confirmButtonColor: '#3e8e63',
+                width: '600px'
             });
         }
 
         function remover(id) {
-            if(confirm("Excluir este prontuário permanentemente?")) {
-                prontuarios = prontuarios.filter(p => p.id !== id);
-                salvar();
-            }
+            Swal.fire({
+                title: 'Excluir prontuário?', text: "Essa ação é irreversível.", icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#d63031', cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, excluir'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    prontuarios = prontuarios.filter(p => p.id !== id);
+                    salvarDados();
+                    renderizarProntuarios();
+                    Swal.fire('Excluído!', '', 'success');
+                }
+            });
         }
 
-        function logout() { window.location.href = 'index.html'; }
+        function resetForm() {
+            document.getElementById('formProntuario').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-save"></i> Salvar Registro';
+            document.getElementById('btnCancelar').style.display = 'none';
+            document.getElementById('data').valueAsDate = new Date();
+        }
 
-        document.getElementById('data').valueAsDate = new Date();
-        renderTable();
+        // Inicializar
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if(user) document.getElementById('user-name').innerText = user.nome.split(' ')[0];
+            
+            document.getElementById('data').valueAsDate = new Date();
+            renderizarProntuarios();
+        };
+
     </script>
 </body>
 </html>
