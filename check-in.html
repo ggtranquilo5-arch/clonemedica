@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
-            /* Cores Padronizadas */
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --verde-hover: #2d6a4a;
@@ -35,8 +34,6 @@
             min-height: 100vh;
             padding-bottom: 30px;
         }
-
-        /* --- HEADER PADRÃO --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -52,7 +49,6 @@
         }
         .user-profile:hover { background: #e0e0e0; }
 
-        /* MENU DROPDOWN */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
             box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
@@ -73,7 +69,6 @@
         }
         .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-escuro); }
 
-        /* --- LAYOUT PRINCIPAL --- */
         .main-container {
             max-width: 1200px; margin: 25px auto; padding: 0 15px;
             display: grid; grid-template-columns: 350px 1fr; gap: 25px;
@@ -84,7 +79,6 @@
             .main-container { grid-template-columns: 1fr; }
         }
 
-        /* --- FORMULÁRIO (SEM STICKY) --- */
         .card-form {
             background: var(--branco); padding: 25px; border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -114,7 +108,6 @@
             display: none; 
         }
 
-        /* --- LISTA DE FILA --- */
         .queue-header {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
         }
@@ -130,7 +123,6 @@
         }
         .queue-card:hover { transform: translateX(5px); }
 
-        /* Cores de Status */
         .status-aguardando { border-left-color: var(--amarelo); }
         .status-em-atendimento { border-left-color: var(--verde-escuro); }
         .status-finalizado { border-left-color: var(--cinza); opacity: 0.8; }
@@ -265,7 +257,6 @@
     </div>
 
     <script>
-        // --- 1. MENU DROPDOWN ---
         function toggleMenu(e) { 
             e.stopPropagation(); 
             document.getElementById("menuDrop").classList.toggle("show");
@@ -290,8 +281,6 @@
             }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
         }
 
-        // --- 2. LÓGICA DA FILA ---
-        
         let fila = JSON.parse(localStorage.getItem('filaFision')) || [];
 
         function salvarDados() {
@@ -302,7 +291,6 @@
             const container = document.getElementById('listaPacientes');
             container.innerHTML = '';
 
-            // Ordenar por horário
             const listaOrdenada = fila.sort((a, b) => a.hora.localeCompare(b.hora));
 
             if (listaOrdenada.length === 0) {
@@ -311,8 +299,7 @@
             }
 
             listaOrdenada.forEach(p => {
-                // Formatar status para classe CSS e Texto
-                let statusClass = `status-${p.status}`; // ex: status-aguardando
+                let statusClass = `status-${p.status}`;
                 let badgeClass = `bg-${p.status}`; 
                 let statusText = p.status.replace('-', ' ').toUpperCase();
                 let iconStatus = p.status === 'aguardando' ? 'fa-hourglass-start' : (p.status === 'em-atendimento' ? 'fa-user-clock' : 'fa-check-circle');
@@ -346,8 +333,6 @@
             });
         }
 
-        // --- 3. CRUD ---
-
         document.getElementById('formCheckin').onsubmit = function(e) {
             e.preventDefault();
 
@@ -357,7 +342,7 @@
                 hora: document.getElementById('pHora').value,
                 nome: document.getElementById('pNome').value,
                 prof: document.getElementById('pProf').value,
-                status: id ? fila.find(p => p.id == id).status : 'aguardando' // Mantém status se editar, ou 'aguardando' se novo
+                status: id ? fila.find(p => p.id == id).status : 'aguardando'
             };
 
             if (id) {
@@ -384,7 +369,6 @@
                 document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-sync"></i> Atualizar';
                 document.getElementById('btnCancelar').style.display = 'block';
                 
-                // Rola suave até o form (mobile mainly)
                 document.querySelector('.card-form').scrollIntoView({ behavior: 'smooth' });
             }
         }
@@ -428,16 +412,13 @@
             document.getElementById('editId').value = '';
             document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-check"></i> Confirmar Entrada';
             document.getElementById('btnCancelar').style.display = 'none';
-            // Reseta horário para agora
             document.getElementById('pHora').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
         }
 
-        // Inicializar
         window.onload = function() {
             const user = JSON.parse(localStorage.getItem('usuarioLogado'));
             if(user) document.getElementById('user-name').innerText = user.nome.split(' ')[0];
             
-            // Setar hora atual no input
             document.getElementById('pHora').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
             
             renderizarFila();

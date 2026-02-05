@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Cores Padronizadas do Fision+ */
+
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --verde-hover: #2d6a4a;
@@ -17,7 +17,7 @@
             --texto-suave: #7f8c8d;
             --branco: #ffffff;
             --shadow: 0 4px 12px rgba(0,0,0,0.1);
-            --danger: #d63031; /* Vermelho padrão */
+            --danger: #d63031;
             --amarelo: #f1c40f;
             --azul: #3498db;
             --texto-escuro: #2c3e50;
@@ -33,7 +33,6 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER (PADRÃO) --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -49,7 +48,6 @@
         }
         .user-profile:hover { background: #e0e0e0; }
         
-        /* MENU DROPDOWN COMPLETO */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
             box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
@@ -72,10 +70,8 @@
         .profile-dropdown a i { width: 20px; text-align: center; }
 
 
-        /* --- CONTEÚDO --- */
         main { max-width: 1200px; margin: 25px auto; padding: 0 15px; width: 100%; }
 
-        /* KPI CARDS */
         .finance-summary { 
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 15px; margin-bottom: 25px; 
@@ -89,12 +85,10 @@
         .stat-card.pendente { border-left-color: var(--amarelo); }
         .stat-card h3 { margin-top: 5px; font-size: 1.4rem; color: var(--texto); }
 
-        /* TABELA CONTAINER */
         .data-card { background: var(--branco); padding: 25px; border-radius: 15px; box-shadow: var(--shadow); }
         
         .header-table { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         
-        /* ESTILOS DA TABELA */
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px; color: var(--texto-suave); font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #eee; }
         td { padding: 15px; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; vertical-align: middle; }
@@ -104,7 +98,6 @@
         .pendente { background: #fff3cd; color: #856404; }
         .atrasado { background: #f8d7da; color: #721c24; }
 
-        /* MODAL */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; }
         .modal-content { background: var(--branco); padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; box-shadow: var(--shadow); }
         
@@ -113,18 +106,16 @@
         .btn-verde:hover { background: var(--verde-hover); }
         .btn-cancel { background: #f1f1f1; color: #666; margin-right: 10px; }
 
-        /* --- MOBILE OTIMIZADO (CARD VIEW) --- */
         @media (max-width: 768px) {
             header { padding: 10px 15px; }
             .nav-brand h2 { font-size: 1rem !important; }
             .finance-summary { grid-template-columns: 1fr; }
             .header-table { flex-direction: column; align-items: stretch !important; }
             .btn-verde { width: 100%; }
-            .user-profile span { display: none; } /* Esconde nome no mobile */
+            .user-profile span { display: none; }
 
-            /* A MÁGICA: TABELA VIRA CARD */
             .data-card table, .data-card thead, .data-card tbody, .data-card th, .data-card td, .data-card tr { display: block; }
-            .data-card thead { display: none; } /* Esconde cabeçalho */
+            .data-card thead { display: none; }
             
             .data-card tr {
                 margin-bottom: 15px; border: 1px solid #eee; border-radius: 12px;
@@ -138,12 +129,11 @@
             .data-card td:last-child { border-bottom: none; justify-content: center; gap: 20px; }
 
             .data-card td::before {
-                content: attr(data-label); /* Pega o nome da coluna via HTML */
+                content: attr(data-label);
                 font-weight: 700; color: var(--texto-suave); font-size: 0.8rem;
                 text-transform: uppercase; text-align: left;
             }
 
-            /* Estilo especial para o Nome do Paciente (Topo do Card) */
             .data-card td:first-child {
                 background-color: var(--verde-suave); border-radius: 8px;
                 color: var(--verde-escuro); font-weight: bold;
@@ -274,7 +264,6 @@
     </div>
 
     <script>
-        // --- 1. LÓGICA DO MENU COMPLETO ---
         function toggleMenu(e) { 
             e.stopPropagation(); 
             document.getElementById("menuDrop").classList.toggle("show"); 
@@ -303,9 +292,6 @@
             if(confirm("Sair do sistema?")) window.location.href = 'index.html';
         }
 
-        // --- 2. LÓGICA FINANCEIRA ---
-        
-        // Carrega do LocalStorage ou inicia array vazio
         let dadosFinanceiros = JSON.parse(localStorage.getItem('fision_financeiro')) || [];
 
         function salvarDados() {
@@ -337,7 +323,6 @@
             }
 
             dadosFinanceiros.forEach((item, i) => {
-                // Formata data para exibir bonitinho
                 const dataFormatada = item.vencimentoRaw ? new Date(item.vencimentoRaw).toLocaleDateString('pt-BR', {timeZone: 'UTC'}) : '--/--';
 
                 corpo.innerHTML += `
@@ -356,7 +341,6 @@
             });
         }
 
-        // --- 3. MODAL E CRUD ---
 
         function abrirModal(index = null) {
             document.getElementById('modalCobranca').style.display = 'flex';
@@ -364,7 +348,6 @@
             const title = document.getElementById('modalTitle');
 
             if (index !== null) {
-                // Modo Edição
                 title.innerText = "Editar Lançamento";
                 const item = dadosFinanceiros[index];
                 document.getElementById('editIndex').value = index;
@@ -374,11 +357,9 @@
                 document.getElementById('status').value = item.status;
                 document.getElementById('obs').value = item.obs || "";
             } else {
-                // Modo Criação
                 title.innerText = "Nova Cobrança";
                 form.reset();
                 document.getElementById('editIndex').value = "";
-                // Data de hoje como padrão
                 document.getElementById('vencimento').value = new Date().toISOString().split('T')[0];
             }
         }
@@ -398,9 +379,9 @@
             };
 
             if (index !== "") {
-                dadosFinanceiros[index] = item; // Atualiza
+                dadosFinanceiros[index] = item; 
             } else {
-                dadosFinanceiros.push(item); // Adiciona novo
+                dadosFinanceiros.push(item); 
             }
 
             fecharModal();
@@ -414,9 +395,7 @@
             }
         }
 
-        // Inicializa ao carregar a página
         window.onload = function() {
-            // Tenta pegar nome do usuário logado se existir
             const user = JSON.parse(localStorage.getItem('usuarioLogado'));
             if(user) document.getElementById('user-name').innerText = user.nome.split(' ')[0];
             

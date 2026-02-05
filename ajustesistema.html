@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
-            /* Cores Padronizadas do Sistema */
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --verde-hover: #2d6a4a;
@@ -34,7 +33,6 @@
             padding-bottom: 40px;
         }
 
-        /* --- HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -50,7 +48,6 @@
         }
         .user-profile:hover { background: #e0e0e0; }
 
-        /* MENU DROPDOWN */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
             box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
@@ -71,14 +68,12 @@
         }
         .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-escuro); }
 
-        /* --- CONTEÚDO PRINCIPAL --- */
         main { max-width: 900px; margin: 30px auto; padding: 0 15px; }
 
         .page-header { margin-bottom: 25px; text-align: center; }
         .page-header h1 { color: var(--verde-escuro); font-size: 1.8rem; margin-bottom: 5px; }
         .page-header p { color: var(--texto-suave); }
 
-        /* STATUS CARDS */
         .stats-row {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;
         }
@@ -93,7 +88,6 @@
             font-size: 1.4rem;
         }
 
-        /* SEÇÕES DE CONFIGURAÇÃO */
         .config-section {
             background: var(--branco); border-radius: var(--radius); box-shadow: var(--shadow);
             margin-bottom: 25px; overflow: hidden;
@@ -107,7 +101,6 @@
 
         .section-body { padding: 25px; }
 
-        /* FORMULÁRIOS */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .full-width { grid-column: 1 / -1; }
 
@@ -120,7 +113,6 @@
         }
         input:focus { border-color: var(--verde-escuro); box-shadow: 0 0 0 3px var(--verde-suave); }
 
-        /* BOTÕES */
         .btn-save {
             background: var(--verde-escuro); color: white; border: none; padding: 12px 30px;
             border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;
@@ -146,7 +138,6 @@
         }
         .btn-reset:hover { background: var(--danger); color: white; }
 
-        /* RODAPÉ LOGOUT */
         .logout-container { margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid #eee; }
         .btn-logout-big {
             background: transparent; color: var(--texto-suave); border: none;
@@ -298,7 +289,6 @@
     </main>
 
     <script>
-        // --- 1. LÓGICA DO MENU (Igual às outras páginas) ---
         function toggleMenu(e) { 
             e.stopPropagation(); 
             document.getElementById("menuDrop").classList.toggle("show");
@@ -323,10 +313,8 @@
             }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
         }
 
-        // --- 2. LÓGICA DA PÁGINA ---
 
         window.onload = () => {
-            // Carregar dados da clínica
             const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
             document.getElementById('clinicaNome').value = dados.nome || '';
             document.getElementById('clinicaCnpj').value = dados.cnpj || '';
@@ -334,7 +322,6 @@
             document.getElementById('clinicaEmail').value = dados.email || '';
             document.getElementById('clinicaEnd').value = dados.end || '';
 
-            // Calcular tamanho do Storage (apenas visual)
             const total = JSON.stringify(localStorage).length;
             const sizeKB = (total / 1024).toFixed(2);
             document.querySelector('#storage-info h3').innerText = sizeKB + ' KB';
@@ -359,7 +346,7 @@
         }
 
         function exportarBackup() {
-            // Coleta todos os dados importantes do localStorage
+            
             const backup = {
                 data_backup: new Date().toLocaleString(),
                 clinica: JSON.parse(localStorage.getItem('dadosClinica')),

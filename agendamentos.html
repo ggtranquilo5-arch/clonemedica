@@ -33,7 +33,6 @@
             padding-bottom: 40px;
         }
 
-        /* --- HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -49,7 +48,6 @@
         }
         .user-profile:hover { background: #e0e0e0; }
 
-        /* MENU DROPDOWN */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
             box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
@@ -68,7 +66,6 @@
         }
         .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-escuro); }
 
-        /* --- MAIN LAYOUT --- */
         main { 
             max-width: 1200px; margin: 30px auto; padding: 0 15px; 
             display: grid; grid-template-columns: 350px 1fr; gap: 25px;
@@ -80,14 +77,12 @@
         .header-full h1 { color: var(--verde-escuro); font-size: 1.8rem; }
         .header-full p { color: var(--texto-suave); }
 
-        /* CARDS */
         .card { background: var(--branco); border-radius: var(--radius); box-shadow: var(--shadow); padding: 25px; height: fit-content; }
         .card-title { 
             font-size: 1.1rem; color: var(--verde-escuro); font-weight: bold; margin-bottom: 20px; 
             display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;
         }
 
-        /* FORMULÁRIO */
         .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px; }
         .form-group label { font-size: 0.85rem; font-weight: 700; color: var(--texto-suave); }
         
@@ -113,7 +108,6 @@
         }
         .btn-cancel:hover { background: #eee; }
 
-        /* LISTA DE AGENDAMENTOS */
         .appointment-item {
             background: #fff; padding: 15px 20px; border-radius: 12px; margin-bottom: 15px;
             display: flex; justify-content: space-between; align-items: center;
@@ -256,7 +250,6 @@
     </main>
 
     <script>
-        // --- MÁSCARAS DE INPUT ---
         function mascaraCPF(i){
             var v = i.value;
             if(isNaN(v[v.length-1])){ i.value = v.substring(0, v.length-1); return; }
@@ -272,7 +265,6 @@
             i.value = v;
         }
 
-        // --- LÓGICA DO MENU ---
         function toggleMenu(e) { 
             e.stopPropagation(); document.getElementById("menuDrop").classList.toggle("show");
             setTimeout(() => document.getElementById("menuSearch")?.focus(), 100);
@@ -294,11 +286,9 @@
             }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
         }
 
-        // --- LÓGICA DA AGENDA ---
         let agenda = JSON.parse(localStorage.getItem('agendaFision')) || [];
         const form = document.getElementById('formAgenda');
 
-        // Configurar data mínima como hoje
         document.getElementById('data').valueAsDate = new Date();
 
         form.addEventListener('submit', (e) => {
@@ -323,7 +313,6 @@
                 Swal.fire({ icon: 'success', title: 'Agendado!', timer: 1500, showConfirmButton: false });
             }
 
-            // Ordenar por data e hora
             agenda.sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
             
             salvar();
@@ -378,7 +367,6 @@
             }
             container.innerHTML = '';
             agenda.forEach(item => {
-                // Formatar Data
                 const dataObj = new Date(item.data + 'T00:00:00');
                 const dia = dataObj.getDate().toString().padStart(2, '0');
                 const mes = dataObj.toLocaleString('pt-BR', { month: 'short' }).toUpperCase();

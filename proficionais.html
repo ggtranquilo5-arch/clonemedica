@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Cores Originais */
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --verde-hover: #2d6a4a;
@@ -16,7 +15,6 @@
             --branco: #ffffff;
             --shadow: 0 4px 12px rgba(0,0,0,0.1);
 
-            /* Variáveis Menu */
             --verde-primario: #3e8e63;
             --verde-suave: #e8f5e9;
             --texto-suave: #7f8c8d;
@@ -36,7 +34,6 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -52,7 +49,6 @@
         }
         .user-profile:hover { background: #e0e0e0; }
         
-        /* --- MENU DROPDOWN --- */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
             box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
@@ -74,7 +70,6 @@
         .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-primario); }
         .profile-dropdown a i { width: 20px; text-align: center; }
 
-        /* --- CONTAINER --- */
         .container {
             max-width: 1300px; margin: 20px auto;
             display: grid; grid-template-columns: 380px 1fr; gap: 20px; padding: 0 15px;
@@ -85,7 +80,6 @@
             border-radius: 15px; box-shadow: var(--shadow); backdrop-filter: blur(10px);
         }
 
-        /* --- FORMULÁRIO --- */
         .avatar-upload { position: relative; max-width: 100px; margin: 0 auto 15px; text-align: center; }
         .avatar-preview {
             width: 100px; height: 100px; border-radius: 50%;
@@ -107,7 +101,6 @@
         }
         .btn-save:hover { background: var(--verde-hover); }
 
-        /* --- CARDS DE PROFISSIONAIS --- */
         .prof-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         
         .prof-card {
@@ -143,7 +136,6 @@
         .btn-icon:hover { color: var(--verde-escuro); transform: scale(1.1); }
         .btn-icon.delete:hover { color: var(--danger); }
 
-        /* RESPONSIVIDADE */
         @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; }
             .user-profile span { display: none; }
@@ -247,23 +239,19 @@
     </div>
 
     <script>
-        // --- 1. LÓGICA DE IMAGEM ---
-        let imagemBase64 = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; // Imagem padrão
+        let imagemBase64 = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
 
         document.getElementById('imageUpload').addEventListener('change', function(e) {
             if(e.target.files && e.target.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    imagemBase64 = e.target.result; // Guarda a string da imagem
+                    imagemBase64 = e.target.result;
                     document.getElementById('imagePreview').style.backgroundImage = "url('" + imagemBase64 + "')";
                 }
                 reader.readAsDataURL(e.target.files[0]);
             }
         });
 
-        // --- 2. LÓGICA DE SALVAR E CARREGAR (CRUD) ---
-        
-        // Carregar dados ao iniciar a página
         window.onload = function() {
             carregarUsuario();
             carregarProfissionais();
@@ -275,7 +263,6 @@
         }
 
         function salvarProfissional() {
-            // Pegar valores dos inputs
             const nome = document.getElementById('profNome').value;
             const cpf = document.getElementById('profCPF').value;
             const registro = document.getElementById('profRegistro').value;
@@ -283,31 +270,25 @@
             const tel = document.getElementById('profTelefone').value;
             const email = document.getElementById('profEmail').value;
 
-            // Validação simples
             if(!nome || !cpf || !registro) {
                 alert("Por favor, preencha pelo menos Nome, CPF e Registro.");
                 return;
             }
 
-            // Criar objeto do profissional
             const novoProfissional = {
-                id: Date.now(), // ID único baseado no tempo
+                id: Date.now(),
                 nome, cpf, registro, espec, tel, email,
                 foto: imagemBase64
             };
 
-            // Pegar lista atual ou criar nova array vazia
             let lista = JSON.parse(localStorage.getItem('listaProfissionais')) || [];
             
-            // Adicionar novo item
             lista.push(novoProfissional);
 
-            // Salvar no navegador
             localStorage.setItem('listaProfissionais', JSON.stringify(lista));
 
             alert("Profissional cadastrado com sucesso!");
             
-            // Limpar formulário e recarregar lista
             limparFormulario();
             carregarProfissionais();
         }
@@ -317,7 +298,7 @@
             const container = document.getElementById('listaProfissionais');
             const total = document.getElementById('totalProfs');
 
-            container.innerHTML = ''; // Limpa a tela antes de redesenhar
+            container.innerHTML = '';
             total.innerText = lista.length;
 
             if(lista.length === 0) {
@@ -325,7 +306,6 @@
                 return;
             }
 
-            // Cria o HTML para cada profissional salvo
             lista.forEach(prof => {
                 const card = `
                     <div class="prof-card">
@@ -353,7 +333,6 @@
         function deletarProf(id) {
             if(confirm("Tem certeza que deseja remover este profissional?")) {
                 let lista = JSON.parse(localStorage.getItem('listaProfissionais')) || [];
-                // Filtra a lista removendo o item com o ID correspondente
                 lista = lista.filter(prof => prof.id !== id);
                 localStorage.setItem('listaProfissionais', JSON.stringify(lista));
                 carregarProfissionais();
@@ -367,7 +346,6 @@
             document.getElementById('profTelefone').value = '';
             document.getElementById('profEmail').value = '';
             
-            // Reseta imagem para padrão
             imagemBase64 = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
             document.getElementById('imagePreview').style.backgroundImage = "url('" + imagemBase64 + "')";
         }
@@ -376,7 +354,6 @@
             alert("Função de edição rápida: Delete e cadastre novamente com os dados corretos (por enquanto).");
         }
 
-        // --- 3. FUNÇÕES DO MENU ---
         function toggleMenu(e) { 
             e.stopPropagation(); 
             document.getElementById("menuDrop").classList.toggle("show"); 

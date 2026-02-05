@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
-            /* Cores Padronizadas */
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --verde-hover: #2d6a4a;
@@ -35,7 +34,6 @@
             padding-bottom: 30px;
         }
 
-        /* --- HEADER PADRÃO --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -51,7 +49,6 @@
         }
         .user-profile:hover { background: #e0e0e0; }
 
-        /* MENU DROPDOWN COMPLETO */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
             box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
@@ -72,10 +69,8 @@
         }
         .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-escuro); }
 
-        /* --- LAYOUT --- */
         main { max-width: 1200px; margin: 25px auto; padding: 0 15px; width: 100%; }
 
-        /* KPI CARDS */
         .stats-grid { 
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; 
         }
@@ -91,7 +86,6 @@
         .stat-card h3 { font-size: 1.6rem; font-weight: 800; margin: 5px 0; }
         .stat-card p { font-size: 0.75rem; color: var(--texto-suave); font-weight: 700; text-transform: uppercase; }
 
-        /* LISTA DE AGENDAMENTO */
         .agenda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         
         .appointment-card {
@@ -125,7 +119,6 @@
         }
         .btn-action:active { transform: scale(0.9); }
         
-        /* Botão para finalizar atendimento (pulsa quando ativo) */
         .btn-finish { background: var(--danger); animation: pulse 2s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(214, 48, 49, 0); } 100% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0); } }
 
@@ -136,7 +129,6 @@
         .btn-verde { background: var(--verde-escuro); color: white; }
         .btn-cancel { background: #f1f1f1; color: #666; margin-right: 10px; }
 
-        /* MODAL */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; }
         .modal-content { background: var(--branco); padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; box-shadow: var(--shadow); }
 
@@ -251,7 +243,6 @@
     </div>
 
     <script>
-        // --- 1. LÓGICA DO MENU (PADRÃO) ---
         function toggleMenu(e) { 
             e.stopPropagation(); 
             document.getElementById("menuDrop").classList.toggle("show"); 
@@ -280,9 +271,6 @@
             if(confirm("Sair do sistema?")) window.location.href = 'index.html';
         }
 
-        // --- 2. LÓGICA DA AGENDA (Com LocalStorage) ---
-        
-        // Carrega dados salvos ou usa um exemplo inicial se estiver vazio
         let agendaData = JSON.parse(localStorage.getItem('fision_agenda')) || [
             { id: 1, nome: "Ana Beatriz Souza", hora: "09:00", procedimento: "Fisioterapia", status: "waiting" },
             { id: 2, nome: "Carlos Eduardo Lima", hora: "10:30", procedimento: "RPG", status: "waiting" }
@@ -302,7 +290,6 @@
                 return;
             }
 
-            // Ordenar por horário
             agendaData.sort((a, b) => a.hora.localeCompare(b.hora));
 
             container.innerHTML = agendaData.map((item, index) => {
@@ -314,7 +301,7 @@
                 
                 if (item.status === 'active') {
                     btnIcon = 'fa-stop';
-                    btnClass = 'btn-action btn-finish'; // Classe que pulsa
+                    btnClass = 'btn-action btn-finish';
                     btnTitle = "Finalizar Atendimento";
                 } else if (item.status === 'finished') {
                     btnIcon = 'fa-check';
@@ -350,7 +337,6 @@
             const item = agendaData.find(p => p.id === id);
             
             if (item.status === 'waiting') {
-                // Iniciar atendimento
                 item.status = 'active';
                 Swal.fire({
                     title: 'Atendimento Iniciado',
@@ -365,7 +351,6 @@
                 renderAgenda();
 
             } else if (item.status === 'active') {
-                // Finalizar atendimento
                 Swal.fire({
                     title: 'Finalizar sessão?',
                     text: "Isso marcará o atendimento como concluído.",
@@ -398,11 +383,9 @@
             document.getElementById('em-atendimento-count').innerText = ativos;
         }
 
-        // --- 3. MODAL & CRUD ---
         function abrirModal() {
             document.getElementById('modalAgendamento').style.display = 'flex';
             document.getElementById('formAgendamento').reset();
-            // Seta hora atual
             const now = new Date();
             const timeString = now.toTimeString().split(' ')[0].substring(0,5);
             document.getElementById('horaAgendamento').value = timeString;
@@ -416,7 +399,7 @@
             e.preventDefault();
             
             const novoItem = {
-                id: Date.now(), // ID único baseado no tempo
+                id: Date.now(),
                 nome: document.getElementById('nomePaciente').value,
                 hora: document.getElementById('horaAgendamento').value,
                 procedimento: document.getElementById('servicoAgendamento').value,

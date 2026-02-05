@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
-            /* Cores Padronizadas */
             --verde-escuro: #3e8e63;
             --verde-claro: #c2dfcc;
             --verde-hover: #2d6a4a;
@@ -36,7 +35,6 @@
             padding-bottom: 30px;
         }
 
-        /* --- HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -52,7 +50,6 @@
         }
         .user-profile:hover { background: #e0e0e0; }
 
-        /* MENU DROPDOWN */
         .profile-dropdown {
             display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
             box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
@@ -73,7 +70,6 @@
         }
         .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-escuro); }
 
-        /* --- LAYOUT PRINCIPAL --- */
         .main-container {
             max-width: 1200px; margin: 25px auto; padding: 0 15px;
             display: grid; grid-template-columns: 350px 1fr; gap: 25px;
@@ -84,7 +80,6 @@
             .main-container { grid-template-columns: 1fr; }
         }
 
-        /* --- FORMULÁRIO (SIDEBAR) --- */
         .card-form {
             background: var(--branco); padding: 25px; border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -114,7 +109,6 @@
             display: none; 
         }
 
-        /* --- ÁREA DE CONTEÚDO (DIREITA) --- */
         .stats-row {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;
         }
@@ -133,7 +127,6 @@
         }
         .search-bar input { border: none; outline: none; flex: 1; font-size: 1rem; color: var(--texto); }
 
-        /* --- CARDS DE PRONTUÁRIOS --- */
         .grid-cards { display: grid; grid-template-columns: 1fr; gap: 15px; }
 
         .record-card {
@@ -144,7 +137,6 @@
         }
         .record-card:hover { transform: translateY(-3px); }
 
-        /* Bordas Coloridas por Tipo */
         .border-avaliacao { border-left-color: var(--roxo); }
         .border-sessao { border-left-color: var(--azul); }
         .border-evolucao { border-left-color: var(--verde-escuro); }
@@ -288,7 +280,6 @@
     </div>
 
     <script>
-        // --- 1. MENU COMPLETO ---
         function toggleMenu(e) { 
             e.stopPropagation(); 
             document.getElementById("menuDrop").classList.toggle("show");
@@ -313,9 +304,6 @@
             }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
         }
 
-        // --- 2. LÓGICA DE PRONTUÁRIOS ---
-        
-        // Dados Iniciais (Exemplo)
         let prontuarios = JSON.parse(localStorage.getItem('prontuariosFision')) || [
             { id: 1, data: "2024-05-20", paciente: "Maria Silva", tipo: "avaliacao", profissional: "Dra. Helena", resumo: "Paciente relata dor lombar aguda ao realizar movimentos de flexão..." },
             { id: 2, data: "2024-05-21", paciente: "Carlos Eduardo", tipo: "sessao", profissional: "Dr. Ricardo", resumo: "Realizada liberação miofascial e exercícios de fortalecimento de core." }
@@ -329,7 +317,6 @@
             const container = document.getElementById('listaRegistros');
             const termo = document.getElementById('filtroBusca').value.toLowerCase();
             
-            // Atualizar contador
             document.getElementById('count-total').innerText = prontuarios.length;
             
             container.innerHTML = '';
@@ -339,8 +326,7 @@
                 p.profissional.toLowerCase().includes(termo) ||
                 p.tipo.toLowerCase().includes(termo)
             );
-            
-            // Ordenar por data (mais recente primeiro)
+
             filtrados.sort((a,b) => new Date(b.data) - new Date(a.data));
 
             if (filtrados.length === 0) {
@@ -351,7 +337,6 @@
             filtrados.forEach(p => {
                 const dataFormatada = p.data.split('-').reverse().join('/');
                 
-                // Configuração visual por tipo
                 let labelTipo = p.tipo.charAt(0).toUpperCase() + p.tipo.slice(1);
                 if(p.tipo === 'avaliacao') labelTipo = 'Avaliação Inicial';
                 if(p.tipo === 'sessao') labelTipo = 'Sessão';
@@ -389,7 +374,6 @@
             });
         }
 
-        // --- 3. CRUD ---
 
         document.getElementById('formProntuario').onsubmit = function(e) {
             e.preventDefault();
@@ -409,7 +393,7 @@
                 prontuarios[index] = dados;
                 Swal.fire('Atualizado!', 'Prontuário salvo com sucesso.', 'success');
             } else {
-                prontuarios.unshift(dados); // Adiciona no começo
+                prontuarios.unshift(dados);
                 Swal.fire('Sucesso!', 'Novo registro adicionado.', 'success');
             }
 
@@ -477,7 +461,6 @@
             document.getElementById('data').valueAsDate = new Date();
         }
 
-        // Inicializar
         window.onload = function() {
             const user = JSON.parse(localStorage.getItem('usuarioLogado'));
             if(user) document.getElementById('user-name').innerText = user.nome.split(' ')[0];
