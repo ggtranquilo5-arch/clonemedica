@@ -75,12 +75,12 @@
         .page-header p { color: var(--texto-suave); }
 
         .stats-row {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px;
         }
         .mini-card {
             background: var(--branco); padding: 20px; border-radius: var(--radius);
             box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px;
-            transition: 0.3s;
+            transition: 0.3s; cursor: pointer;
         }
         .mini-card:hover { transform: translateY(-3px); }
         .mini-icon {
@@ -180,7 +180,7 @@
                 <a href="avaliaçãoeprontuários.html" class="search-item"><i class="fas fa-file-medical"></i> Prontuários</a>
                 <a href="relatorios.html" class="search-item"><i class="fas fa-chart-line"></i> Relatórios</a> 
                 <a href="ajustesistema.html" class="search-item"><i class="fas fa-cog"></i> Configurações</a>
-                
+            </div>
         </div>
     </header>
 
@@ -198,11 +198,19 @@
                     <small style="color:#777">Sistema protegido</small>
                 </div>
             </div>
+            <div class="mini-card" onclick="solicitarNotificacao()">
+                <div class="mini-icon" style="background:#fff9c4; color:#fbc02d"><i class="fas fa-bell"></i></div>
+                <div>
+                    <h3 style="font-size:1.1rem; margin:0" id="notif-status">Ativar</h3>
+                    <small style="color:#777">Notificações Push</small>
+                </div>
+            </div>
+
             <div class="mini-card">
                 <div class="mini-icon" style="background:#e3f2fd; color:var(--azul)"><i class="fas fa-server"></i></div>
                 <div>
                     <h3 style="font-size:1.1rem; margin:0">Local</h3>
-                    <small style="color:#777">Armazenamento Navegador</small>
+                    <small style="color:#777">Storage Ativo</small>
                 </div>
             </div>
             <div class="mini-card">
@@ -270,7 +278,7 @@
                     <div class="danger-zone">
                         <h4 style="color:var(--danger)"><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h4>
                         <p style="font-size:0.8rem; color:#c0392b; margin: 5px 0 10px;">
-                            Atenção: Esta ação apagará permanentemente todos os clientes, prontuários e configurações deste navegador.
+                            Atenção: Esta ação apagará permanentemente todos os dados deste navegador.
                         </p>
                         <button class="btn-reset" onclick="resetarTudo()">
                             <i class="fas fa-trash"></i> Formatar Sistema
@@ -305,15 +313,33 @@
                 item.style.display = item.innerText.toUpperCase().includes(val) ? "flex" : "none";
             });
         }
-        function logout(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Sair do Sistema?', text: "Você precisará fazer login novamente.", icon: 'warning',
-                showCancelButton: true, confirmButtonColor: '#3e8e63', cancelButtonColor: '#d63031',
-                confirmButtonText: 'Sim, sair', cancelButtonText: 'Cancelar'
-            }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
+
+        function solicitarNotificacao() {
+            if (!("Notification" in window)) {
+                Swal.fire('Erro', 'Este navegador não suporta notificações.', 'error');
+                return;
+            }
+
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    new Notification("Fision+", {
+                        body: "As notificações foram ativadas com sucesso!",
+                        icon: "Logo- prog WEB.png"
+                    });
+                    atualizarStatusNotif();
+                } else {
+                    Swal.fire('Aviso', 'Você bloqueou as notificações. Ative nas configurações do navegador.', 'warning');
+                }
+            });
         }
 
+        function atualizarStatusNotif() {
+            const statusLabel = document.getElementById('notif-status');
+            if (Notification.permission === "granted") {
+                statusLabel.innerText = "Ativo";
+                statusLabel.parentElement.parentElement.style.opacity = "0.7";
+            }
+        }
 
         window.onload = () => {
             const dados = JSON.parse(localStorage.getItem('dadosClinica')) || {};
@@ -326,6 +352,8 @@
             const total = JSON.stringify(localStorage).length;
             const sizeKB = (total / 1024).toFixed(2);
             document.querySelector('#storage-info h3').innerText = sizeKB + ' KB';
+            
+            atualizarStatusNotif();
         };
 
         function salvarDadosClinica() {
@@ -337,59 +365,47 @@
                 end: document.getElementById('clinicaEnd').value
             };
             localStorage.setItem('dadosClinica', JSON.stringify(dados));
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'Dados Atualizados!',
-                text: 'As informações aparecerão nos próximos relatórios.',
-                confirmButtonColor: '#3e8e63'
-            });
+            Swal.fire({ icon: 'success', title: 'Dados Atualizados!', confirmButtonColor: '#3e8e63' });
         }
 
         function exportarBackup() {
-            
             const backup = {
                 data_backup: new Date().toLocaleString(),
                 clinica: JSON.parse(localStorage.getItem('dadosClinica')),
                 clientes: JSON.parse(localStorage.getItem('clientesFision')),
                 prontuarios: JSON.parse(localStorage.getItem('prontuariosFision')),
-                fila: JSON.parse(localStorage.getItem('filaFision')),
                 agendamentos: JSON.parse(localStorage.getItem('agendamentosFision'))
             };
-
             const blob = new Blob([JSON.stringify(backup, null, 2)], {type: "application/json"});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `backup_fision_${new Date().toISOString().slice(0,10)}.json`;
-            
-            Swal.fire({
-                icon: 'success', title: 'Backup Gerado!',
-                text: 'O arquivo foi baixado para o seu dispositivo.',
-                confirmButtonColor: '#3498db'
-            });
-            
             a.click();
+            Swal.fire({ icon: 'success', title: 'Backup Gerado!', confirmButtonColor: '#3498db' });
         }
 
         function resetarTudo() {
             Swal.fire({
                 title: 'TEM CERTEZA?',
-                text: "Isso apagará TODOS os clientes, prontuários e agendamentos. Não há como desfazer!",
+                text: "Isso apagará TUDO permanentemente!",
                 icon: 'error',
                 showCancelButton: true,
                 confirmButtonColor: '#d63031',
-                cancelButtonColor: '#aaa',
-                confirmButtonText: 'Sim, APAGAR TUDO',
-                cancelButtonText: 'Cancelar'
+                confirmButtonText: 'Sim, APAGAR TUDO'
             }).then((result) => {
                 if (result.isConfirmed) {
                     localStorage.clear();
-                    Swal.fire('Sistema Formatado', 'Recarregando...', 'success').then(() => {
-                        window.location.reload();
-                    });
+                    window.location.reload();
                 }
             });
+        }
+
+        function logout(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Sair?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#3e8e63', confirmButtonText: 'Sim'
+            }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
         }
     </script>
 </body>
