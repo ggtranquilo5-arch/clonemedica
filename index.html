@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clínica Fision+ | Login e Cadastro</title>
+    <title>Gestão de Inventário | Login e Cadastro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -143,8 +143,8 @@
         <div class="clinic-logo">
             <img src="Perfil.png" alt="Logo Clínica">
         </div>
-        <h1>Fision+</h1>
-        <p>Sistema Integrado de Fisioterapia</p>
+        <h1>Gestão de Estoque</h1>
+        <p>Controle de Produtos de Limpeza</p>
     </header>
 
     <nav class="tabs">
@@ -153,14 +153,14 @@
     </nav>
 
     <div class="form-container">
-        <form id="form-login">
+        <form id="form-login" method="POST" action="login_action.php">
             <div class="field">
-                <label for="l-email">E-mail Profissional/Paciente</label>
-                <input type="email" id="l-email" placeholder="nome@exemplo.com" required>
+                <label for="l-email">E-mail do Usuário</label>
+                <input type="email" id="l-email" name="email" placeholder="nome@exemplo.com" required>
             </div>
             <div class="field">
                 <label for="l-pass">Senha</label>
-                <input type="password" id="l-pass" placeholder="••••••••" required>
+                <input type="password" id="l-pass" name="senha" placeholder="••••••••" required>
             </div>
             
             <div class="form-utils">
@@ -180,18 +180,26 @@
             </div>
         </form>
 
-        <form id="form-register" class="hidden">
+        <form id="form-register" class="hidden" method="POST" action="cadastro_action.php">
             <div class="field">
                 <label for="r-name">Nome Completo</label>
-                <input type="text" id="r-name" placeholder="Como deseja ser chamado?" required>
+                <input type="text" id="r-name" name="nome" placeholder="Como deseja ser chamado?" required>
             </div>
             <div class="field">
                 <label for="r-email">E-mail</label>
-                <input type="email" id="r-email" placeholder="seu@email.com" required>
+                <input type="email" id="r-email" name="email" placeholder="seu@email.com" required>
             </div>
             <div class="field">
                 <label for="r-pass">Crie uma Senha</label>
-                <input type="password" id="r-pass" minlength="6" placeholder="Mín. 6 caracteres" required>
+                <input type="password" id="r-pass" name="senha" minlength="6" placeholder="Mín. 6 caracteres" required>
+            </div>
+            <div class="field">
+                <label for="r-tipo">Tipo de Perfil</label>
+                <select id="r-tipo" name="tipo" required style="padding: 12px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 1rem; background-color: white;">
+                    <option value="" disabled selected>Selecione...</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Requisitante">Requisitante</option>
+                </select>
             </div>
             <button type="submit" class="btn-submit">FINALIZAR CADASTRO</button>
         </form>
@@ -207,35 +215,18 @@
         document.getElementById('form-register').classList.toggle('hidden', isLogin);
     }
 
-    document.getElementById('form-register').onsubmit = function(e) {
-        e.preventDefault();
-        const email = document.getElementById('r-email').value;
-        const password = document.getElementById('r-pass').value;
-
-        localStorage.setItem(email, password);
-        alert("Cadastro realizado! Agora faça login.");
-        switchTab('login');
-    };
-
-    document.getElementById('form-login').onsubmit = function(e) {
-        e.preventDefault();
-        const email = document.getElementById('l-email').value;
-        const pass = document.getElementById('l-pass').value;
-
-        const savedPass = localStorage.getItem(email);
-
-        if (savedPass === null) {
-            alert("E-mail não encontrado. Por favor, cadastre-se primeiro!");
-            switchTab('register');
-        } else if (savedPass !== pass) {
-            alert("Senha incorreta!");
-        } else {
-            alert("Login realizado com sucesso!");
-            window.location.href = 'telainicial.html';
-        }
-    };
+    // O envio dos formulários agora é feito diretamente pelo action="arquivo.php" com method="POST"
 
     window.onload = function () {
+        // Exibir alertas simples caso retorne erro na URL do PHP
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('erro') === 'credenciais') alert('E-mail ou senha incorretos.');
+        if (urlParams.get('erro') === 'email_existente') alert('Este e-mail já está cadastrado.');
+        if (urlParams.get('sucesso') === 'cadastro') {
+            alert('Cadastro realizado com sucesso! Faça seu login.');
+            switchTab('login');
+        }
+
         google.accounts.id.initialize({
             client_id: "SEU_ID.apps.googleusercontent.com", 
             callback: (res) => { alert("Login Google bem-sucedido!"); window.location.href = 'telainicial.html'; }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -18,133 +19,375 @@
             --texto-suave: #7f8c8d;
             --danger: #d63031;
             --azul: #3498db;
-            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             --radius: 15px;
             --img-fundo: url("imagem.pjp/Logo- prog WEB.png");
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
 
         body {
             background-color: var(--bg-corpo);
             background-image: linear-gradient(rgba(248, 249, 250, 0.92), rgba(248, 249, 250, 0.92)), var(--img-fundo);
-            background-size: cover; background-attachment: fixed;
+            background-size: cover;
+            background-attachment: fixed;
             min-height: 100vh;
             padding-bottom: 40px;
         }
 
         header {
-            background: rgba(255, 255, 255, 0.98); padding: 10px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-        .logo-img { width: 35px; }
-
-        .user-profile { 
-            position: relative; cursor: pointer; display: flex; align-items: center; gap: 10px; 
-            padding: 5px 12px; border-radius: 30px; background: #eee; transition: 0.3s;
-        }
-        .user-profile:hover { background: #e0e0e0; }
-
-        .profile-dropdown {
-            display: none; position: absolute; top: 120%; right: 0; background: var(--branco);
-            box-shadow: var(--shadow); border-radius: 12px; min-width: 250px; z-index: 2000;
-            overflow: hidden; padding-bottom: 8px; max-height: 80vh; overflow-y: auto;
-        }
-        .profile-dropdown.show { display: block; }
-        .dropdown-search {
-            padding: 10px 15px; border-bottom: 1px solid #eee; background: #fafafa;
-            display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 10;
-        }
-        .dropdown-search input { width: 100%; border: none; background: transparent; outline: none; font-size: 0.9rem; color: var(--texto); padding: 0;}
-        .dropdown-section-title { padding: 12px 15px 5px; font-size: 0.75rem; color: var(--texto-suave); font-weight: 700; text-transform: uppercase; }
-        .profile-dropdown a { 
-            display: flex; align-items: center; gap: 10px; padding: 10px 15px; 
-            text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.9rem; transition: 0.2s;
-        }
-        .profile-dropdown a:hover { background: var(--verde-suave); color: var(--verde-escuro); }
-
-        main { 
-            max-width: 1200px; margin: 30px auto; padding: 0 15px; 
-            display: grid; grid-template-columns: 350px 1fr; gap: 25px;
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
         }
 
-        @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
-
-        .header-full { grid-column: 1 / -1; margin-bottom: 10px; }
-        .header-full h1 { color: var(--verde-escuro); font-size: 1.8rem; }
-        .header-full p { color: var(--texto-suave); }
-
-        .card { background: var(--branco); border-radius: var(--radius); box-shadow: var(--shadow); padding: 25px; height: fit-content; }
-        .card-title { 
-            font-size: 1.1rem; color: var(--verde-escuro); font-weight: bold; margin-bottom: 20px; 
-            display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;
+        .logo-img {
+            width: 35px;
         }
 
-        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-size: 0.85rem; font-weight: 700; color: var(--texto-suave); }
-        
-        input, select { 
-            padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; 
-            font-size: 0.95rem; width: 100%; transition: 0.3s;
-        }
-        input:focus, select:focus { border-color: var(--verde-escuro); box-shadow: 0 0 0 3px var(--verde-suave); }
-
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-        .btn-schedule { 
-            background: var(--verde-escuro); color: white; border: none; padding: 14px; 
-            border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; transition: 0.3s; 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-schedule:hover { background: var(--verde-hover); transform: translateY(-2px); }
-
-        .btn-cancel { 
-            background: white; color: var(--texto-suave); border: 1px solid #ddd; padding: 10px; 
-            border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; 
-            display: none; transition: 0.3s;
-        }
-        .btn-cancel:hover { background: #eee; }
-
-        .appointment-item {
-            background: #fff; padding: 15px 20px; border-radius: 12px; margin-bottom: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid #eee; border-left: 5px solid var(--verde-escuro);
+        .user-profile {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 12px;
+            border-radius: 30px;
+            background: #eee;
             transition: 0.3s;
         }
-        .appointment-item:hover { transform: translateX(5px); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        .user-profile:hover {
+            background: #e0e0e0;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: var(--branco);
+            box-shadow: var(--shadow);
+            border-radius: 12px;
+            min-width: 250px;
+            z-index: 2000;
+            overflow: hidden;
+            padding-bottom: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .dropdown-search {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .dropdown-search input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.9rem;
+            color: var(--texto);
+            padding: 0;
+        }
+
+        .dropdown-section-title {
+            padding: 12px 15px 5px;
+            font-size: 0.75rem;
+            color: var(--texto-suave);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .profile-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: var(--texto);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .profile-dropdown a:hover {
+            background: var(--verde-suave);
+            color: var(--verde-escuro);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .header-full {
+            grid-column: 1 / -1;
+            margin-bottom: 10px;
+        }
+
+        .header-full h1 {
+            color: var(--verde-escuro);
+            font-size: 1.8rem;
+        }
+
+        .header-full p {
+            color: var(--texto-suave);
+        }
+
+        .card {
+            background: var(--branco);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            height: fit-content;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: var(--verde-escuro);
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--texto-suave);
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.95rem;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--verde-escuro);
+            box-shadow: 0 0 0 3px var(--verde-suave);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-schedule {
+            background: var(--verde-escuro);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-schedule:hover {
+            background: var(--verde-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel {
+            background: white;
+            color: var(--texto-suave);
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+            display: none;
+            transition: 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #eee;
+        }
+
+        .appointment-item {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #eee;
+            border-left: 5px solid var(--verde-escuro);
+            transition: 0.3s;
+        }
+
+        .appointment-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
 
         .app-date-box {
-            background: var(--verde-suave); color: var(--verde-escuro);
-            padding: 8px 15px; border-radius: 8px; text-align: center; margin-right: 15px;
+            background: var(--verde-suave);
+            color: var(--verde-escuro);
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-right: 15px;
             min-width: 80px;
         }
-        .app-date-box strong { display: block; font-size: 1.2rem; line-height: 1; }
-        .app-date-box span { font-size: 0.75rem; text-transform: uppercase; font-weight: bold; }
 
-        .app-info { flex-grow: 1; }
-        .app-info h4 { color: var(--texto); font-size: 1.05rem; margin-bottom: 4px; }
-        .app-info p { font-size: 0.85rem; color: var(--texto-suave); display: flex; align-items: center; gap: 6px; }
-        .badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; background: #eee; color: #555; }
-
-        .app-actions { display: flex; gap: 8px; }
-        .btn-icon { 
-            width: 35px; height: 35px; border-radius: 50%; border: none; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; transition: 0.2s;
+        .app-date-box strong {
+            display: block;
+            font-size: 1.2rem;
+            line-height: 1;
         }
-        .btn-edit { background: #e3f2fd; color: var(--azul); }
-        .btn-edit:hover { background: var(--azul); color: white; }
-        
-        .btn-delete { background: #ffebee; color: var(--danger); }
-        .btn-delete:hover { background: var(--danger); color: white; }
 
-        .empty-state { text-align: center; padding: 50px 20px; color: #ccc; }
-        .empty-state i { font-size: 3rem; margin-bottom: 15px; color: #e0e0e0; }
+        .app-date-box span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
 
+        .app-info {
+            flex-grow: 1;
+        }
+
+        .app-info h4 {
+            color: var(--texto);
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .app-info p {
+            font-size: 0.85rem;
+            color: var(--texto-suave);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: #eee;
+            color: #555;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .btn-edit {
+            background: #e3f2fd;
+            color: var(--azul);
+        }
+
+        .btn-edit:hover {
+            background: var(--azul);
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: var(--danger);
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #ccc;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -154,7 +397,8 @@
         </a>
         <div class="user-profile" onclick="toggleMenu(event)">
             <span>Olá,<strong id="user-name">Administrador</strong></span>
-            <div style="width:32px; height:32px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
+            <div
+                style="width:32px; height:32px; background:var(--verde-escuro); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center;">
                 <i class="fas fa-calendar-alt"></i>
             </div>
             <div class="profile-dropdown" id="menuDrop">
@@ -168,12 +412,14 @@
                 <a href="dashboard.html" class="search-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
                 <a href="agendamentos.html" class="search-item"><i class="fas fa-calendar-check"></i> Agendamentos</a>
                 <a href="clientes.html" class="search-item"><i class="fas fa-address-book"></i> Cadastro de Clientes</a>
-                <a href="proficionais.html" class="search-item"><i class="fas fa-user-md"></i> Cadastro Profissionais</a>
+                <a href="proficionais.html" class="search-item"><i class="fas fa-user-md"></i> Cadastro
+                    Profissionais</a>
                 <a href="check-in.html" class="search-item"><i class="fas fa-qrcode"></i> Realizar Check-in</a>
                 <a href="mensalidade.html" class="search-item"><i class="fas fa-money-bill-wave"></i> Mensalidades</a>
                 <a href="financeiro.html" class="search-item"><i class="fas fa-money-bill-wave"></i> Financeiro</a>
-                <a href="avaliaçãoeprontuários.html" class="search-item"><i class="fas fa-file-medical"></i> Prontuários</a>
-                <a href="relatorios.html" class="search-item"><i class="fas fa-chart-line"></i> Relatórios</a> 
+                <a href="avaliaçãoeprontuários.html" class="search-item"><i class="fas fa-file-medical"></i>
+                    Prontuários</a>
+                <a href="relatorios.html" class="search-item"><i class="fas fa-chart-line"></i> Relatórios</a>
                 <a href="ajustesistema.html" class="search-item"><i class="fas fa-cog"></i> Configurações</a>
             </div>
         </div>
@@ -189,7 +435,7 @@
             <div class="card-title" id="formTitle"><i class="fas fa-plus-circle"></i> Novo Horário</div>
             <form id="formAgenda">
                 <input type="hidden" id="editId">
-                
+
                 <div class="form-group">
                     <label>Paciente</label>
                     <input type="text" id="paciente" placeholder="Nome completo" required>
@@ -198,11 +444,13 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>CPF</label>
-                        <input type="text" id="cpf" placeholder="000.000.000-00" oninput="mascaraCPF(this)" maxlength="14">
+                        <input type="text" id="cpf" placeholder="000.000.000-00" oninput="mascaraCPF(this)"
+                            maxlength="14">
                     </div>
                     <div class="form-group">
                         <label>WhatsApp</label>
-                        <input type="text" id="whatsapp" placeholder="(00) 00000-0000" oninput="mascaraTel(this)" maxlength="15">
+                        <input type="text" id="whatsapp" placeholder="(00) 00000-0000" oninput="mascaraTel(this)"
+                            maxlength="15">
                     </div>
                 </div>
 
@@ -246,27 +494,27 @@
         <section class="card">
             <div class="card-title"><i class="fas fa-calendar-day"></i> Próximos Atendimentos</div>
             <div id="listaAgenda">
-                </div>
+            </div>
         </section>
     </main>
 
     <script>
-        function mascaraCPF(i){
+        function mascaraCPF(i) {
             var v = i.value;
-            if(isNaN(v[v.length-1])){ i.value = v.substring(0, v.length-1); return; }
+            if (isNaN(v[v.length - 1])) { i.value = v.substring(0, v.length - 1); return; }
             i.setAttribute("maxlength", "14");
             if (v.length == 3 || v.length == 7) i.value += ".";
             if (v.length == 11) i.value += "-";
         }
-        function mascaraTel(i){
+        function mascaraTel(i) {
             var v = i.value;
-            v=v.replace(/\D/g,"");
-            v=v.replace(/^(\d{2})(\d)/g,"($1) $2");
-            v=v.replace(/(\d)(\d{4})$/,"$1-$2");
+            v = v.replace(/\D/g, "");
+            v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+            v = v.replace(/(\d)(\d{4})$/, "$1-$2");
             i.value = v;
         }
 
-        function toggleMenu(e) { 
+        function toggleMenu(e) {
             e.stopPropagation(); document.getElementById("menuDrop").classList.toggle("show");
             setTimeout(() => document.getElementById("menuSearch")?.focus(), 100);
         }
@@ -284,7 +532,7 @@
             Swal.fire({
                 title: 'Sair?', icon: 'warning', showCancelButton: true,
                 confirmButtonColor: '#3e8e63', confirmButtonText: 'Sim'
-            }).then((r) => { if(r.isConfirmed) window.location.href = 'index.html'; });
+            }).then((r) => { if (r.isConfirmed) window.location.href = 'index.html'; });
         }
 
         let agenda = JSON.parse(localStorage.getItem('agendaFision')) || [];
@@ -295,7 +543,7 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const id = document.getElementById('editId').value;
-            
+
             const dados = {
                 paciente: document.getElementById('paciente').value,
                 cpf: document.getElementById('cpf').value,
@@ -315,7 +563,7 @@
             }
 
             agenda.sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
-            
+
             salvar();
             cancelarEdicao();
         });
@@ -337,7 +585,7 @@
             document.getElementById('btnSubmit').innerHTML = '<i class="fas fa-sync"></i> Atualizar';
             document.getElementById('btnSubmit').style.background = '#3498db';
             document.getElementById('btnCancel').style.display = 'block';
-            
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -419,4 +667,5 @@
         renderAgenda();
     </script>
 </body>
+
 </html>
